@@ -2517,24 +2517,29 @@
   (README with the pre-run contract, <code>analysis.md</code>, <code>tables/</code>); design in the
   follow-up plan §3R. Slurm job 17260494, 11 minutes.</p>
   <dl class="defs">
-    <dt>ACC and RED sides</dt>
+    <dt>SAME and OPP sides</dt>
     <dd>Every quantity is computed per side and then named by its relation to the shock, never as
-    bid or ask. <strong>ACC</strong> is the side whose fills built the position (the bid after an up
-    shock, the ask after a down shock); <strong>RED</strong> is the opposite side, the one that unwinds
-    it. Skews are signed RED − ACC, so a positive value always means "tilted toward getting out".
-    For an up shock this is exactly the review's ask − bid.</dd>
+    bid or ask. <strong>SAME</strong> is the side on the same side as the shock, whose fills built the position (the bid after an up
+    shock, the ask after a down shock); <strong>OPP</strong> is the opposite side, the one that unwinds
+    it. Skews are signed OPP − SAME, so a positive value always means "tilted toward getting out".
+    For an up shock this is exactly the review's ask − bid; for a down shock it is bid − ask, so up and
+    down shocks pool on one sign convention. (The pilot figures below still carry the earlier labels
+    ACC = SAME and RED = OPP; they are being redrawn.)</dd>
     <dt>Distance to the touch, d (bps of mid)</dt>
     <dd>Own best resting quote on a side minus the market's same-side best, from the book state
     strictly before the event; 0 = at the touch, negative = improving it. <code>A</code> =
-    d<sub>ACC</sub> − d<sub>RED</sub>: positive = the accumulating side is quoted further from the
+    d<sub>SAME</sub> − d<sub>OPP</sub>: positive = the same side as the shock is quoted further from the
     market than the unwind side. <code>A_rel</code> is the same in half-spreads, comparable across
     calm and stressed days.</dd>
     <dt>Depth skew K</dt>
-    <dd>(Q<sub>RED</sub> − Q<sub>ACC</sub>) / (Q<sub>RED</sub> + Q<sub>ACC</sub>) on resting notional
-    at minute-end; +1 = only unwind-side depth. Also per distance bucket (touch ≤ 0 bps, near ≤ 10,
-    mid ≤ 100, far &gt; 100 = beyond 1% of mid, the review's cutoff).</dd>
+    <dd>(Q<sub>OPP</sub> − Q<sub>SAME</sub>) / (Q<sub>OPP</sub> + Q<sub>SAME</sub>) on resting notional
+    at minute-end; +1 = only unwind-side depth. Also per distance bucket. <strong>Touch bucket</strong> =
+    resting orders priced at or better than the market's best quote on their own side (distance ≤ 0 bps:
+    the order joins or improves the best bid or best ask); <strong>near</strong> = up to 10 bps behind
+    it; <strong>mid</strong> = 10 to 100 bps; <strong>far</strong> = beyond 100 bps, i.e. more than 1% from
+    mid, the review's cutoff.</dd>
     <dt>Post and cancel imbalance at the touch, Π<sub>P</sub>, Π<sub>C</sub></dt>
-    <dd>(RED − ACC) / (RED + ACC) of notional posted, or canceled, in the minute inside the touch
+    <dd>(OPP − SAME) / (OPP + SAME) of notional posted, or canceled, in the minute inside the touch
     bucket. These are the review's "net posted at the touch" and "net withdrawal at the touch" as
     ratios; the raw differences are stored too.</dd>
     <dt>Withdrawal rate w, refresh rate</dt>
@@ -2547,44 +2552,61 @@
     shocks. Grain is 1 minute because the median formation is 10 minutes and a 5-minute grid holds
     at most two points of it.</dd>
   </dl>
-  <div class="callout"><strong>Pilot reading (n = 10).</strong> The shocked MM tilts <em>distance</em>,
-  not <em>depth</em>. After the peak its unwind-side best quote moves about 1.7 bps closer to the
-  market's best and its accumulating-side best about 1.7 bps further away (asymmetry +3.1 bps,
-  10 of 10 shocks in the predicted direction), while resting notional stays balanced (depth skew
-  0.00 → 0.00), the accumulating side never goes dark, and no wallet ever joins the touch. The
-  accumulating side is pulled and re-quoted far faster than at baseline (withdrawal rate 1.2 → 4.5
-  of the side's book per minute, 9 of 10). Up and down shocks give the same asymmetry (+3.3 and
-  +3.1 bps), so the ACC/RED labelling overlays as required.</div>
-  <h4>Headline table: the shocked wallet, POST1 (peak → +30 min) against its own BASE</h4>
-  <p>Cross-shock medians of per-shock window medians; "share" = shocks whose POST1 − BASE has the
-  predicted sign; Wilcoxon signed-rank p on 10 pairs, reported for completeness only. Source
-  <code>Exp9/tables/headline.csv</code> (all / up / down / class / episode-class subsets).</p>
+  <div class="callout"><strong>Pilot reading (n = 10), the 2 hours before the build against the 30 minutes and the 2 hours after the peak.</strong>
+  The shocked MM tilts <em>distance</em>, not <em>depth</em>. From PRE to POST1 its unwind-side (OPP) best quote moves
+  1.2 bps closer to the market's best and its same-side (SAME) best 1.4 bps further away — an asymmetry of +2.8 bps, 9 of 10
+  shocks in the predicted direction — while resting notional on the two sides stays balanced (depth skew 0.00 → 0.00),
+  the same side never goes dark, and no wallet ever joins the touch. By POST2 the asymmetry has halved (+1.3 bps, 9 of 10)
+  but has not returned to PRE. The same side is pulled and re-quoted faster than before the build (withdrawal rate 2.0 → 4.5 of
+  the side's book per minute in POST1, 7 of 10), and that churn is back to normal by POST2. During the build itself (FORM) the
+  tilt is already present at about a third of its POST1 size.</div>
+  <h4>Headline table: the shocked wallet, PRE against FORM, POST1 and POST2</h4>
+  <p>PRE = the 2 hours before formation start; FORM = formation start to peak; POST1 = peak to +30 min; POST2 = +30 min to
+  +2 h. Cells are cross-shock medians of the per-shock within-window median. "Δ" columns are the paired per-shock difference
+  against PRE: median, share of shocks with the predicted sign, Wilcoxon signed-rank p on 10 pairs (reported for completeness
+  only). Source <code>Exp9/tables/pilot/pre_vs_post_windows.csv</code>; the BASE-referenced version (−24 h to −2 h) is in
+  <code>Exp9/tables/pilot/headline.csv</code> and agrees in sign on every row.</p>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>metric</th><th class="n">BASE</th><th class="n">POST1</th><th class="n">POST1 − BASE</th><th class="n">predicted-sign share</th><th class="n">p</th></tr></thead>
+      <thead><tr><th>metric</th><th class="n">PRE</th><th class="n">FORM</th><th class="n">POST1</th><th class="n">POST2</th>
+        <th class="n">Δ POST1 − PRE</th><th class="n">share / p</th><th class="n">Δ POST2 − PRE</th><th class="n">share / p</th></tr></thead>
       <tbody>
-        <tr><td>Depth skew K (unitless)</td><td class="n">0.000</td><td class="n">0.000</td><td class="n">0.000</td><td class="n">6/10</td><td class="n">0.63</td></tr>
-        <tr class="hi"><td>Quote-distance asymmetry A, d<sub>ACC</sub> − d<sub>RED</sub> (bps)</td><td class="n">−0.08</td><td class="n">+2.63</td><td class="n">+3.13</td><td class="n">10/10</td><td class="n">0.002</td></tr>
-        <tr><td>A in half-spreads (A_rel)</td><td class="n">−0.70</td><td class="n">+10.50</td><td class="n">+10.37</td><td class="n">10/10</td><td class="n">0.002</td></tr>
-        <tr><td>Unwind-side best distance d<sub>RED</sub> (bps)</td><td class="n">3.64</td><td class="n">2.56</td><td class="n">−1.68</td><td class="n">8/10</td><td class="n">0.027</td></tr>
-        <tr><td>Accumulating-side best distance d<sub>ACC</sub> (bps)</td><td class="n">3.78</td><td class="n">4.75</td><td class="n">+1.71</td><td class="n">10/10</td><td class="n">0.002</td></tr>
-        <tr><td>Share of minutes with the unwind side at or inside the touch</td><td class="n">0.00</td><td class="n">0.00</td><td class="n">0</td><td class="n">—</td><td class="n">—</td></tr>
-        <tr><td>Presence on the accumulating side (share of minutes quoting)</td><td class="n">1.00</td><td class="n">1.00</td><td class="n">0</td><td class="n">—</td><td class="n">—</td></tr>
-        <tr><td>Resting notional on the accumulating side Q<sub>ACC</sub> (kUSD)</td><td class="n">549</td><td class="n">329</td><td class="n">−0.8 [−128, +2.4]</td><td class="n">7/10</td><td class="n">0.23</td></tr>
-        <tr class="hi"><td>Withdrawal rate w<sub>ACC</sub> (share of book canceled per minute)</td><td class="n">1.22</td><td class="n">4.49</td><td class="n">+2.59</td><td class="n">9/10</td><td class="n">0.004</td></tr>
-        <tr><td>Refresh rate on the accumulating side</td><td class="n">2.43</td><td class="n">9.02</td><td class="n">+5.19</td><td class="n">9/10</td><td class="n">0.004</td></tr>
+        <tr><td>Depth skew K (unitless)</td><td class="n">0.00</td><td class="n">0.00</td><td class="n">0.00</td><td class="n">0.00</td><td class="n">0.00</td><td class="n">5/10 · 0.70</td><td class="n">0.00</td><td class="n">6/10 · 0.43</td></tr>
+        <tr class="hi"><td>Quote-distance asymmetry A = d<sub>SAME</sub> − d<sub>OPP</sub> (bps)</td><td class="n">−0.53</td><td class="n">+0.71</td><td class="n">+2.63</td><td class="n">+1.13</td><td class="n">+2.82</td><td class="n">9/10 · 0.004</td><td class="n">+1.33</td><td class="n">9/10 · 0.004</td></tr>
+        <tr><td>A in half-spreads</td><td class="n">−1.36</td><td class="n">+5.00</td><td class="n">+10.50</td><td class="n">+2.50</td><td class="n">+12.57</td><td class="n">10/10 · 0.002</td><td class="n">+4.06</td><td class="n">9/10 · 0.010</td></tr>
+        <tr><td>OPP-side (unwind) best distance to the touch (bps)</td><td class="n">3.61</td><td class="n">4.04</td><td class="n">2.56</td><td class="n">2.84</td><td class="n">−1.17</td><td class="n">8/10 · 0.037</td><td class="n">−0.69</td><td class="n">8/10 · 0.037</td></tr>
+        <tr><td>SAME-side best distance to the touch (bps)</td><td class="n">3.75</td><td class="n">4.70</td><td class="n">4.75</td><td class="n">4.22</td><td class="n">+1.38</td><td class="n">10/10 · 0.002</td><td class="n">+0.58</td><td class="n">8/10 · 0.010</td></tr>
+        <tr><td>Share of minutes with the OPP side at or inside the touch</td><td class="n">0.00</td><td class="n">0.00</td><td class="n">0.00</td><td class="n">0.00</td><td class="n">0</td><td class="n">—</td><td class="n">0</td><td class="n">—</td></tr>
+        <tr><td>Presence on the SAME side (share of minutes quoting)</td><td class="n">1.00</td><td class="n">1.00</td><td class="n">1.00</td><td class="n">1.00</td><td class="n">0</td><td class="n">—</td><td class="n">0</td><td class="n">—</td></tr>
+        <tr><td>Resting notional, SAME side (kUSD)</td><td class="n">457</td><td class="n">480</td><td class="n">329</td><td class="n">335</td><td class="n">−22</td><td class="n">6/10 · 0.38</td><td class="n">−1</td><td class="n">6/10 · 0.49</td></tr>
+        <tr><td>Resting notional, OPP side (kUSD)</td><td class="n">379</td><td class="n">385</td><td class="n">436</td><td class="n">463</td><td class="n">+0.2</td><td class="n">— · 0.70</td><td class="n">+1.5</td><td class="n">— · 0.43</td></tr>
+        <tr class="hi"><td>Withdrawal rate, SAME side (share of book canceled per min)</td><td class="n">1.96</td><td class="n">3.48</td><td class="n">4.49</td><td class="n">3.04</td><td class="n">+1.73</td><td class="n">7/10 · 0.064</td><td class="n">+0.05</td><td class="n">6/10 · 0.92</td></tr>
+        <tr><td>Withdrawal rate, OPP side</td><td class="n">2.00</td><td class="n">3.50</td><td class="n">3.70</td><td class="n">2.46</td><td class="n">+1.24</td><td class="n">— · 0.13</td><td class="n">+0.01</td><td class="n">— · 0.77</td></tr>
+        <tr><td>Refresh rate, SAME side (posted + canceled over book, per min)</td><td class="n">3.94</td><td class="n">6.92</td><td class="n">9.02</td><td class="n">6.03</td><td class="n">+3.58</td><td class="n">7/10 · 0.064</td><td class="n">+0.10</td><td class="n">6/10 · 0.92</td></tr>
+        <tr><td>Fill-through rate, SAME side (filled over book, per min)</td><td class="n">0.007</td><td class="n">0.010</td><td class="n">0.004</td><td class="n">0.003</td><td class="n">0.000</td><td class="n">2/10 · 0.22</td><td class="n">0.000</td><td class="n">5/10 · 0.09</td></tr>
+        <tr><td>Order lifetime at cancel, SAME side (s)</td><td class="n">2.28</td><td class="n">1.49</td><td class="n">1.50</td><td class="n">2.27</td><td class="n">−0.12</td><td class="n">6/10 · 0.56</td><td class="n">−0.19</td><td class="n">7/10 · 0.28</td></tr>
       </tbody>
     </table>
   </div>
-  <h4>The review's four predicted signs (positive inventory shock; RED = ask)</h4>
+  <ul class="tight">
+    <li><strong>PRE → POST1 is where the response is.</strong> Both distances move (unwind side in, same side out) and
+    the same-side churn doubles; depth, presence and fill-through do not move.</li>
+    <li><strong>PRE → POST2 keeps the distance tilt at about half strength and nothing else.</strong> Churn and order
+    lifetimes are back at PRE levels by the second hour; the asymmetry is still +1.3 bps in 9 of 10.</li>
+    <li><strong>PRE → FORM already shows the tilt</strong> (+0.8 bps, 7 of 10) and a rising withdrawal rate on both
+    sides: the desk starts backing off during the build, not after the peak.</li>
+    <li>Order lifetimes at cancel are about 2 seconds throughout: these desks re-quote continuously, which is why
+    cancel-based "withdrawal" measures read as churn rather than as pulling liquidity.</li>
+  </ul>
+  <h4>The review's four predicted signs, read against PRE (positive inventory shock; OPP = ask)</h4>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Predicted</th><th>Metric</th><th class="n">BASE → POST1</th><th class="n">share</th><th>Verdict at n = 10</th></tr></thead>
+      <thead><tr><th>Predicted</th><th>Metric</th><th class="n">PRE → POST1</th><th class="n">share / p</th><th class="n">PRE → POST2</th><th class="n">share / p</th><th>Verdict at n = 10</th></tr></thead>
       <tbody>
-        <tr class="hi"><td>net posted at the touch ↑</td><td>Π<sub>P</sub><sup>touch</sup> &gt; 0</td><td class="n">−0.20 → +0.95</td><td class="n">9/10 (p 0.004)</td><td><strong>confirms</strong>: what is posted at the touch after the peak is almost all unwind-side</td></tr>
-        <tr><td>net withdrawal at the touch ↓</td><td>Π<sub>C</sub><sup>touch</sup> &lt; 0</td><td class="n">−0.66 → +1.00</td><td class="n">0/10 (p 0.004)</td><td><strong>opposite sign</strong>, and the metric is the wrong instrument for these desks: they re-quote every ~2 seconds, so cancels travel with posts and a side that posts more also cancels more. The withdrawal <em>rate</em> per side is the substitute (ACC 4.5 vs RED 3.7 per minute) and is only weakly in the predicted direction</td></tr>
-        <tr><td>net posted away (&gt; 1%) ↓</td><td>Π<sub>P</sub><sup>far</sup> &lt; 0</td><td class="n">0.00 → +0.06</td><td class="n">0/3</td><td><strong>not testable</strong>: the far bucket is almost unused by these wallets; their ladders live inside 100 bps. The cutoff needs to move to where the book is (a reading decision, the continuous distance is stored)</td></tr>
-        <tr><td>net withdrawal away ≈ 0 or ↑</td><td>Π<sub>C</sub><sup>far</sup> ≥ 0</td><td class="n">−0.17 → +1.00</td><td class="n">4/4</td><td>consistent, on 4 shocks</td></tr>
+        <tr class="hi"><td>net posted at the touch ↑</td><td>Π<sub>P</sub><sup>touch</sup> &gt; 0</td><td class="n">−0.26 → +0.95</td><td class="n">8/10 · 0.008</td><td class="n">−0.26 → +0.84</td><td class="n">7/10 · 0.027</td><td><strong>confirms</strong>: what is posted at the touch after the peak is almost all unwind-side, in both windows</td></tr>
+        <tr><td>net withdrawal at the touch ↓</td><td>Π<sub>C</sub><sup>touch</sup> &lt; 0</td><td class="n">−0.07 → +1.00</td><td class="n">0/10 · 0.008</td><td class="n">−0.07 → +0.98</td><td class="n">1/10 · 0.055</td><td><strong>opposite sign</strong>, and the metric is the wrong instrument for these desks: they re-quote every ~2 s, so cancels travel with posts and a side that posts more also cancels more. The withdrawal <em>rate</em> per side (SAME 4.5 vs OPP 3.7 per minute in POST1) is the substitute and is only weakly in the predicted direction</td></tr>
+        <tr><td>net posted away (&gt; 1%) ↓</td><td>Π<sub>P</sub><sup>far</sup> &lt; 0</td><td class="n">+1.00 → +0.06 (paired n = 2)</td><td class="n">—</td><td class="n">+1.00 → 0.00 (n = 3)</td><td class="n">—</td><td><strong>not testable at 1%</strong>: the far bucket is almost unused by these wallets (4 of 10 shocks have any far order in PRE); their ladders live inside 100 bps. The full run re-cuts "away" at 25, 50 and 100 bps from the stored continuous distances</td></tr>
+        <tr><td>net withdrawal away ≈ 0 or ↑</td><td>Π<sub>C</sub><sup>far</sup> ≥ 0</td><td class="n">+1.00 → +1.00 (n = 3)</td><td class="n">—</td><td class="n">+1.00 → 0.00 (n = 4)</td><td class="n">—</td><td>not testable at 1%, same reason</td></tr>
       </tbody>
     </table>
   </div>
