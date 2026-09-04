@@ -198,7 +198,7 @@
 <main class="status" id="top">
   <h1>Exp8 review status</h1>
   <p class="lede">Where each point from the 2026-09-02 review stands, and where in the report it is
-  answered. Updated 2026-09-04 15:00 UTC. Reports: <a href="exp8-report.html">full Exp8 report</a>
+  answered. Updated 2026-09-04 (part 7). Reports: <a href="exp8-report.html">full Exp8 report</a>
   &middot; <a href="briefing.html">the story briefing</a> &middot; <a href="overview.html">about these pages</a>.</p>
 
   <div class="note"><strong>How to read the state column.</strong>
@@ -229,7 +229,7 @@
         <td>Of 138 covered shocks, 20.3% are followed by an equity drop worse than &minus;1% and 7.2% worse than &minus;5% (17.4% / 4.5% without 2025-10-10). Maintenance over equity rises by more than 2 pp in 13.1% and stays below 0.20 in 137 of 140. Snapshots are ~2 h apart, so this is an hours claim, never a 5-minute one. <strong>Missing:</strong> the link to Miao&rsquo;s equity and portfolio shocks; no shared event grain exists yet.</td></tr>
       <tr><td>5</td><td>The observed chain: price drops, takers sell, MM inventory rises, MMs unwind with limit orders.</td>
         <td><span class="st done">DONE</span> (confirmed on 181)</td>
-        <td><a href="exp8-report.html#cause">&sect;C</a> and <a href="exp8-report.html#table-10">Table 10</a> (flow) &middot; <a href="exp8-report.html#atlas">&sect;F</a> (price against the inventory) &middot; <a href="exp8-report.html#e-price">&sect;E2</a> and <a href="exp8-report.html#table-27">Table 27</a> (post-only unwind)</td>
+        <td><a href="exp8-report.html#cause">&sect;C</a>, <a href="exp8-report.html#table-10">Table 10</a> and <a href="exp8-report.html#table-11">Table 11</a> (flow, all 181) &middot; <a href="exp8-report.html#d-cp181">D2, who is on the other side</a> &middot; <a href="exp8-report.html#atlas">&sect;F</a> (price against the inventory) &middot; <a href="exp8-report.html#e-price">&sect;E2</a> and <a href="exp8-report.html#table-27">Table 27</a> (post-only unwind)</td>
         <td>Hit-side taker volume 5.3&times; its 24-hour rate, imbalance +0.44; the mid fell in 115 of 125 up shocks, median formation move &minus;85 bps; unwinding is 98% post-only at the median for the roster ten. Post-only unwinding is a property of these ten, not of shocked MMs generally (&sect;E2). <strong>Extended 2026-09-04 to all 1,964 shocked-MM rows</strong> (<a href="exp8-report.html#d-take">&sect;D4</a>, <a href="exp8-unwind-activity.html">full page</a>): the typical shocked MM of any role does not take more than its own normal after the peak; what the roster takes is two thirds on the unwind side; order counts tilt only one point; the unwind is carried by reducing-side filled orders (unwind-side share 0.51 &rarr; 0.61, above one half in 91% of catalogue rows).</td></tr>
       <tr><td>6</td><td>After a shock, measure quoting, not fills: net posted and net withdrawn liquidity at and away from the touch, 5-minute steps for 2 hours, against four predicted signs.</td>
         <td><span class="st done">DONE</span> on all 181 shocks (published 2026-09-04)</td>
@@ -248,16 +248,16 @@
         <td>The report gained a what-is-new list, numbered tables with captions, and an appendix. It is still ordered by history (sections A&ndash;J) and still mixes six samples: 181 shocks, three one-minute episodes, 57 wallet-episodes at 3&sigma;, 10 pilot shocks, 99&ndash;151 equity-covered subsets, and the 245-shock v3 catalogue. The rewrite into a reader document around five threads has not started.</td></tr>
       <tr><td>2(i)</td><td>One shock taxonomy: inventory, price, equity and portfolio shocks and how they connect (inventory shock + adverse price = equity stress?); idiosyncratic against systemic shocks.</td>
         <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-report.html#atlas">&sect;F</a> (inventory, price and equity z on one grid, Figures 15&ndash;16) &middot; <a href="exp8-report.html#d-axis">&sect;D3</a> and <a href="exp8-report.html#table-19">Table 19</a> (alone / few / broad), Figure 8</td>
-        <td>In the report: inventory and price shock sizes are uncorrelated (Spearman 0.00) yet 54% of formations hold a &ge;3&sigma; price move; BROAD shocks are price events (75% vs 32% for ALONE). <strong>Not yet in the report</strong>, only in <code>Exp8/analysis.md</code>: &sect;19 measures concentration against all active MMs (median 78, not the roster 7), finds the roster cutoffs dead (focal share median 0.073), and gets a monotone equity gradient (34.8 / 21.4 / 6.0% lose &gt;1%) that removes the report&rsquo;s &ldquo;FEW carries the equity tail&rdquo;; &sect;18 shows recovery speed is set by wallet identity and volatility, not absorption share; &sect;20 gives the full-catalogue flow split (64% one-sided). No shared grain with Miao yet.</td></tr>
+        <td><a href="exp8-report.html#atlas">&sect;F</a> (inventory, price and equity z on one grid, Figures 15&ndash;16) &middot; <a href="exp8-report.html#d-axis">&sect;D3</a> and <a href="exp8-report.html#table-19">Table 19</a> (alone / few / broad), Figure 8 &middot; <a href="exp8-report.html#d-pop181">D3, against all active MMs</a> with <a href="exp8-report.html#table-21">Table 21</a> (six candidate rules) and <a href="exp8-report.html#table-22">Table 22</a> (the two-axis grid), Figure 9</td>
+        <td>In the report: inventory and price shock sizes are uncorrelated (Spearman 0.00) yet 54% of formations hold a &ge;3&sigma; price move; BROAD shocks are price events (75% vs 32% for ALONE). <strong>Added 2026-09-04:</strong> the same concentration measured against all active MMs (median 78, not the roster 7) kills the roster cutoffs (focal share median 0.073; <code>C</code> &ge; 0.60 in 3 of 181) and gives a <em>monotone</em> equity gradient (34.8 / 21.4 / 6.0% lose &gt; 1%), which removes the report&rsquo;s &ldquo;FEW carries the equity tail&rdquo;. The replacement is two axes rather than one class, and the worst cell is the eight shocks where the move concentrated on a few MMs and the shocked wallet was not one of them. <strong>Still missing:</strong> the published ALONE / FEW / BROAD labels are unchanged &mdash; adopting a population rule relabels 40&ndash;45% of the catalogue and has to be propagated deliberately &mdash; and there is no shared grain with Miao&rsquo;s equity shocks yet.</td></tr>
       <tr><td>2(ii)</td><td>MM archetypes by initial inventory and mean-reversion speed.</td>
         <td><span class="st done">DONE</span> as a proposal</td>
         <td><a href="exp8-report.html#e-chain">&sect;E3</a> &middot; <a href="exp8-report.html#table-29">Table 29</a> &middot; Figure 13</td>
         <td>Nine wallets. Book size and deviation half-life (3 min to 1,162 min) move together and predict reversion (&rho; &minus;0.93 with half-back-by-60-min); post-only against crossing is a second, nearly independent axis. Naming the axes is left to the author.</td></tr>
       <tr><td>2(iii)</td><td>Archetype &rarr; actions (limit vs market, refill speed, size) &rarr; outcomes (reversion, loss, PnL, time back to normal liquidity).</td>
         <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-report.html#e-chain">&sect;E3</a> (order type, taker share, half-back rates, execution percentile, markouts, equity) &middot; <a href="exp8-report.html#quoting">&sect;G</a> (reaction latency and refill, per wallet)</td>
-        <td>Actions now measured on the order stream: latency from surge onset to book response median 9 min (per-wallet medians 2.5 to 11 min), same-side depth refilled to 80% within 30 min in 87% of shocks. <strong>Missing:</strong> these quoting columns are not yet joined into the E3 table, and no test yet of whether the quote tilt speeds the unwind.</td></tr>
+        <td><a href="exp8-report.html#e-chain">&sect;E3</a> (order type, taker share, half-back rates, execution percentile, markouts, equity) &middot; <a href="exp8-report.html#e-drivers">&sect;E4</a> (what decides recovery speed) &middot; <a href="exp8-report.html#quoting">&sect;G</a> (reaction latency and refill, per wallet)</td>
+        <td>Actions now measured on the order stream: latency from surge onset to book response median 9 min (per-wallet medians 2.5 to 11 min), same-side depth refilled to 80% within 30 min in 87% of shocks. <strong>Added 2026-09-04 (&sect;E4):</strong> recovery speed is set by shock size and market volatility, and more by wallet identity than by either; the absorption share adds nothing once size is controlled (R&sup2; +0.006 on <code>rec60</code>, +0.000 on time-to-back), so it must not be described as predicting recovery. <strong>Missing:</strong> the quoting columns are not yet joined into the E3 table, and there is still no test of whether the quote tilt speeds the unwind.</td></tr>
       <tr><td>3</td><td>How the whole market reacts; fill quality afterwards.</td>
         <td><span class="st todo">NOT DONE</span></td>
         <td>Planned as Phase 4 in <code>plans/plan-2026-09-03-exp8-order-behavior-followup.md</code> &sect;6</td>
@@ -274,12 +274,17 @@
 
   <h2 id="notyet">Not in the deployed report yet</h2>
   <ul>
-    <li><code>Exp8/analysis.md</code> &sect;19, concentration against all active MMs and the two-axis idiosyncratic / systemic grid. Would replace the roster-based classes in &sect;D3, &sect;F and &sect;E3.</li>
-    <li><code>Exp8/analysis.md</code> &sect;18, what drives recovery speed (size, volatility, wallet identity; absorption share adds nothing).</li>
-    <li><code>Exp8/analysis.md</code> &sect;20, the 181-shock flow rollout: 64% one-sided hit, effective 11 absorbers, shocked wallet at rank 2&ndash;3.</li>
-    <li>The exact taker&ndash;maker pairing extended to 2026-06-30 is built but not yet used in &sect;D2.</li>
-    <li>The equity attribution that ties an inventory shock to Miao&rsquo;s equity shocks, and the market-quality event study, are planned and not built.</li>
+    <li>The <strong>equity attribution</strong> that ties an inventory shock to Miao&rsquo;s equity shocks, and the <strong>market-quality event study</strong> (quoted spread, top-5 depth and taker realised cost for 2 h after the 181 peaks, split idiosyncratic against systemic), are planned and not built.</li>
+    <li>The <strong>published ALONE / FEW / BROAD labels have not been changed</strong> to the population rule of <a href="exp8-report.html#d-pop181">&sect;D3</a>. Doing so relabels 40&ndash;45% of the catalogue and has to be propagated through &sect;D3, &sect;F and &sect;G at once; <code>tables/population_reclass.csv</code> carries both labels per shock so any table can be re-cut without a rebuild. It is a decision, not a build.</li>
+    <li>The <strong>quoting columns of &sect;G are not joined into the &sect;E3 archetype table</strong>, and there is no test of whether the post-shock quote tilt actually speeds the unwind.</li>
   </ul>
+
+  <div class="note"><strong>Cleared 2026-09-04 (part 7).</strong> Four items that were on this list are
+  now in the deployed report: <a href="exp8-report.html#d-pop181">&sect;D3 against all active MMs</a>
+  with the two-axis grid; <a href="exp8-report.html#e-drivers">&sect;E4</a> on what decides recovery
+  speed; the 181-shock flow rollout in <a href="exp8-report.html#c-flow181">&sect;C</a> and
+  <a href="exp8-report.html#d-absorb181">&sect;D</a>; and the extended taker&ndash;maker pairing put to
+  work in <a href="exp8-report.html#d-cp181">&sect;D2</a>.</div>
 
   <footer>Working research output, not a paper. Wallet identities are never published; desks are
   named by volume rank. Authored in <code>code/site_status.html</code>, published by
