@@ -6,6 +6,7 @@ HYPE** (Hyperliquid perpetuals), covering 2025-03-27 to 2026-06-30 UTC.
 - **[Review status (home)](https://xinxin-m.github.io/mm-inventory-reports/)** - each point of the 2026-09-02 review, its state, and a link to where the report answers it
 - **[Briefing - Exp5 and Exp8 in 15 minutes](https://xinxin-m.github.io/mm-inventory-reports/briefing.html)**
 - **[Exp8 - Sudden MM inventory shocks, full report](https://xinxin-m.github.io/mm-inventory-reports/exp8-report.html)**
+- **[Exp8 D4 - Do shocked MMs take, or quote, their way out?](https://xinxin-m.github.io/mm-inventory-reports/exp8-unwind-activity.html)** - all 1,964 shocked-MM rows, two hours after their own peak against their own baseline
 - **[About these pages](https://xinxin-m.github.io/mm-inventory-reports/overview.html)**
 
 Site: <https://xinxin-m.github.io/mm-inventory-reports/>

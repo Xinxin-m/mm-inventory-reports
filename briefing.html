@@ -272,7 +272,7 @@
       <li><strong>Denominator floor 2 &mdash; &sigma;<sub>t</sub> is never below 2% of the wallet's
       30-day p95 |position| (lagged one day).</strong> For wallets that are quiet but big: a $300k
       move on a $6m book is many MADs if the book has been calm, but is 5% of the book and not a
-      shock for that desk. Sets &sigma;<sub>t</sub> for 5 of the 181; removing this floor adds 2
+      shock for that MM. Sets &sigma;<sub>t</sub> for 5 of the 181; removing this floor adds 2
       candidate events.</li>
 
       <li><strong>Candidate &mdash; |z<sub>t</sub>| &ge; 6 on an active wallet-day.</strong>
@@ -697,7 +697,7 @@
     <li><strong>In sections A–E, quoting is only observed where a quote was filled.</strong>
     Every "spread" figure there is a realized, fill-conditional price gap. <span class="new">NEW</span> The raw
     order stream (posts, cancels, resting prices) turned out to be available on this host
-    (2026-09-03); its first use is the quoting pilot in §G, and nothing
+    (2026-09-03); its first use is §G, and nothing
     before that section has been rebuilt on it.</li>
 <!-- p0904:fix1:end -->
     <li><strong>Cliffs have no attribution at all.</strong> Whether they are informed

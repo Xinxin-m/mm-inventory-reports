@@ -52,11 +52,11 @@
 </style>
 </head>
 <body>
-<main class="status">
+<main class="status" id="top">
   <h1>Exp8 review status</h1>
   <p class="lede">Where each point from the 2026-09-02 review stands, and where in the report it is
   answered. Updated 2026-09-04 15:00 UTC. Reports: <a href="exp8-report.html">full Exp8 report</a>
-  &middot; <a href="briefing.html">15-minute briefing</a> &middot; <a href="overview.html">about these pages</a>.</p>
+  &middot; <a href="briefing.html">the story briefing</a> &middot; <a href="overview.html">about these pages</a>.</p>
 
   <div class="note"><strong>How to read the state column.</strong>
   <span class="st done">DONE</span> the point is answered in the deployed report at the linked place.
@@ -64,7 +64,7 @@
   <span class="st todo">NOT DONE</span> nothing in the report yet; where it will go is named.
   Every link opens the report at the table, figure or section that carries the answer.</div>
 
-  <h2>Olga</h2>
+  <h2 id="olga">Olga</h2>
   <div class="table-wrap"><table>
     <thead><tr><th>#</th><th>Ask</th><th>State</th><th>Where in the report</th><th>What it says, and what is missing</th></tr></thead>
     <tbody>
@@ -87,7 +87,7 @@
       <tr><td>5</td><td>The observed chain: price drops, takers sell, MM inventory rises, MMs unwind with limit orders.</td>
         <td><span class="st done">DONE</span> (confirmed on 181)</td>
         <td><a href="exp8-report.html#cause">&sect;C</a> and <a href="exp8-report.html#table-10">Table 10</a> (flow) &middot; <a href="exp8-report.html#atlas">&sect;F</a> (price against the inventory) &middot; <a href="exp8-report.html#e-price">&sect;E2</a> and <a href="exp8-report.html#table-18">Table 18</a> (post-only unwind)</td>
-        <td>Hit-side taker volume 5.3&times; its 24-hour rate, imbalance +0.44; the mid fell in 115 of 125 up shocks, median formation move &minus;85 bps; unwinding is 98% post-only at the median for the roster ten. Post-only unwinding is a property of these ten, not of shocked MMs generally (&sect;E2).</td></tr>
+        <td>Hit-side taker volume 5.3&times; its 24-hour rate, imbalance +0.44; the mid fell in 115 of 125 up shocks, median formation move &minus;85 bps; unwinding is 98% post-only at the median for the roster ten. Post-only unwinding is a property of these ten, not of shocked MMs generally (&sect;E2). <strong>Extended 2026-09-04 to all 1,964 shocked-MM rows</strong> (<a href="exp8-report.html#d-take">&sect;D4</a>, <a href="exp8-unwind-activity.html">full page</a>): the typical shocked MM of any role does not take more than its own normal after the peak; what the roster takes is two thirds on the unwind side; order counts tilt only one point; the unwind is carried by reducing-side filled orders (unwind-side share 0.51 &rarr; 0.61, above one half in 91% of catalogue rows).</td></tr>
       <tr><td>6</td><td>After a shock, measure quoting, not fills: net posted and net withdrawn liquidity at and away from the touch, 5-minute steps for 2 hours, against four predicted signs.</td>
         <td><span class="st done">DONE</span> on all 181 shocks (published 2026-09-04)</td>
         <td><a href="exp8-report.html#quoting">&sect;G Book response</a> &middot; <a href="exp8-report.html#table-22">Table 22</a> (before / during / after) &middot; <a href="exp8-report.html#table-23">Table 23</a> (the four predicted signs) &middot; Figures 14&ndash;17</td>
@@ -95,7 +95,7 @@
     </tbody>
   </table></div>
 
-  <h2>Ruizhe</h2>
+  <h2 id="ruizhe">Ruizhe</h2>
   <div class="table-wrap"><table>
     <thead><tr><th>#</th><th>Ask</th><th>State</th><th>Where in the report</th><th>What it says, and what is missing</th></tr></thead>
     <tbody>
@@ -122,14 +122,14 @@
     </tbody>
   </table></div>
 
-  <h2>Where the new Exp9 quoting results are</h2>
+  <h2 id="exp9">Where the new Exp9 quoting results are</h2>
   <ul>
     <li><strong>In this site:</strong> report <a href="exp8-report.html#quoting">&sect;G</a>, with <a href="exp8-report.html#table-22">Table 22</a>, <a href="exp8-report.html#table-23">Table 23</a>, the away-cutoff sweep at 25 / 50 / 100 bps, the subset splits (up / down, revert / step / partial, alone / few / broad), reaction latency and refill, Figures 14&ndash;17, and the validation gates in a toggle.</li>
     <li><strong>In the repository</strong> (not published here): <code>experiments/Exp9_post_shock_quoting/analysis.md</code> &sect;2&ndash;&sect;9 is the full record, Appendix A the superseded 10-shock pilot; tables in <code>Exp9/tables/</code> (<code>pre_vs_post_windows.csv</code>, <code>pre_vs_post_windows_by_subset.csv</code>, <code>olga_four_cells.csv</code>, <code>far_cutoff_sensitivity.csv</code>, <code>reaction_latency.csv</code>, <code>reaction_by_wallet.csv</code>, <code>validation.csv</code>); figures in <code>Exp9/figures/</code>; setup, run ledger and validation ledger in <code>Exp9/README.md</code>. Build: Slurm 17261556 (56 min, 181 of 181 shocks); tables and figures: 17262226.</li>
     <li><strong>Two pilot readings did not survive the full run</strong> and are superseded in &sect;G: the unwind side and the accumulating side no longer move by similar amounts (the accumulating-side move is seven times larger), and the third predicted sign is absent at every cutoff rather than weakly present at 25 bps.</li>
   </ul>
 
-  <h2>Not in the deployed report yet</h2>
+  <h2 id="notyet">Not in the deployed report yet</h2>
   <ul>
     <li><code>Exp8/analysis.md</code> &sect;19, concentration against all active MMs and the two-axis idiosyncratic / systemic grid. Would replace the roster-based classes in &sect;D3, &sect;F and &sect;E3.</li>
     <li><code>Exp8/analysis.md</code> &sect;18, what drives recovery speed (size, volatility, wallet identity; absorption share adds nothing).</li>
