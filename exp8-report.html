@@ -253,9 +253,66 @@
     <p class="eq">&sigma;<sub>t</sub> &nbsp;=&nbsp; max(&nbsp;&sigma;<sup>7d</sup><sub>t</sub>,&nbsp;&nbsp;0.02 &times; p95(|P|)<sub>30d</sub>,&nbsp;&nbsp;$12,500 / m<sub>t</sub>&nbsp;)
       <span class="eqnote">p95 of |position| over the trailing 30 days, lagged one day so it never sees the shock</span></p>
     <p class="eq">z<sub>t</sub> &nbsp;=&nbsp; dev<sub>t</sub> / &sigma;<sub>t</sub>&nbsp;, &nbsp;&nbsp;shock candidate when |z<sub>t</sub>| &ge; 6</p>
-    <p>So z is a <strong>robust z-score</strong> — median/MAD, not mean/standard-deviation — with
-    two floors on the denominator: the p95 term keeps a wallet that has been unusually flat for a
-    week from generating shocks out of noise, and the $12,500 floor does the same for small books. The constants are not free parameters: <strong>$12,500 = $100k / (z&nbsp;=&nbsp;6), rounded down</strong> &mdash; since detection needs a move of 6&sigma; and &sigma; can never fall below the floor, the floor implies a minimum move of 6&nbsp;&times;&nbsp;$12.5k&nbsp;=&nbsp;$75k, kept deliberately below the explicit $100k size gate so the floor only prevents division by a near-zero MAD and never becomes a second size rule. <strong>c&nbsp;=&nbsp;0.02</strong> removes 2 of 183 candidate events, both from the one wallet whose MAD collapses to ~1.8% of its own p95 position; c&nbsp;=&nbsp;0.05 would remove 12 (sensitivity: <code>tables/scale_floor_impact.csv</code>).
+    <p>So z is a <strong>robust z-score</strong> &mdash; median/MAD, not mean/standard-deviation.
+    The denominator is a <code>max()</code> of three candidate scales, and the two extra terms are
+    what this report calls <strong>floors</strong>.</p>
+
+    <h5 style="margin:1.1em 0 .35em">What &ldquo;floor&rdquo; means here</h5>
+    <p>A floor is a <strong>lower bound on the denominator &sigma;<sub>t</sub></strong> &mdash; not on
+    the move, the position, or z. Because &sigma;<sub>t</sub> is the largest of the three terms, a
+    floor can only push &sigma;<sub>t</sub> <em>up</em>, never down, so it can only make z
+    <em>smaller</em> and detection <em>harder</em>. A floor does nothing at all unless the trailing
+    MAD &sigma;<sup>7d</sup><sub>t</sub> has fallen below it. Throughout this report a floor
+    <strong>binds</strong> at a bin when it is the largest of the three &mdash; the term that
+    actually sets &sigma;<sub>t</sub> there.</p>
+
+    <h5 style="margin:1.1em 0 .35em">Why each floor is needed</h5>
+    <p>They answer two different failure modes, and neither is about
+    &sigma;<sup>7d</sup><sub>t</sub> being &ldquo;too small&rdquo; in the abstract:</p>
+    <ul>
+      <li><strong>$12,500 / m<sub>t</sub> &mdash; a divide-by-almost-zero guard.</strong>
+      A wallet that holds a near-constant position for a week has
+      median|dev|&nbsp;&asymp;&nbsp;0, so &sigma;<sup>7d</sup><sub>t</sub>&nbsp;&asymp;&nbsp;0 and z
+      explodes on <em>any</em> move at all, including one-coin rounding in the position series. The
+      floor says: if the measured scale is under $12.5k, z is reporting the <em>resolution</em> of
+      the position series, not risk. The constant is not free &mdash; <strong>$12,500 = $100k /
+      (z&nbsp;=&nbsp;6), rounded down</strong>. Since a candidate needs 6&sigma; and &sigma; can
+      never fall below the floor, the floor implies a minimum detectable move of
+      6&nbsp;&times;&nbsp;$12.5k&nbsp;=&nbsp;$75k, deliberately kept <em>below</em> the explicit
+      $100k size gate, so the floor only stops the division and never becomes a second, hidden
+      size rule.</li>
+
+      <li><strong>0.02 &times; p95(|P|)<sub>30d</sub> &mdash; a relative floor for wallets that are
+      quiet but big.</strong> A desk can run a large book with tiny intraday wiggle: its
+      &sigma;<sup>7d</sup><sub>t</sub> is small <em>relative to what it actually carries</em>. A
+      $300k move on such a wallet is 10&sigma; on the trailing-MAD yardstick but 5% of the book,
+      and 5% of the book is not a shock for that desk. This floor ties the scale to book size at
+      2%, so a move must be large against the wallet's own <em>capacity</em>, not only against its
+      recent calm. <code>p95(|P|)<sub>30d</sub></code> is recomputed once per UTC date over the
+      trailing 30 days and <strong>lagged one day, so it never sees the shock</strong>.
+      <strong>c&nbsp;=&nbsp;0.02</strong> removes 2 of 183 candidate events; c&nbsp;=&nbsp;0.05
+      would remove 12 (sensitivity: <code>tables/scale_floor_impact.csv</code>).</li>
+    </ul>
+
+    <h5 style="margin:1.1em 0 .35em">How often each one actually binds</h5>
+    <p>Across the 181 shocks (<code>tables/scale_diagnostics.csv</code>) the floors are guards, not
+    shapers of the catalogue &mdash; the measured trailing scale sets &sigma;<sub>t</sub> in almost
+    every case:</p>
+    <ul>
+      <li>&sigma;<sup>7d</sup><sub>t</sub> binds <strong>173 times (95.6%)</strong>; the p95 floor
+      binds <strong>5 times</strong>; the $12,500 floor binds <strong>3 times</strong>.</li>
+      <li><strong>2 of the 181</strong> have no trailing &sigma; at all &mdash; the wallet lacked the
+      288 valid trailing bins the MAD requires &mdash; and so rest entirely on the floors.</li>
+      <li>Median &sigma;<sup>7d</sup><sub>t</sub>&nbsp;/&nbsp;p95(|P|)<sub>30d</sub> is
+      <strong>0.124</strong> (p5 0.034, p95 0.333): the trailing MAD typically sits at about
+      <strong>12% of book size, six times clear of the 2% floor</strong>. Only 5 of the 174
+      measurable shocks fall under it.</li>
+      <li>The binding cases are the intended ones. The clearest is rank&nbsp;8 on 2025-12-17: a
+      &sigma;<sup>7d</sup><sub>t</sub> of $236k against a p95 position of <strong>$21.3m</strong>
+      &mdash; 1.1% of book &mdash; which the floor lifts to $426k. That is the quiet-but-big case
+      exactly.</li>
+    </ul>
+    <p>
     The <strong>two windows do different jobs and coexist inside the same z</strong>: the 6-hour
     median <em>centers</em> (what is this wallet's level right now), the 7-day MAD <em>scales</em>
     (what is a normal-sized wobble for it). Neither replaced the other at any point. A 12-hour
@@ -496,7 +553,12 @@
     Every number here is benchmarked against every MM trading the same side, in the same 60
     minutes, off the same reference price.
     <ul class="tight">
-      <li>Price against its own peak mid: <strong>+16.2 bps</strong>; peer median +18.3.</li>
+      <li>Price against its own peak mid: <strong>+16.2 bps</strong>; peer median +18.3.
+      The sign is corrected for shock direction, so + means better than flattening at the
+      peak whether the wallet was selling down a long or buying back a short. Split out it is
+      <strong>+23.0 bps</strong> on the 124 up shocks and <strong>−9.4 bps</strong> on the
+      56 down shocks: the pooled level averages two opposite price regimes, which is why only
+      the benchmarked gap is interpretable (§E2).</li>
       <li>30-minute markout: <strong>−7.6 bps</strong>; peer median −8.8.</li>
       <li>60-minute markout: <strong>−15.3 bps</strong>; peer median −10.7.</li>
       <li>Like for like, the gap is <strong>0.4 bp</strong> on price and <strong>1.0 bp</strong>
@@ -506,8 +568,11 @@
       <li>A negative markout is the normal condition here, not a symptom: that side of that
       window paid everybody.</li>
       <li>MMs that got flat fast printed far worse absolute prices, <strong>−76.9 bps</strong>
-      against the peak mid versus <strong>+14.1 bps</strong> for MMs that sat still.
-      Benchmarked, what separates them is <em>when</em> they traded, not how well (§E2).</li>
+      against the peak mid versus <strong>+8.2 bps</strong> for MMs that sat still. That gap is
+      where each wallet's own peak happened to sit on the price path, not how well it traded:
+      inside each pilot episode the price metric is <strong>0.85 to 0.89</strong>
+      rank-correlated with the wallet's own peak-bin mid, and the fast wallets' 60-minute
+      markout is no worse than the slow wallets' (§E2).</li>
     </ul></li>
     <li><strong>Unwinding is a post-only activity.</strong> Across the 181 shocks the ten
     MMs unwind with post-only limit orders (84.4% of volume on average, 97.9% median) and
@@ -1524,6 +1589,36 @@
   peers</strong> are each a median taken across shocks, while <strong>Gap</strong> is the
   median of the per-shock paired difference. Gap is therefore <em>not</em> the difference of
   the two columns beside it, and it is the paired figure that is like for like.</p>
+
+  <h4>What the price row measures, and what its sign means</h4>
+  <dl class="defs">
+    <dt>Price vs own peak mid (bps)</dt>
+    <dd>The volume-weighted price of the wallet's shock-reducing fills over those 60
+    minutes, measured against the midpoint in that wallet's <em>own</em> peak 5-minute bin.
+    It answers one question: did the wallet do better or worse than flattening the whole
+    position instantly at its peak? Every shock therefore has a different reference price,
+    but the wallet and all of its peers in that window are priced off the same one, so the
+    choice of reference cancels out of the Gap and Percentile columns.</dd>
+
+    <dt>The sign is corrected for shock direction — <strong>+</strong> does not mean
+    "the price went up"</dt>
+    <dd>Which side reduces the position flips with the shock. After an <strong>up</strong>
+    shock the wallet is long and reduces by <strong>selling</strong> (124 of the 180 shocks
+    where it traded the reducing side); after a <strong>down</strong> shock it is short and
+    reduces by <strong>buying</strong> (56). Selling above the peak mid is good; buying above
+    it is bad. The raw difference from the mid therefore means opposite things in the two
+    families, so the metric is signed by direction — sell price minus peak mid for an up
+    shock, peak mid minus buy price for a down shock — and <strong>+ always means better than
+    flattening at the peak</strong> in both. Without that correction the families partly
+    cancel: the down-shock median would read +9.4 instead of −9.4 bps, and the pooled median
+    +17.6 instead of +16.2.</dd>
+
+    <dt>A <strong>+</strong> is still not evidence of good execution</dt>
+    <dd>+16.2 bps is mostly a statement about where the price went in the hour after the
+    peak, and that hour was the same for everyone trading that side. Execution quality is
+    the <strong>Gap</strong> and <strong>Percentile</strong> columns and nothing else: those
+    hold the window, the side and the reference price fixed and vary only the wallet.</dd>
+  </dl>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Metric</th><th class="n">Shocked MM</th><th class="n">MM peers</th>
@@ -1536,6 +1631,7 @@
       </tbody>
     </table>
   </div>
+
   <ul class="tight">
     <li><strong>The shocked MM gets the same prices as every other MM trading that
     direction at that moment.</strong> Like for like the gap is 0.4 bp on price and 1.0 bp
@@ -1544,14 +1640,99 @@
     shocked wallet's 60-minute markout of −15.3 bps sits against a peer median of −10.7
     bps: losing money on reducing fills over the next hour is what that side of that
     window paid everybody.</li>
-    <li><strong>Speed does not buy worse execution.</strong> Wallets that got flat printed
-    much worse absolute prices than wallets that sat still (−76.9 vs +14.1 bps against the
-    peak mid), but benchmarked, that difference is <em>when</em> they traded relative to
-    the price path, not <em>how well</em>.</li>
-    <li><strong>Unwinding is a post-only activity.</strong> The median taker share of
-    reducing fills is about zero across the whole shocked population — the concession is in
-    where quotes sit, not in crossing the spread. Shocked MMs do cross slightly more than
-    peers (92% of shocks), but at tiny levels.</li>
+    <li><strong>Getting flat fast is not what makes the price look bad.</strong> Split at
+    the pooled median of <code>frac_closed_60m</code> across the three pilot episodes
+    (n = 21 wallet-episode pairs with any reducing-side fill, 10 fast / 11 slow), the wallets
+    that closed most of their excursion inside the hour printed <strong>−76.9 bps</strong>
+    against the peak mid and the wallets that barely traded printed <strong>+8.2 bps</strong>.
+    There are two plain readings of that 85 bp difference.
+      <ul class="tight">
+        <li><strong>Reading 1, they paid for speed.</strong> A wallet in a hurry concedes on
+        price — quotes nearer the other side, more crossing the spread — so it gets worse
+        fills than a wallet that waits the move out.</li>
+        <li><strong>Reading 2, they traded at different points on the same price path.</strong>
+        The price kept moving away from the peak. A wallet that finished the job inside the
+        hour did most of its trading deep into that move; a wallet that barely traded printed
+        a few fills near the start, close to its own reference mid. Same execution quality,
+        different position on the clock.</li>
+      </ul>
+    </li>
+    <li><strong>Three checks, all pointing at reading 2.</strong>
+      <ul class="tight">
+        <li><strong>The reference price explains most of the spread across wallets.</strong>
+        Inside each pilot episode the price metric is <strong>0.85 to 0.89</strong>
+        rank-correlated with the wallet's own peak-bin mid — −0.87 on the up-shock episode,
+        +0.89 and +0.85 on the two down-shock episodes, the sign following the direction
+        correction. Where a wallet's peak landed on the price path, not how it traded
+        afterwards, sets the number.</li>
+        <li><strong>Worked example, 2025-10-10.</strong> All ten measured wallets sit on one
+        down shock, all reducing by buying, with peaks between 21:15 and 21:35. The eight that
+        peaked at 21:15–21:25 had peak-bin mids of <strong>$33.19 to $37.51</strong>, at the
+        crash low, and bought back at <strong>$36.97 to $39.82</strong> — −450 to −1,984 bps.
+        The two that peaked at 21:35, after the rebound, had peak mids of <strong>$39.73</strong>
+        and <strong>$39.76</strong> and bought at <strong>$39.44</strong> and
+        <strong>$39.46</strong> — <strong>+72</strong> and <strong>+74 bps</strong>. Same day,
+        same side, same metric, opposite sign, out of a twenty-minute difference in when the
+        peak occurred. Within that episode the fast half's median peak mid is
+        <strong>$35.58</strong> against the slow half's <strong>$37.35</strong>, which is most
+        of the −751 vs −505 bps between them.</li>
+        <li><strong>Neither the markout nor the aggression backs reading 1.</strong> If the
+        fast wallets had conceded price, the markout on those fills would be worse; it is
+        slightly better, <strong>+10.5</strong> against <strong>−0.2 bps</strong> at 60
+        minutes. And they did not cross the spread more: median taker share of the reducing
+        fills is <strong>18.0%</strong> fast against <strong>19.3%</strong> slow. Their shocks
+        were larger, $938k against $825k median, which is the one real difference between the
+        buckets.</li>
+      </ul>
+    </li>
+    <li><strong>What this does not establish.</strong> The fast/slow split is 21
+    wallet-episode pairs on three episodes and has no peer benchmark of its own: the
+    percentile-among-peers was never computed separately for the fast and slow buckets. The
+    180-shock benchmark above puts the shocked wallet at the 48th percentile overall, but
+    that population is the ten detected wallets, not the fast bucket. What is supported here
+    is that the −76.9 vs +8.2 bps gap is explained by the reference price rather than by
+    execution — not that speed is free.</li>
+    <li><strong>Unwinding is a post-only activity for the ten, not for everyone.</strong>
+    The median taker share of reducing fills is 0.01 across the 180 benchmarked shocks: for
+    the detected wallets the concession is in where quotes sit, not in crossing the spread,
+    and they do cross slightly more than peers (92% of shocks) but at tiny levels. Read the
+    denominator, though. Across all 57 shocked MMs in the pilot episodes the median is 0.00
+    only because most never trade the reducing side at all; among the 21 that do, the median
+    taker share is <strong>19.3%</strong>, and it splits by role — <strong>0.2%</strong> for
+    the four roster wallets against <strong>20.1%</strong> for the seventeen non-roster MMs.
+    Post-only unwinding is a property of the detected ten, not of shocked MMs
+    generally.</li>
+  </ul>
+
+
+  <h4>The same rows split by shock direction</h4>
+  <p>Pooling up and down shocks averages two different price regimes, and the absolute
+  columns do not survive the split — two of the three change sign. The benchmarked columns
+  barely move, which is the argument for reading only those.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Metric</th><th>Shocks</th><th class="n">Shocked MM</th>
+        <th class="n">MM peers</th><th class="n">Gap</th><th class="n">Percentile</th></tr></thead>
+      <tbody>
+        <tr class="hi"><td>Price vs own peak mid (bps)</td><td>Up, n=124, reducing by selling</td><td class="n">+23.0</td><td class="n">+22.4</td><td class="n">−0.2</td><td class="n">49.0</td></tr>
+        <tr class="hi"><td>Price vs own peak mid (bps)</td><td>Down, n=56, reducing by buying</td><td class="n">−9.4</td><td class="n">−1.9</td><td class="n">−1.2</td><td class="n">46.5</td></tr>
+        <tr><td>M30 (bps)</td><td>Up, n=124</td><td class="n">−8.1</td><td class="n">−11.3</td><td class="n">+0.4</td><td class="n">51.4</td></tr>
+        <tr><td>M30 (bps)</td><td>Down, n=56</td><td class="n">+3.1</td><td class="n">−2.3</td><td class="n">−6.3</td><td class="n">36.4</td></tr>
+        <tr><td>M60 (bps)</td><td>Up, n=124</td><td class="n">−20.0</td><td class="n">−21.3</td><td class="n">−1.4</td><td class="n">48.1</td></tr>
+        <tr><td>M60 (bps)</td><td>Down, n=56</td><td class="n">+17.4</td><td class="n">+14.5</td><td class="n">+0.8</td><td class="n">52.0</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="tight">
+    <li><strong>Every absolute level here is a property of the price path, not of the
+    wallet.</strong> Price against the peak mid runs from +23.0 to −9.4 bps and the
+    60-minute markout from −20.0 to +17.4 bps — a sign change — purely by splitting on which
+    way the shock went. The paired gap stays inside 1.4 bp in five of the six cells.</li>
+    <li><strong>The sixth cell is worth naming: 30-minute markout on down shocks.</strong>
+    There the shocked MM is 6.3 bps behind its peers at the <strong>36th percentile</strong>,
+    the only cell in this report where it is clearly worse than the market rather than level
+    with it. It is 56 shocks and it does not persist to 60 minutes (+0.8 bp, 52nd
+    percentile), so it is a flag for follow-up, not a finding.</li>
   </ul>
 
   <details>
