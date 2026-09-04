@@ -66,6 +66,8 @@
   dl.defs { margin:14px 0; }
   dl.defs dt { font-weight:600; margin-top:12px; }
   dl.defs dd { margin:3px 0 0 0; color:var(--muted); }
+  dl.defs dd .table-wrap { margin:10px 0 4px; }
+  dl.defs dd table { color:var(--text); min-width:0; }
   ul.tight li { margin-bottom:7px; }
   code { padding:1px 5px; background:color-mix(in srgb, var(--text) 8%, transparent);
          border-radius:4px; font-size:13px; }
@@ -1590,6 +1592,21 @@
   median of the per-shock paired difference. Gap is therefore <em>not</em> the difference of
   the two columns beside it, and it is the paired figure that is like for like.</p>
 
+  <div class="callout">
+    <strong>Whose shocks these are.</strong> The 6&sigma; detector was only ever run on the
+    fixed roster of ten wallets, and <strong>nine of them produced any shock</strong>
+    (<code>tables/shocks.csv</code>: 181 shocks, 9 distinct users, rank 6 contributing
+    none). So every row in this section is a roster wallet's shock, with all other MMs
+    appearing only as <em>peers inside a window a roster wallet defined</em>. There is no
+    shock catalogue for MMs outside the ten. The one place other MMs' <em>own</em> shocks
+    are identified is the three detailed episodes, at a looser <strong>|z|&nbsp;&ge;&nbsp;3</strong>
+    bar rather than 6&sigma; &mdash; 54 wallet-episode rows meeting that bar plus the roster
+    members present, 57 rows over 45 distinct wallets
+    (<code>tables/pilot_allmm_wallets.csv</code>, <code>pilot_unwind_allmm.csv</code>).
+    Wherever this section says &ldquo;the 57&rdquo;, that is the population it means: three
+    episodes, a 3&sigma; bar, not a population-wide catalogue. See also &sect;F.
+  </div>
+
   <h4>What the price row measures, and what its sign means</h4>
   <dl class="defs">
     <dt>Price vs own peak mid (bps)</dt>
@@ -1599,6 +1616,25 @@
     position instantly at its peak? Every shock therefore has a different reference price,
     but the wallet and all of its peers in that window are priced off the same one, so the
     choice of reference cancels out of the Gap and Percentile columns.</dd>
+
+    <dt>Which fills go into it: one side, both roles</dt>
+    <dd><strong>One side only</strong> &mdash; the shock-reducing side, which is the side
+    that moves the wallet back toward its baseline, so <em>sell</em> after an up shock and
+    <em>buy</em> after a down shock. Side is the wallet's own order side in
+    <code>grouped_trade_oid</code> (<code>side = "B"</code> buy, <code>"A"</code> sell;
+    verified on 2025-10-10 against <code>end_position &minus; start_position</code> over all
+    2,412,156 grouped order rows &mdash; positive on <strong>99.9992%</strong> of B rows and
+    positive on <strong>no</strong> A row, medians +0.40 and &minus;0.40 HYPE, the residual
+    being rows with zero net position change). Fills on the other side inside the same hour
+    are dropped, so this is not a round-trip P&amp;L and the two sides are never netted.
+    <strong>Both roles</strong> &mdash; resting and spread-crossing fills both count, with
+    no filter on <code>crossed</code> (23.6% of grouped order rows that day crossed). The
+    taker share is reported as its own row rather
+    than removed from the price, so the price row is the wallet's realized average on that
+    side, not a maker-only quote-placement measure. Weighting is by coin size, and the
+    peer sets differ only in <em>membership</em>: <code>mm</code> is the labeled active MMs,
+    <code>makers</code> is every wallet with at least one resting fill on that side, and
+    each of those peers is still measured over all of its own fills on the side.</dd>
 
     <dt>The sign is corrected for shock direction — <strong>+</strong> does not mean
     "the price went up"</dt>
@@ -1611,7 +1647,25 @@
     shock, peak mid minus buy price for a down shock — and <strong>+ always means better than
     flattening at the peak</strong> in both. Without that correction the families partly
     cancel: the down-shock median would read +9.4 instead of −9.4 bps, and the pooled median
-    +17.6 instead of +16.2.</dd>
+    +17.6 instead of +16.2. In full:
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Shock</th><th>Position</th><th>Reducing side</th>
+            <th>A <strong>+</strong> value means</th><th>A <strong>&minus;</strong> value means</th></tr></thead>
+          <tbody>
+            <tr><td>Up (n=124)</td><td>Long</td><td>Sell</td>
+              <td>sold <strong>above</strong> the peak mid</td>
+              <td>sold <strong>below</strong> the peak mid</td></tr>
+            <tr><td>Down (n=56)</td><td>Short</td><td>Buy</td>
+              <td>bought <strong>below</strong> the peak mid</td>
+              <td>bought <strong>above</strong> the peak mid</td></tr>
+          </tbody>
+        </table>
+      </div>
+      So <strong>+ is always the better outcome and &minus; always the worse one</strong>,
+      and the two rows are directly comparable. The price <em>level</em> moved in opposite
+      directions in the two families, which is why the split table below shows +23.0 against
+      &minus;9.4 bps.</dd>
 
     <dt>A <strong>+</strong> is still not evidence of good execution</dt>
     <dd>+16.2 bps is mostly a statement about where the price went in the hour after the
@@ -1696,10 +1750,11 @@
     The median taker share of reducing fills is 0.01 across the 180 benchmarked shocks: for
     the detected wallets the concession is in where quotes sit, not in crossing the spread,
     and they do cross slightly more than peers (92% of shocks) but at tiny levels. Read the
-    denominator, though. Across all 57 shocked MMs in the pilot episodes the median is 0.00
-    only because most never trade the reducing side at all; among the 21 that do, the median
-    taker share is <strong>19.3%</strong>, and it splits by role — <strong>0.2%</strong> for
-    the four roster wallets against <strong>20.1%</strong> for the seventeen non-roster MMs.
+    denominator, though. Across the 57 wallet-episode rows shocked at the looser 3&sigma;
+    bar in the three detailed episodes, the median is 0.00 only because most of them never
+    trade the reducing side at all; among the 21 that do, the median taker share is
+    <strong>19.3%</strong>, and it splits by role — <strong>0.2%</strong> for the four
+    roster wallets against <strong>20.1%</strong> for the seventeen non-roster MMs.
     Post-only unwinding is a property of the detected ten, not of shocked MMs
     generally.</li>
   </ul>
@@ -1794,7 +1849,7 @@
     events is indicative only.</li>
     <li><strong>Small samples in the detailed sections.</strong> The side-agreement,
     counterparty and speed-versus-price results rest on 13–41 shocked wallets per episode
-    and 20 wallet-events in the speed split.</li>
+    and 21 wallet-events in the speed split.</li>
     <li><strong>Position data has a known defect.</strong> About 12% of five-minute position
     changes in the underlying panel are not fully explained by visible fills. Detected
     shocks are essentially unaffected, but the defect constrains any looser variant.</li>
