@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<title>MM inventory events on HYPE</title>
+<style>
+  :root { --bg:#f5f7f8; --surface:#fff; --text:#172126; --muted:#5a6b74;
+          --line:#d8e0e4; --accent:#176b87; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#101619; --surface:#182126; --text:#eef5f6;
+            --muted:#a9b8be; --line:#34444c; --accent:#70c7df; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; color:var(--text); background:var(--bg);
+         font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
+  main { max-width:74ch; margin:0 auto; padding:48px clamp(20px,5vw,40px) 80px; }
+  h1 { font-size:clamp(26px,4vw,36px); letter-spacing:-.02em; margin:0 0 6px; }
+  p.lede { color:var(--muted); margin-top:0; }
+  a { color:var(--accent); text-underline-offset:3px; }
+  .card { display:block; padding:18px 20px; margin:16px 0; background:var(--surface);
+          border:1px solid var(--line); border-radius:12px; text-decoration:none;
+          color:inherit; }
+  .card:hover { border-color:var(--accent); }
+  .card strong { display:block; font-size:17px; margin-bottom:4px; color:var(--accent); }
+  .card span { color:var(--muted); font-size:14.5px; }
+  .note { padding:15px 17px; margin:26px 0; background:var(--surface);
+          border:1px solid var(--line); border-left:5px solid var(--accent);
+          border-radius:11px; font-size:14.5px; }
+  ul { padding-left:22px; } li { margin-bottom:7px; }
+  footer { margin-top:40px; padding-top:16px; border-top:1px solid var(--line);
+           color:var(--muted); font-size:14px; }
+  code { padding:1px 5px; border-radius:4px; font-size:13.5px;
+         background:color-mix(in srgb, var(--text) 8%, transparent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Market-maker inventory events on HYPE</h1>
+  <p class="lede">Two descriptive studies of how ten top-volume Hyperliquid HYPE
+  market makers change inventory around sudden events, measured against the whole
+  labeled market-maker population. 2025-03-27 to 2026-06-30 UTC.</p>
+
+  <a class="card" href="briefing.html">
+    <strong>Briefing &mdash; Exp5 and Exp8 in 15 minutes &rarr;</strong>
+    <span>Start here. Scope of both studies side by side, what each observed with the
+    evidence named for every claim, why there are two event catalogues and how they
+    overlap, the limits, and a minute-by-minute running order. Five figures.</span></a>
+
+  <a class="card" href="exp8-report.html">
+    <strong>Exp8 &mdash; Sudden MM inventory shocks, full report &rarr;</strong>
+    <span>The complete report behind the Exp8 half: definitions, how the detector was
+    built and audited, what causes a shock, who else absorbed it, how the position is
+    unwound, what the study does not establish, and a 24-figure gallery.</span></a>
+
+  <div class="note"><strong>How to read these.</strong> Everything here is a
+  <strong>descriptive association measured on a five-minute grid</strong> &mdash; no
+  causal claim is made or implied. Events are detected on <strong>ten wallets
+  only</strong>, so counts and rates describe those ten; every cross-sectional
+  comparison is against the full labeled market-maker population. Detector precision is
+  92&ndash;98%, established by reading every detected panel and recording one verdict
+  each, and the residual failure modes are listed rather than tuned away. Each report
+  carries its own limits section, and both are readings of an <code>analysis.md</code>
+  that is the authoritative record.</div>
+
+  <p>Numbers that changed during review, and why, are kept in the reports rather than
+  quietly corrected: Exp8 &sect;D1 records a retracted &ldquo;roughly twice the
+  share&rdquo; claim and the window defect behind it, and the Exp5 half records a
+  retracted markout reading that came from a censored sample.</p>
+
+  <footer>Working research output, not a paper. Wallet identities are never published:
+  MMs are referred to only by a volume rank. Built from
+  <code>report.html</code> and <code>presentation_brief.html</code> by
+  <code>make_public_site.py</code>.</footer>
+</main>
+</body>
+</html>

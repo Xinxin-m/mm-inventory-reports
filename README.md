@@ -3,8 +3,10 @@
 Public, link-shareable HTML reports on **market-maker inventory events on
 HYPE** (Hyperliquid perpetuals), covering 2025-03-27 to 2026-06-30 UTC.
 
+- **[Review status (home)](https://xinxin-m.github.io/mm-inventory-reports/)** - each point of the 2026-09-02 review, its state, and a link to where the report answers it
 - **[Briefing - Exp5 and Exp8 in 15 minutes](https://xinxin-m.github.io/mm-inventory-reports/briefing.html)**
 - **[Exp8 - Sudden MM inventory shocks, full report](https://xinxin-m.github.io/mm-inventory-reports/exp8-report.html)**
+- **[About these pages](https://xinxin-m.github.io/mm-inventory-reports/overview.html)**
 
 Site: <https://xinxin-m.github.io/mm-inventory-reports/>
 
