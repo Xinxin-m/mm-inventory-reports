@@ -2404,9 +2404,6 @@
   stays below 0.20 in 137 of 140 (median 0.025, where 1.0 is liquidation). The typical inventory
   shock does not make the desk constrained; a small tail does, and most of that tail is one day.</div>
   <div class="eqbox">
-    <p><strong>Price shock</strong>, the inventory recipe applied to the 5-minute HYPE mid (market grid of the user dashboard):</p>
-    <p class="eq">r<sub>t</sub> = 10<sup>4</sup> (mid<sub>close,t</sub> / mid<sub>open,t</sub> − 1) &nbsp;&nbsp; &sigma;<sup>P</sup><sub>t</sub> = 1.4826 · median|r<sub>s</sub>| over the trailing 7 days (2,016 bins, ≥288 valid) &nbsp;&nbsp; price z<sub>t</sub> = r<sub>t</sub> / &sigma;<sup>P</sup><sub>t</sub>
-      <span class="eqnote">reported in the peak bin and as the maximum over the formation window; no denominator floors, since a price has no analogue of the position floors. Whole-grid benchmark: |price z| ≥ 6 in 0.22% of bins, p99 = 4.04</span></p>
     <p><strong>Equity and constraint</strong>, from the exchange account snapshots at three points (last at or before formation start, lookback 8 h; first after the peak, ≤6 h; first after peak + 6 h, ≤14 h):</p>
     <p class="eq">equity change (%) = 100 · (E<sub>after</sub> − E<sub>pre</sub>) / E<sub>pre</sub> &nbsp;&nbsp; maintenance/equity = maintenance<sub>cross</sub> / E &nbsp;&nbsp; margin/equity = margin<sub>total</sub> / E
       <span class="eqnote">whole account, all coins, deposits not netted; snapshot cadence median 2.0 h — the pre snapshot sits a median 1.2 h before formation start and the after-peak snapshot 1.4 h after the peak, so "pre → after peak" spans about 3 hours. This is an hours-resolution claim, never a 5-minute one</span></p>
@@ -2424,7 +2421,7 @@
   </ul>
   <h4>The two numbers the review asked for, at candidate thresholds</h4>
   <p>Share of covered shocks past each threshold; the thresholds are proposals for the group to
-  pick from, read off the distribution in Figure 13 (<code>tables/shock_atlas_thresholds.csv</code>).</p>
+  pick from, read off the distribution in Figure 12 (<code>tables/shock_atlas_thresholds.csv</code>).</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Split</th><th class="n">n covered</th><th class="n">equity drop worse than −1%</th><th class="n">worse than −5%</th>
@@ -2457,6 +2454,12 @@
     while ALONE shocks have none.</li>
   </ul>
   <h4>Inventory, price and equity shocks together</h4>
+  <p>The price shock is measured with the inventory recipe applied to the HYPE mid, so the two are comparable by construction; it appears in Figure 12 and in <code>tables/shock_atlas.csv</code> (<code>price_z_peak</code>, <code>price_z_form_max</code>, <code>price_ret_form_bps</code>), not in the equity table above.</p>
+  <div class="eqbox">
+    <p><strong>Price shock</strong>, the inventory recipe applied to the 5-minute HYPE mid (market grid of the user dashboard):</p>
+    <p class="eq">r<sub>t</sub> = 10<sup>4</sup> (mid<sub>close,t</sub> / mid<sub>open,t</sub> − 1) &nbsp;&nbsp; &sigma;<sup>P</sup><sub>t</sub> = 1.4826 · median|r<sub>s</sub>| over the trailing 7 days (2,016 bins, ≥288 valid) &nbsp;&nbsp; price z<sub>t</sub> = r<sub>t</sub> / &sigma;<sup>P</sup><sub>t</sub>
+      <span class="eqnote">reported in the peak bin and as the maximum over the formation window; no denominator floors, since a price has no analogue of the position floors. Whole-grid benchmark: |price z| ≥ 6 in 0.22% of bins, p99 = 4.04</span></p>
+  </div>
   <ul class="tight">
     <li><strong>Inventory and price shocks are nearly independent in size.</strong> Spearman
     correlation between inventory |z| at the peak and price z in the peak bin is 0.00; against the
