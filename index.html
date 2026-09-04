@@ -21,30 +21,6 @@
          font:15px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
   a { color:var(--accent); text-underline-offset:3px; }
   a:focus-visible, button:focus-visible, summary:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
-  /* left menu */
-  aside.sitenav { position:fixed; inset:0 auto 0 0; width:262px; padding:56px 16px 24px;
-          background:var(--surface); border-right:1px solid var(--line); overflow-y:auto; }
-  #navtoggle { position:fixed; top:11px; left:11px; z-index:40; font-size:13px; padding:7px 10px;
-               color:var(--text); background:var(--surface); border:1px solid var(--line);
-               border-radius:8px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.12); }
-  html[data-nav="off"] aside.sitenav { display:none; }
-  html[data-nav="off"] main { margin-left:0; padding-top:62px; }
-  aside.sitenav > strong { display:block; font-size:15px; line-height:1.35; margin-bottom:4px; }
-  aside.sitenav .sub { color:var(--muted); font-size:12.5px; margin:0 0 14px; }
-  aside.sitenav details { margin:2px 0; padding:0; background:none; border:0; border-radius:0; }
-  aside.sitenav summary { list-style:none; cursor:pointer; padding:7px 8px; border-radius:7px;
-          font-weight:600; font-size:14px; color:var(--text); display:flex; align-items:center; gap:8px; }
-  aside.sitenav summary::-webkit-details-marker { display:none; }
-  aside.sitenav summary::before { content:"\25B8"; color:var(--muted); font-size:11px; width:10px; }
-  aside.sitenav details[open] summary::before { content:"\25BE"; }
-  aside.sitenav details.current summary { background:color-mix(in srgb, var(--accent) 12%, transparent); }
-  aside.sitenav summary a { color:inherit; text-decoration:none; flex:1; }
-  aside.sitenav summary a:hover { color:var(--accent); }
-  aside.sitenav nav { margin:0 0 4px 18px; padding-left:8px; border-left:1px solid var(--line); }
-  aside.sitenav nav a { display:block; padding:4px 6px; color:var(--muted); text-decoration:none; font-size:13px; }
-  aside.sitenav nav a:hover { color:var(--accent); }
-  aside.sitenav .foot { margin-top:18px; padding-top:12px; border-top:1px solid var(--line);
-          color:var(--muted); font-size:12px; }
   main { max-width:1140px; margin-left:262px; padding:38px clamp(20px,4vw,60px) 80px; }
   /* content classes (same as the report) */
   h1 { margin:0; font-size:clamp(27px,4vw,40px); letter-spacing:-.03em; }
@@ -91,29 +67,63 @@
   .card span { color:var(--muted); font-size:14.5px; }
   footer { margin-top:40px; padding-top:16px; border-top:1px solid var(--line);
            color:var(--muted); font-size:14px; }
+  @media (max-width:900px) { .metadata, .findings { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (max-width:480px) { .metadata, .findings { grid-template-columns:1fr; } }
+
+  /* left menu (make_public_site.py; identical on every page) */
+  aside.sitenav { position:fixed; inset:0 auto 0 0; width:262px; padding:56px 16px 24px;
+          background:var(--surface); border-right:1px solid var(--line); overflow-y:auto; }
+  #navtoggle { position:fixed; top:11px; left:11px; z-index:40; font-size:13px; padding:7px 10px;
+               color:var(--text); background:var(--surface); border:1px solid var(--line);
+               border-radius:8px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.12); }
+  main { margin-left:262px; }   /* the report pages' own rule is 246px; the menu is wider */
+  html[data-nav="off"] aside.sitenav { display:none; }
+  html[data-nav="off"] main { margin-left:0; padding-top:62px; }
+  aside.sitenav > strong { display:block; font-size:15px; line-height:1.35; margin-bottom:4px; }
+  aside.sitenav > .sub { color:var(--muted); font-size:12.5px; margin:0 0 14px; }
+  aside.sitenav details { margin:2px 0; padding:0; background:none; border:0; border-radius:0; }
+  aside.sitenav summary { list-style:none; cursor:pointer; padding:8px 9px; border-radius:7px;
+          font-weight:600; font-size:14px; line-height:1.35; color:var(--text);
+          display:flex; align-items:baseline; gap:9px; -webkit-tap-highlight-color:transparent; }
+  aside.sitenav summary::-webkit-details-marker { display:none; }
+  aside.sitenav summary::marker { content:""; }
+  aside.sitenav summary:hover { background:color-mix(in srgb, var(--text) 6%, transparent); }
+  aside.sitenav summary::before { content:"\25B8"; color:var(--accent); font-size:15px;
+          line-height:1; width:15px; flex:0 0 15px; text-align:center; }
+  aside.sitenav details[open] > summary::before { content:"\25BE"; }
+  aside.sitenav details.current > summary { background:color-mix(in srgb, var(--accent) 13%, transparent); }
+  aside.sitenav nav { display:block; margin:0 0 6px 24px; padding-left:9px;
+          border-left:1px solid var(--line); }
+  aside.sitenav nav a { display:block; padding:4px 6px; color:var(--muted); text-decoration:none;
+          font-size:13px; font-weight:400; }
+  aside.sitenav nav a.sub { padding-left:18px; font-size:12.5px; }
+  aside.sitenav nav a.open { color:var(--accent); font-weight:600; }
+  aside.sitenav nav a:hover { color:var(--accent); }
+  aside.sitenav .foot { margin-top:18px; padding-top:12px; border-top:1px solid var(--line);
+          color:var(--muted); font-size:12px; }
   @media (max-width:900px) {
     aside.sitenav { position:static; width:auto; padding-top:56px; border-right:0;
             border-bottom:1px solid var(--line); }
+    aside.sitenav nav { display:block; }
     main { margin-left:0; }
-    .metadata, .findings { grid-template-columns:repeat(2,minmax(0,1fr)); }
   }
-  @media (max-width:480px) { .metadata, .findings { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
 <button id="navtoggle" type="button" aria-expanded="true" aria-controls="sitenav" title="Show or hide the menu">&#10005; Menu</button>
 <aside class="sitenav" id="sitenav"><strong>MM inventory shocks on HYPE</strong>
 <p class="sub">Exp8 and Exp9, 2025-03-27 &rarr; 2026-06-30. Ten roster MMs against all labelled MMs.</p>
-<details class="current" open><summary><a href="index.html">Review status</a></summary>
-<nav aria-label="Review status sections">
+<details class="current" open><summary>Review status</summary>
+<nav aria-label="Review status">
+<a class="open" href="#">This page, top &uarr;</a>
 <a href="#olga">Olga's six points</a>
 <a href="#ruizhe">Ruizhe's five points</a>
 <a href="#exp9">Where the Exp9 results are</a>
 <a href="#notyet">Not in the report yet</a>
-</nav>
-</details>
-<details><summary><a href="briefing.html">The story so far</a></summary>
-<nav aria-label="The story so far sections">
+</nav></details>
+<details><summary>The story so far</summary>
+<nav aria-label="The story so far">
+<a class="open" href="briefing.html">Open The story so far &rarr;</a>
 <a href="briefing.html#story">The story in one paragraph</a>
 <a href="briefing.html#thread-a">A. Anatomy of a shock</a>
 <a href="briefing.html#thread-b">B. Getting out</a>
@@ -124,39 +134,61 @@
 <a href="briefing.html#next">Order of work</a>
 <a href="briefing.html#limits">What it does not establish</a>
 <a href="briefing.html#runsheet">15-minute running order</a>
-</nav>
-</details>
-<details><summary><a href="exp8-report.html">Full Exp8 report</a></summary>
-<nav aria-label="Full Exp8 report sections">
+</nav></details>
+<details><summary>Full Exp8 report</summary>
+<nav aria-label="Full Exp8 report">
+<a class="open" href="exp8-report.html">Open Full Exp8 report &rarr;</a>
 <a href="exp8-report.html#summary">Summary</a>
 <a href="exp8-report.html#brief">Overview: both studies</a>
+<a href="exp8-report.html#brief-scope" class="sub">Scope of each</a>
+<a href="exp8-report.html#brief-exp5" class="sub">What Exp5 observed</a>
+<a href="exp8-report.html#brief-exp8" class="sub">What Exp8 observed</a>
+<a href="exp8-report.html#brief-bridge" class="sub">Why two catalogues</a>
+<a href="exp8-report.html#brief-limits" class="sub">What neither establishes</a>
 <a href="exp8-report.html#definitions">A. Definitions</a>
 <a href="exp8-report.html#detector">B. What a shock is</a>
+<a href="exp8-report.html#b-tried" class="sub">B1. What we tried</a>
+<a href="exp8-report.html#b-final" class="sub">B2. Final parameters</a>
+<a href="exp8-report.html#b-v3" class="sub">B3. Velocity rule (v3)</a>
 <a href="exp8-report.html#cause">C. What causes a shock</a>
 <a href="exp8-report.html#population">D. Who else was there</a>
+<a href="exp8-report.html#d-side" class="sub">D1. Same side?</a>
+<a href="exp8-report.html#d-each" class="sub">D2. Trading each other</a>
+<a href="exp8-report.html#d-axis" class="sub">D3. Alone / few / broad</a>
+<a href="exp8-report.html#d-take" class="sub">D4. Take or quote out? (all shocked MMs)</a>
 <a href="exp8-report.html#unwind">E. Getting out</a>
+<a href="exp8-report.html#e-path" class="sub">E1. The path</a>
+<a href="exp8-report.html#e-price" class="sub">E2. The price</a>
+<a href="exp8-report.html#e-chain" class="sub">E3. Archetypes → outcomes</a>
 <a href="exp8-report.html#atlas">F. Shock atlas</a>
 <a href="exp8-report.html#quoting">G. Book response</a>
+<a href="exp8-report.html#g-evolution" class="sub">G, 5-min grid: Figure 18</a>
 <a href="exp8-report.html#limits">H. Limits</a>
 <a href="exp8-report.html#gallery">I. Figure gallery</a>
+<a href="exp8-report.html#g-audit" class="sub">I1. A sample of shocks</a>
+<a href="exp8-report.html#g-ep39" class="sub">I2. Episode 39</a>
+<a href="exp8-report.html#g-ep47" class="sub">I3. Episode 47</a>
+<a href="exp8-report.html#g-ep71" class="sub">I4. Episode 71</a>
 <a href="exp8-report.html#appendix">J. Appendix</a>
-</nav>
-</details>
-<details><summary><a href="exp8-unwind-activity.html">D4. Take or quote their way out?</a></summary>
-<nav aria-label="D4. Take or quote their way out? sections">
+</nav></details>
+<details><summary>D4. Take or quote their way out?</summary>
+<nav aria-label="D4. Take or quote their way out?">
+<a class="open" href="exp8-unwind-activity.html">Open D4. Take or quote their way out? &rarr;</a>
 <a href="exp8-unwind-activity.html#summary">Summary</a>
 <a href="exp8-unwind-activity.html#defs">Definitions</a>
 <a href="exp8-unwind-activity.html#taker">1. Taker volume</a>
-<a href="exp8-unwind-activity.html#orders">2. Orders</a>
+<a href="exp8-unwind-activity.html#orders">2. Orders: counts and sides</a>
 <a href="exp8-unwind-activity.html#fills">3. Where the unwind shows up</a>
 <a href="exp8-unwind-activity.html#curves">4. Event-time figures</a>
 <a href="exp8-unwind-activity.html#ranks">5. By roster rank</a>
 <a href="exp8-unwind-activity.html#validation">6. Validation</a>
 <a href="exp8-unwind-activity.html#limits">7. Not established</a>
-</nav>
-</details>
-<details><summary><a href="overview.html">About these pages</a></summary>
-</details>
+<a href="exp8-unwind-activity.html#provenance">Provenance</a>
+</nav></details>
+<details><summary>About these pages</summary>
+<nav aria-label="About these pages">
+<a class="open" href="overview.html">Open About these pages &rarr;</a>
+</nav></details>
 <p class="foot">Descriptive, not causal. Wallets by roster rank only. Generated by <code>make_public_site.py</code>.</p></aside>
 <main class="status" id="top">
   <h1>Exp8 review status</h1>
