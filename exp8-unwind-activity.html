@@ -110,11 +110,42 @@
   p.small { font-size:13px; color:var(--muted); }
 
 <!-- p0904b:tabcap:end -->
+
+  /* site pages block inside the report's own contents panel (make_public_site.py) */
+  .sitepages { margin:0 0 14px; padding:0 0 10px; border-bottom:1px solid var(--line); }
+  .sitepages details { margin:0; padding:0; background:none; border:0; }
+  .sitepages summary { list-style:none; font-weight:600; font-size:13.5px; padding:5px 0; color:var(--text); cursor:pointer; }
+  .sitepages summary::-webkit-details-marker { display:none; }
+  .sitepages summary::before { content:"\25B8  "; color:var(--muted); font-size:11px; }
+  .sitepages details[open] summary::before { content:"\25BE  "; }
+  .sitepages a { display:block; padding:3px 0 3px 14px; color:var(--muted); text-decoration:none; font-size:13px; }
+  .sitepages a:hover { color:var(--accent); }
+  .sitepages a.pg { padding-left:0; font-weight:600; color:var(--text); }
 </style>
 </head>
 <body>
 <button id="navtoggle" type="button" aria-expanded="true" aria-controls="toc" title="Show or hide the contents panel">&#9776; Contents</button>
 <aside id="toc">
+<div class="sitepages"><details open><summary>Other pages on this site</summary>
+<a class="pg" href="index.html">Review status</a>
+<a href="index.html#olga">Olga's six points</a>
+<a href="index.html#ruizhe">Ruizhe's five points</a>
+<a href="index.html#exp9">Where the Exp9 results are</a>
+<a href="index.html#notyet">Not in the report yet</a>
+<a class="pg" href="briefing.html">The story so far</a>
+<a href="briefing.html#story">The story in one paragraph</a>
+<a href="briefing.html#thread-a">A. Anatomy of a shock</a>
+<a href="briefing.html#thread-b">B. Getting out</a>
+<a href="briefing.html#thread-c">C. Who is hit</a>
+<a href="briefing.html#thread-d">D. Equity and constraint</a>
+<a href="briefing.html#thread-e">E. The desks differ</a>
+<a href="briefing.html#hypotheses">Six tests</a>
+<a href="briefing.html#next">Order of work</a>
+<a href="briefing.html#limits">What it does not establish</a>
+<a href="briefing.html#runsheet">15-minute running order</a>
+<a class="pg" href="exp8-report.html">Full Exp8 report</a>
+<a class="pg" href="overview.html">About these pages</a>
+</details></div>
   <strong>Exp8 &middot; D4. Do shocked MMs take, or quote, their way out?</strong>
   <nav aria-label="Page sections">
     <a href="#summary">Summary</a>
