@@ -244,7 +244,11 @@
   <p><strong>The same ten MMs during shocks versus all times.</strong> Same active-day
   bins, split by whether the bin lies inside one of that MM's own 181 detected shock
   windows (start &rarr; end; 3,517 of 919,081 bins). At the median, exposure during a
-  shock is 3.7&times; its all-times level and |z| goes from 0.62 to 4.72:</p>
+  shock is 3.7&times; its all-times level, |z| goes from 0.62 to 4.72, and fill-time
+  k roughly doubles. <strong>|z| here is exactly the detection z</strong> &mdash;
+  dev<sub>t</sub>/&sigma;<sub>t</sub> with both floors, the quantity thresholded at 6;
+  window bins include the sub-threshold approach and decay, which is why the in-shock
+  median is 4.7, not 6:</p>
 <!-- desc-stats:shockcmp:start -->
 <div class="table-wrap"><table>
 <thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
@@ -252,10 +256,56 @@
 <tr><td>Inventory exposure |P| (kUSD) &mdash; in-shock</td><td class="n">3,517</td><td class="n">1,517</td><td class="n">3,159</td><td class="n">0</td><td class="n">170</td><td class="n">588</td><td class="n">1,661</td><td class="n">25,730</td></tr>
 <tr><td>|deviation| (kUSD) &mdash; all-times</td><td class="n">918,815</td><td class="n">159</td><td class="n">321</td><td class="n">0</td><td class="n">15</td><td class="n">53</td><td class="n">166</td><td class="n">9,076</td></tr>
 <tr><td>|deviation| (kUSD) &mdash; in-shock</td><td class="n">3,517</td><td class="n">984</td><td class="n">1,312</td><td class="n">0</td><td class="n">209</td><td class="n">543</td><td class="n">1,147</td><td class="n">9,076</td></tr>
-<tr><td>|z| (&sigma;) &mdash; all-times</td><td class="n">920,407</td><td class="n">0.968</td><td class="n">1.386</td><td class="n">0.000</td><td class="n">0.237</td><td class="n">0.620</td><td class="n">1.256</td><td class="n">86.254</td></tr>
-<tr><td>|z| (&sigma;) &mdash; in-shock</td><td class="n">3,517</td><td class="n">5.650</td><td class="n">5.789</td><td class="n">0.001</td><td class="n">2.805</td><td class="n">4.717</td><td class="n">6.615</td><td class="n">86.254</td></tr>
+<tr><td>|z| (&sigma;) &mdash; all-times</td><td class="n">920,407</td><td class="n">0.968</td><td class="n">1.385</td><td class="n">0.000</td><td class="n">0.237</td><td class="n">0.620</td><td class="n">1.256</td><td class="n">86.254</td></tr>
+<tr><td>|z| (&sigma;) &mdash; in-shock</td><td class="n">3,517</td><td class="n">5.651</td><td class="n">5.789</td><td class="n">0.001</td><td class="n">2.805</td><td class="n">4.717</td><td class="n">6.615</td><td class="n">86.254</td></tr>
+<tr><td>k = maint/equity &mdash; all-times</td><td class="n">17,633,160</td><td class="n">0.025</td><td class="n">0.031</td><td class="n">0.000</td><td class="n">0.007</td><td class="n">0.014</td><td class="n">0.026</td><td class="n">3.781</td></tr>
+<tr><td>k = maint/equity &mdash; in-shock</td><td class="n">108,819</td><td class="n">0.047</td><td class="n">0.041</td><td class="n">0.000</td><td class="n">0.017</td><td class="n">0.033</td><td class="n">0.084</td><td class="n">0.557</td></tr>
 </tbody></table></div>
 <!-- desc-stats:shockcmp:end -->
+
+  <p><strong>Equity and k around each shock.</strong> k = maintenance margin / pool
+  equity per fill (1 = the liquidation boundary); the value at a reference time is the
+  k just after the MM's last HYPE fill at or before it, with a 60-minute lookback
+  (per-fill k exists 2025-09-27 onward &rarr; 99 of the 181 shocks). Equity is the
+  exchange account checkpoint series (cadence ~2&nbsp;h in 2025, ~5.5&nbsp;h by
+  mid-2026), so the three reference points are: the last checkpoint before the window
+  opens (&le;8&nbsp;h back), the first checkpoint after the peak (&le;6&nbsp;h), and
+  the first checkpoint after peak+6&nbsp;h (&le;14&nbsp;h) &mdash; checkpoint equity,
+  not a 5-minute path:</p>
+<!-- desc-stats:aroundshock:start -->
+<div class="table-wrap"><table>
+<thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
+<tr><td>k &mdash; pre-shock</td><td class="n">95</td><td class="n">0.024</td><td class="n">0.023</td><td class="n">0.001</td><td class="n">0.009</td><td class="n">0.016</td><td class="n">0.026</td><td class="n">0.126</td></tr>
+<tr><td>k &mdash; at peak</td><td class="n">97</td><td class="n">0.028</td><td class="n">0.029</td><td class="n">0.001</td><td class="n">0.011</td><td class="n">0.017</td><td class="n">0.031</td><td class="n">0.158</td></tr>
+<tr><td>k &mdash; peak +6h</td><td class="n">90</td><td class="n">0.033</td><td class="n">0.061</td><td class="n">0.003</td><td class="n">0.011</td><td class="n">0.018</td><td class="n">0.034</td><td class="n">0.548</td></tr>
+<tr><td>k &Delta; pre &rarr; peak</td><td class="n">95</td><td class="n">0.005</td><td class="n">0.017</td><td class="n">-0.024</td><td class="n">-0.001</td><td class="n">0.001</td><td class="n">0.004</td><td class="n">0.121</td></tr>
+<tr><td>k &Delta; peak &rarr; +6h</td><td class="n">89</td><td class="n">0.005</td><td class="n">0.044</td><td class="n">-0.038</td><td class="n">-0.004</td><td class="n">0.001</td><td class="n">0.004</td><td class="n">0.391</td></tr>
+<tr><td>k &Delta; pre &rarr; +6h</td><td class="n">88</td><td class="n">0.010</td><td class="n">0.050</td><td class="n">-0.029</td><td class="n">-0.003</td><td class="n">0.002</td><td class="n">0.008</td><td class="n">0.435</td></tr>
+<tr><td>MM equity &mdash; last snapshot before start (kUSD)</td><td class="n">151</td><td class="n">8,966</td><td class="n">8,413</td><td class="n">86</td><td class="n">1,936</td><td class="n">6,027</td><td class="n">16,243</td><td class="n">49,144</td></tr>
+<tr><td>MM equity &mdash; first snapshot after peak (kUSD)</td><td class="n">141</td><td class="n">9,122</td><td class="n">8,343</td><td class="n">0</td><td class="n">1,925</td><td class="n">6,367</td><td class="n">16,169</td><td class="n">47,887</td></tr>
+<tr><td>MM equity &mdash; first snapshot after peak+6h (kUSD)</td><td class="n">154</td><td class="n">8,688</td><td class="n">8,262</td><td class="n">0</td><td class="n">1,863</td><td class="n">5,639</td><td class="n">15,866</td><td class="n">47,743</td></tr>
+<tr><td>equity &Delta; pre &rarr; after peak (%)</td><td class="n">138</td><td class="n">-1.8</td><td class="n">+11.2</td><td class="n">-100.0</td><td class="n">-0.7</td><td class="n">+0.1</td><td class="n">+0.7</td><td class="n">+9.2</td></tr>
+<tr><td>equity &Delta; after peak &rarr; after +6h (%)</td><td class="n">133</td><td class="n">-0.5</td><td class="n">+9.9</td><td class="n">-100.0</td><td class="n">-0.4</td><td class="n">+0.1</td><td class="n">+1.0</td><td class="n">+18.3</td></tr>
+<tr><td>equity &Delta; pre &rarr; after +6h (%)</td><td class="n">146</td><td class="n">-1.8</td><td class="n">+12.2</td><td class="n">-100.0</td><td class="n">-0.8</td><td class="n">+0.1</td><td class="n">+1.3</td><td class="n">+12.8</td></tr>
+</tbody></table></div>
+<!-- desc-stats:aroundshock:end -->
+  <ul class="tight">
+    <li><strong>The typical shock does not dent equity.</strong> The median change is
+    +0.06% from pre to after-peak and +0.07% to after +6&nbsp;h; equity falls in only
+    47.8% / 43.8% / 49.3% of shocks (pre&rarr;after-peak / after-peak&rarr;+6h /
+    pre&rarr;+6h) &mdash; a coin flip. The mean is &minus;1.8%: a small tail of shocks
+    loses percent-level equity while the median shock loses nothing.</li>
+    <li><strong>k rises into the peak more often than not (66.3% of shocks) but by a
+    negligible amount</strong> (median &Delta; +0.001, p75 +0.004). The stronger fact is
+    selection: during shock windows fill-time k runs at 2.3&times; its all-times median
+    (0.033 vs 0.014) &mdash; shocks happen when MMs are already running more levered
+    &mdash; yet even the in-shock p75 (0.084) sits far from the k&nbsp;=&nbsp;1
+    liquidation boundary.</li>
+    <li>Coverage: equity 151 / 141 / 154 of 181 at the three reference points
+    (checkpoint gaps and the 2025-11-20&rarr;28 panel hole); k 95 / 97 / 90 of the 99
+    leverage-era shocks.</li>
+  </ul>
+
   <ul class="tight">
     <li><strong>A</strong> — exposure = |position| valued at the bin-open mid, so long and
       short bins do not cancel; ALL active-day bins (919,081 wallet-bins across the 3,198
