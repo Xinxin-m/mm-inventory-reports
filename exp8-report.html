@@ -101,6 +101,15 @@
   .callout.newbox { border-left-color:#c0392b; }
 
 <!-- p0904:css:end -->
+<!-- p0904b:tabcap:start -->
+
+  /* 2026-09-04b: table captions and the detector rule list */
+  p.tabcap { margin:18px 0 -8px; color:var(--muted); font-size:13.5px; max-width:88ch; line-height:1.5; }
+  p.tabcap strong { color:var(--text); }
+  ol.rules { padding-left:22px; } ol.rules li { margin-bottom:9px; }
+  p.small { font-size:13px; color:var(--muted); }
+
+<!-- p0904b:tabcap:end -->
 </style>
 <!-- p0904:tog3:start --><!-- p0904:tog3:end -->
 <!-- p0904:reletter:start --><!-- p0904:reletter:end -->
@@ -238,7 +247,8 @@
   MM's execution is a coin flip.</div>
 
   <h3 id="brief-scope">Scope: what each study covers</h3>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-1"><strong>Table 1 &mdash; Scope of the two studies, side by side.</strong> One row per design choice; the two columns are Exp5 (spikes and cliffs) and Exp8 (shocks). A cell spanning both columns is a choice the studies share.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th></th><th>Exp5 — spikes and cliffs</th><th>Exp8 — shocks</th></tr></thead>
       <tbody>
@@ -275,7 +285,13 @@
           two hours later.</td>
           <td><strong>Shock</strong>: ≥6× the wallet's own normal deviation measured on a
           <em>trailing 7-day</em> scale, ≥$100k, with 60% of the build inside a single
-          25-minute stretch, and standing out 1.5× from its neighbours on both sides.
+          <!-- p0904b:scope:start -->
+25-minute stretch, and <em>prominent</em>: the peak's distance from the
+          trailing median is at least 1.5× the largest such distance the wallet showed in
+          the 3 hours before the window (and, if the position comes back, in the 3 hours
+          after). Prominence compares the size of the move with the size of the wallet's
+          other recent moves, not with the size of its book (rule 10 below).
+<!-- p0904b:scope:end -->
           <strong>Whether it comes back is not part of the rule</strong> — it is recorded
           afterwards as a label (revert / partial / step).</td></tr>
         <tr><td>Events found</td>
@@ -313,10 +329,81 @@
     <p class="eq">&sigma;<sub>t</sub> &nbsp;=&nbsp; max(&nbsp;&sigma;<sup>7d</sup><sub>t</sub>,&nbsp;&nbsp;0.02 &times; p95(|P|)<sub>30d</sub>,&nbsp;&nbsp;$12,500 / m<sub>t</sub>&nbsp;)
       <span class="eqnote">p95 of |position| over the trailing 30 days, lagged one day so it never sees the shock</span></p>
     <p class="eq">z<sub>t</sub> &nbsp;=&nbsp; dev<sub>t</sub> / &sigma;<sub>t</sub>&nbsp;, &nbsp;&nbsp;shock candidate when |z<sub>t</sub>| &ge; 6</p>
-    <p>So z is a <strong>robust z-score</strong> &mdash; median/MAD, not mean/standard-deviation.
-    The denominator is a <code>max()</code> of three candidate scales, and the two extra terms are
-    what this report calls <strong>floors</strong>.</p>
+<!-- p0904b:rule:start -->
+    <p>z is a <strong>robust z-score</strong>: the deviation is measured from a median rather
+    than a mean, and scaled by a median absolute deviation (MAD) rather than a standard deviation,
+    so one wild bin cannot inflate its own yardstick. A shock must pass every rule below, in this
+    order. Each bullet says what the rule is for and what it excludes.</p>
+    <ol class="rules">
+      <li><strong>Centering &mdash; trailing 6-hour median (72 bins, at least 36 valid).</strong>
+      dev<sub>t</sub> is the position minus the median of the six hours before <em>t</em>. A wallet
+      that carries a large book all day has a large median and a small deviation; the level of the
+      book is never what is being tested.</li>
 
+      <li><strong>Scale &mdash; trailing 7-day MAD of the deviation.</strong>
+      &sigma;<sup>7d</sup><sub>t</sub> is how big this wallet's ordinary wobble has been over the
+      last week of active days, so a $500k move is a shock for a wallet that usually wobbles by
+      $50k and nothing for one that usually wobbles by $500k.</li>
+
+      <li><strong>Denominator floor 1 &mdash; &sigma;<sub>t</sub> is never below $12,500 of
+      HYPE.</strong> Guards against dividing by almost zero. A wallet whose position barely moved
+      for a week has a MAD near zero and would register a shock on a one-coin rounding change.
+      Since a candidate needs 6&sigma;, this floor implies a minimum move of $75k, below the $100k
+      size rule, so it never acts as a second size rule. It sets &sigma;<sub>t</sub> for 3 of the
+      181 shocks.</li>
+
+      <li><strong>Denominator floor 2 &mdash; &sigma;<sub>t</sub> is never below 2% of the wallet's
+      30-day p95 |position| (lagged one day).</strong> For wallets that are quiet but big: a $300k
+      move on a $6m book is many MADs if the book has been calm, but is 5% of the book and not a
+      shock for that desk. Sets &sigma;<sub>t</sub> for 5 of the 181; removing this floor adds 2
+      candidate events.</li>
+
+      <li><strong>Candidate &mdash; |z<sub>t</sub>| &ge; 6 on an active wallet-day.</strong>
+      The wallet's position is six of its own ordinary wobbles away from its own six-hour level.
+      An active wallet-day has at least 300 grouped fills and $1m traded.</li>
+
+      <li><strong>Observed start &mdash; walking back from the peak, |z| falls to 1.5 within 3
+      hours without crossing a data gap.</strong> Excludes excursions whose beginning is missing,
+      because every later measurement (formation time, speed, cause) needs the start.</li>
+
+      <li><strong>Size &mdash; |dev<sub>peak</sub>| &times; mid &ge; $100k.</strong> A dollar
+      floor on the move itself, so a small book cannot produce a shock out of a few thousand
+      dollars, however many MADs that is.</li>
+
+      <li><strong>Suddenness &mdash; 60% of the build inside one 25-minute stretch</strong> (v2,
+      this catalogue). Separates a jump from a drift. Section B3 shows this rule scales with the
+      event's own size and rejects large slow builds; the v3 velocity rule is the replacement
+      candidate.</li>
+
+      <li><strong>Straight, traded build-up &mdash; path efficiency &ge; 0.5 and fills in at least
+      half the formation bins.</strong> Excludes zig-zag paths and carried-forward flat positions
+      that only look like a move because the wallet stopped trading.</li>
+
+      <li><strong>Prominence &mdash; |dev<sub>peak</sub>| &ge; 1.5 &times; the largest |dev| in
+      the 3 hours before the window; for events whose level comes back, also &ge; 1.5 &times; the
+      largest |dev| in the 3 hours after.</strong> Both sides compare deviations from the trailing
+      median, not positions, so a large standing inventory does not disqualify anything: the 181
+      shocks start from pre-window median books between $0.5k and $20.6m (25% above $444k). What it
+      does exclude is a big move that is <em>not alone</em>: a second swing within three hours of
+      a first one of similar size, or a wallet that oscillates by this much routinely, so a cluster
+      of equally large shocks can yield none. This is the costliest rule in the funnel: it cuts
+      737 candidate windows to 217 (v2, 6-hour baseline), and at a multiplier of 1.0 the catalogue
+      would be 383 shocks instead of 181, the extra events concentrated in ranks 2 (46&rarr;132)
+      and 7 (16&rarr;59), the two constantly oscillating wallets. Those 202 were never audited by
+      eye, so recall on clustered shocks is a known cost, not a measured one
+      (<code>tables/shock_threshold_sensitivity.csv</code>, <code>tables/detection_funnel.csv</code>).</li>
+
+      <li><strong>Live wallet at the start &mdash; fills in at least half the bins of the prior 2
+      hours, and both a buy and a sell in the prior 6 hours.</strong> Excludes a dormant wallet
+      whose first fill of the day reads as a jump.</li>
+    </ol>
+    <p>Whether the position comes back is <strong>not</strong> a rule. It is recorded afterwards
+    as a label (revert / partial / step) from the residual level shift 60 minutes after the
+    window. The exact role of the two floors, and how often each one is the term that sets
+    &sigma;<sub>t</sub>, is below.</p>
+    <details class="more"><summary>the two denominator floors: definition, why each is needed, how often each binds</summary>
+
+<!-- p0904b:rule:end -->
     <h5 style="margin:1.1em 0 .35em">What &ldquo;floor&rdquo; means here</h5>
     <p>A floor is a <strong>lower bound on the denominator &sigma;<sub>t</sub></strong> &mdash; not on
     the move, the position, or z. Because &sigma;<sub>t</sub> is the largest of the three terms, a
@@ -377,13 +464,17 @@
     median <em>centers</em> (what is this wallet's level right now), the 7-day MAD <em>scales</em>
     (what is a normal-sized wobble for it). Neither replaced the other at any point. A 12-hour
     centering window is run alongside as a robustness variant (132 shocks vs 181; section B).
+<!-- p0904b:ruletail:start -->
     Exp5 differs only in using one full-sample scale per wallet instead of the trailing
     &sigma;<sup>7d</sup><sub>t</sub>.</p>
+    </details>
   </div>
 
   <h4>Descriptive statistics of the core variables</h4>
 
+<!-- p0904b:ruletail:end -->
 <!-- desc-stats:pooled:start -->
+<p class="tabcap" id="table-2"><strong>Table 2 &mdash; Descriptive statistics of the core variables, pooled over the ten MMs.</strong> One row per variable, panels A to E; N is the number of underlying observations named in the row label (5-minute wallet-bins for A and B, shocks for C, market 5-minute bins for D, wallet-days for E). Columns are the count, mean, standard deviation, minimum, quartiles and maximum. Definitions of every panel are in the bullets after Table 5; per-wallet versions are Tables 7 to 9. Source: <code>tables/desc_stats.csv</code>.</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
 <tr><td>A&nbsp; Inventory exposure |position| (kUSD)</td><td class="n">919,081</td><td class="n">1,906</td><td class="n">4,178</td><td class="n">0</td><td class="n">30</td><td class="n">160</td><td class="n">1,042</td><td class="n">25,730</td></tr>
@@ -391,12 +482,74 @@
 <tr><td>C&nbsp; Shock |deviation| at peak (kUSD)</td><td class="n">181</td><td class="n">1,169</td><td class="n">1,432</td><td class="n">103</td><td class="n">249</td><td class="n">732</td><td class="n">1,397</td><td class="n">9,076</td></tr>
 <tr><td>C&nbsp; Shock |z| at peak (&sigma;)</td><td class="n">181</td><td class="n">9.980</td><td class="n">8.527</td><td class="n">6.011</td><td class="n">6.652</td><td class="n">7.657</td><td class="n">10.298</td><td class="n">86.254</td></tr>
 <tr><td>D&nbsp; Taker imbalance / 5-min bin</td><td class="n">132,333</td><td class="n">0.013</td><td class="n">0.437</td><td class="n">-0.995</td><td class="n">-0.334</td><td class="n">0.018</td><td class="n">0.361</td><td class="n">0.998</td></tr>
-<tr><td>E&nbsp; MM account equity (kUSD)</td><td class="n">2,641</td><td class="n">9,138</td><td class="n">12,476</td><td class="n">0</td><td class="n">1,419</td><td class="n">3,563</td><td class="n">13,274</td><td class="n">93,687</td></tr>
+<!-- p0904b:eqlabel:start -->
+<tr><td>E&nbsp; MM cross-margin perp account value, ten roster MMs, one value per wallet per UTC day (kUSD)</td>
+<!-- p0904b:eqlabel:end --><td class="n">2,641</td><td class="n">9,138</td><td class="n">12,476</td><td class="n">0</td><td class="n">1,419</td><td class="n">3,563</td><td class="n">13,274</td><td class="n">93,687</td></tr>
 </tbody></table></div>
 <!-- desc-stats:pooled:end -->
+<!-- p0904b:shockdev:start -->
 
-  <p><strong>The same ten MMs during shocks versus all times.</strong> Same active-day
-  bins, split by whether the bin lies inside one of that MM's own 181 detected shock
+  <p><strong>How far the peak stands from the level the wallet held before the shock.</strong>
+  One row of the underlying data is one of the 181 shocks. Definitions:</p>
+  <ul class="tight">
+    <li><strong>Pre-shock level</strong> &mdash; the median of the wallet's 5-minute position over
+    the 60 minutes before the window opens; the same level the revert / partial / step label is
+    judged against.</li>
+    <li><strong>Amplitude</strong> &mdash; |position at the peak &minus; pre-shock level|. This is
+    the "peak compared to the previous median" quantity. It is reported instead of a ratio of the
+    two positions because 103 of the 181 shocks cross zero (the peak has the opposite sign to the
+    pre-shock level), which makes a ratio of levels meaningless; the ratio row divides the
+    amplitude by the pre-shock |position| instead.</li>
+    <li><strong>Detection deviation</strong> &mdash; |position &minus; trailing 6-hour median| at
+    the peak bin, the quantity the detector thresholds (Table 2, row C); shown so the two
+    "distance from level" measures can be compared. They agree closely because the 60-minute and
+    6-hour medians sit at nearly the same level before a shock.</li>
+    <li><strong>Own volume</strong> &mdash; the wallet's own HYPE fill volume in dollars per
+    5-minute bin, maker and taker, buy and sell. <em>Pre-window</em> is the 6 hours (72 bins)
+    before the window opens, summarized by its median bin; <em>formation</em> is window start to
+    peak (median 10 minutes); <em>whole window</em> is start to end. The two ratio rows have
+    N = 180 because one shock has a pre-window median volume of zero.</li>
+  </ul>
+<p class="tabcap" id="table-3"><strong>Table 3 &mdash; Shock size relative to the wallet's own pre-shock level: inventory and own dollar volume.</strong> One underlying row is one of the 181 shocks; each table row summarizes one quantity over them. Source: <code>tables/desc_stats_shock_deviation.csv</code>.</p>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
+<tr><td>Inventory, pre-shock level: median |position| over the 60 min before the window (kHYPE)</td><td class="n">181</td><td class="n">16.0</td><td class="n">60.4</td><td class="n">0.0</td><td class="n">0.5</td><td class="n">2.4</td><td class="n">12.7</td><td class="n">760.7</td></tr>
+<tr><td>Inventory, pre-shock level (kUSD at the peak mid)</td><td class="n">181</td><td class="n">565</td><td class="n">1,797</td><td class="n">0</td><td class="n">22</td><td class="n">87</td><td class="n">444</td><td class="n">20,605</td></tr>
+<tr><td>Inventory at the peak |position| (kHYPE)</td><td class="n">181</td><td class="n">36.1</td><td class="n">76.5</td><td class="n">0.5</td><td class="n">5.4</td><td class="n">18.3</td><td class="n">41.4</td><td class="n">947.0</td></tr>
+<tr><td>Inventory at the peak (kUSD at the peak mid)</td><td class="n">181</td><td class="n">1,315</td><td class="n">2,295</td><td class="n">31</td><td class="n">207</td><td class="n">645</td><td class="n">1,535</td><td class="n">25,652</td></tr>
+<tr><td>Amplitude: |peak &minus; pre-shock level| (kHYPE)</td><td class="n">181</td><td class="n">30.6</td><td class="n">35.0</td><td class="n">1.8</td><td class="n">6.6</td><td class="n">17.9</td><td class="n">39.7</td><td class="n">195.1</td></tr>
+<tr><td>Amplitude (kUSD at the peak mid)</td><td class="n">181</td><td class="n">1,158</td><td class="n">1,450</td><td class="n">93</td><td class="n">240</td><td class="n">713</td><td class="n">1,492</td><td class="n">9,385</td></tr>
+<tr><td>Amplitude &divide; pre-shock level |position|</td><td class="n">181</td><td class="n">41.1&times;</td><td class="n">143.4&times;</td><td class="n">0.1&times;</td><td class="n">2.7&times;</td><td class="n">5.9&times;</td><td class="n">17.2&times;</td><td class="n">1,351.0&times;</td></tr>
+<tr><td>Detection deviation at the peak: |position &minus; trailing 6-hour median| (kHYPE)</td><td class="n">181</td><td class="n">30.9</td><td class="n">34.8</td><td class="n">1.6</td><td class="n">6.5</td><td class="n">19.5</td><td class="n">41.2</td><td class="n">183.8</td></tr>
+<tr><td>Detection deviation at the peak (kUSD), as Table 2 row C</td><td class="n">181</td><td class="n">1,169</td><td class="n">1,432</td><td class="n">103</td><td class="n">249</td><td class="n">732</td><td class="n">1,397</td><td class="n">9,076</td></tr>
+<tr><td>Own volume, pre-window median per 5-min bin over the 6 h before the window (kUSD)</td><td class="n">181</td><td class="n">88</td><td class="n">101</td><td class="n">0</td><td class="n">26</td><td class="n">56</td><td class="n">119</td><td class="n">626</td></tr>
+<tr><td>Own volume, formation mean per 5-min bin (kUSD)</td><td class="n">181</td><td class="n">454</td><td class="n">441</td><td class="n">34</td><td class="n">149</td><td class="n">281</td><td class="n">602</td><td class="n">1,982</td></tr>
+<tr><td>Own volume, whole-window mean per 5-min bin (kUSD)</td><td class="n">181</td><td class="n">266</td><td class="n">281</td><td class="n">20</td><td class="n">102</td><td class="n">168</td><td class="n">324</td><td class="n">1,668</td></tr>
+<tr><td>Own volume, formation total (kUSD)</td><td class="n">181</td><td class="n">2,115</td><td class="n">2,123</td><td class="n">204</td><td class="n">725</td><td class="n">1,450</td><td class="n">2,619</td><td class="n">12,208</td></tr>
+<tr><td>Own volume, whole-window total (kUSD)</td><td class="n">181</td><td class="n">4,103</td><td class="n">4,428</td><td class="n">322</td><td class="n">1,302</td><td class="n">2,576</td><td class="n">5,423</td><td class="n">28,454</td></tr>
+<tr><td>Formation volume per bin &divide; pre-window median per bin</td><td class="n">180</td><td class="n">19.5&times;</td><td class="n">122.4&times;</td><td class="n">0.5&times;</td><td class="n">3.1&times;</td><td class="n">5.0&times;</td><td class="n">9.6&times;</td><td class="n">1,630.1&times;</td></tr>
+<tr><td>Whole-window volume per bin &divide; pre-window median per bin</td><td class="n">180</td><td class="n">12.9&times;</td><td class="n">96.5&times;</td><td class="n">0.4&times;</td><td class="n">1.8&times;</td><td class="n">3.1&times;</td><td class="n">5.7&times;</td><td class="n">1,292.5&times;</td></tr>
+</tbody></table></div>
+  <ul class="tight">
+    <li>The median shock moves the position by 18.0k HYPE ($713k), 5.9 times the |position| the
+    wallet held in the hour before ($87k). A quarter of shocks move more than 17 times the prior
+    level; at the other end, a quarter move less than 2.7 times it, and those are the shocks
+    that start from an already large book.</li>
+    <li>Own trading speeds up about five-fold while the shock forms: median fill volume goes from
+    $56k per 5-minute bin over the prior six hours to $281k per bin during formation. The median
+    shock puts $1.45m of the wallet's own volume through the formation leg and $2.58m through the
+    whole window.</li>
+  </ul>
+  <p class="small">Source: <code>tables/desc_stats_shock_deviation.csv</code>, built by
+  <code>code/desc_stats_shock_deviation.py</code> from <code>data/shocks_6h.parquet</code> and
+  <code>data/series_5m.parquet</code>.</p>
+
+<!-- p0904b:shockdev:end -->
+
+<!-- p0904b:xref1:start -->
+  <p><strong>The same ten MMs during shocks versus all times (Table 4).</strong> Same active-day
+  bins, split by whether
+<!-- p0904b:xref1:end --> the bin lies inside one of that MM's own 181 detected shock
   windows (start &rarr; end; 3,517 of 919,081 bins). At the median, exposure during a
   shock is 3.7&times; its all-times level, |z| goes from 0.62 to 4.72, and effective
   leverage roughly doubles (0.28&times; &rarr; 0.65&times; median). <strong>|z| here is exactly the detection z</strong> &mdash;
@@ -404,6 +557,7 @@
   window bins include the sub-threshold approach and decay, which is why the in-shock
   median is 4.7, not 6:</p>
 <!-- desc-stats:shockcmp:start -->
+<p class="tabcap" id="table-4"><strong>Table 4 &mdash; The same ten MMs during their shocks versus at all times.</strong> Same active-day 5-minute wallet-bins as Table 2, split into the 3,517 bins that lie inside one of that wallet's own 181 shock windows and all 919,081 bins. Leverage rows use per-fill observations (2025-09-27 onward). Source: <code>tables/desc_stats.csv</code>, panel F.</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
 <tr><td>Inventory exposure |P| (kUSD) &mdash; all-times</td><td class="n">919,081</td><td class="n">1,906</td><td class="n">4,178</td><td class="n">0</td><td class="n">30</td><td class="n">160</td><td class="n">1,042</td><td class="n">25,730</td></tr>
@@ -417,7 +571,9 @@
 </tbody></table></div>
 <!-- desc-stats:shockcmp:end -->
 
-  <p id="around-shock"><strong>Equity and effective leverage around each shock.</strong> Leverage is
+<!-- p0904b:xref2:start -->
+  <p id="around-shock"><strong>Equity and effective leverage around each shock (Table 5).</strong> Leverage is
+<!-- p0904b:xref2:end -->
   measured per fill: lev = k &times; 2 &times; max leverage, where k = maintenance
   margin / pool equity from the per-fill k dataset and HYPE's max leverage is 10
   throughout the sample &mdash; so <strong>liquidation sits at 20&times;</strong>
@@ -430,6 +586,7 @@
   the first checkpoint after peak+6&nbsp;h (&le;14&nbsp;h) &mdash; checkpoint equity,
   not a 5-minute path:</p>
 <!-- desc-stats:aroundshock:start -->
+<p class="tabcap" id="table-5"><strong>Table 5 &mdash; Equity and effective leverage around each shock.</strong> One underlying row is one shock; N is the number of shocks with a usable observation at that reference point. Leverage in multiples of equity (liquidation at 20&times;); equity in kUSD from the account checkpoint series; &Delta; rows are changes between reference points. Source: <code>tables/desc_stats.csv</code>, panels G and H.</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
 <tr><td>leverage (&times;) &mdash; pre-shock</td><td class="n">95</td><td class="n">0.47</td><td class="n">0.47</td><td class="n">0.01</td><td class="n">0.19</td><td class="n">0.33</td><td class="n">0.51</td><td class="n">2.52</td></tr>
@@ -475,10 +632,18 @@
       stands above (or below) its own pre-shock level, in dollars at the concurrent mid.</li>
     <li><strong>D</strong> — whole-market taker imbalance (buy&minus;sell)/(buy+sell) per
       5-minute bin, 132,333 bins.</li>
-    <li><strong>E</strong> — exchange-reported account value, last snapshot per UTC day.
-      <strong>Coverage 2025-09-27 &rarr; 2026-06-30 only</strong> (99 of the 181 shocks fall
-      inside it), snapshot cadence ~2&nbsp;h in 2025 degrading to ~5.5&nbsp;h by mid-2026.
-      Zero-value snapshots are exchange-reported (emptied accounts), kept as recorded.</li>
+<!-- p0904b:eqnote:start -->
+    <li><strong>E</strong> — what the row is: the exchange-reported <strong>cross-margin
+      perpetuals account value</strong> of the wallet (collateral plus unrealized PnL across all
+      its cross-margined perp positions, every coin, not HYPE alone; spot balances and
+      isolated-margin positions are not included). Who: the <strong>ten roster MMs only</strong>,
+      not the wider MM population. Grain: <strong>one value per wallet per UTC day</strong>, the
+      last snapshot of that day, so N = 2,641 is wallet-days: 268 to 277 days for nine wallets
+      and 195 for rank 7, over the 277 days <strong>2025-09-27 &rarr; 2026-06-30</strong> where
+      the snapshot feed exists (99 of the 181 shocks fall inside it). Within a day the snapshot
+      cadence is ~2&nbsp;h in 2025 degrading to ~5.5&nbsp;h by mid-2026. Zero-value snapshots are
+      exchange-reported (emptied accounts), kept as recorded. Per-wallet rows in Table 9.</li>
+<!-- p0904b:eqnote:end -->
   </ul>
   <p>Both catalogues are frozen, and both precision figures are <strong>counts of human
   verdicts on rendered panels</strong>, not estimates from a model. That is the reason to
@@ -717,7 +882,8 @@
   <details id="brief-runsheet">
     <summary>If you are presenting this: a 15-minute running order</summary>
 
-  <div class="table-wrap">
+  <p class="tabcap" id="table-6"><strong>Table 6 &mdash; A 15-minute running order for presenting the two studies.</strong> One row per minute block: what to put up and the one point to make.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th class="n">min</th><th>What to put up</th><th>The one point</th></tr></thead>
       <tbody>
@@ -860,6 +1026,7 @@
   <details>
     <summary>Panel A — inventory exposure |position| per wallet, kUSD (active-day 5-min bins)</summary>
 <!-- desc-stats:per_A:start -->
+<p class="tabcap" id="table-7"><strong>Table 7 &mdash; Panel A per wallet: inventory exposure |position| in kUSD.</strong> One row per roster MM (rank is identity, not size); N is that wallet's active-day 5-minute bins. Source: <code>tables/desc_stats.csv</code>.</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
 <tr><td>MM01</td><td class="n">131,173</td><td class="n">637</td><td class="n">919</td><td class="n">0</td><td class="n">118</td><td class="n">294</td><td class="n">755</td><td class="n">7,427</td></tr>
@@ -878,6 +1045,7 @@
   <details>
     <summary>Panel B — standardized inventory z per wallet (&sigma; units)</summary>
 <!-- desc-stats:per_B:start -->
+<p class="tabcap" id="table-8"><strong>Table 8 &mdash; Panel B per wallet: standardized inventory z, in &sigma; units.</strong> One row per roster MM; the same detection z as Table 2, row B. Source: <code>tables/desc_stats.csv</code>.</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
 <tr><td>MM01</td><td class="n">131,581</td><td class="n">0.049</td><td class="n">1.683</td><td class="n">-17.800</td><td class="n">-0.667</td><td class="n">-0.007</td><td class="n">0.650</td><td class="n">27.135</td></tr>
@@ -896,6 +1064,7 @@
   <details>
     <summary>Panel E — account equity per wallet, kUSD (2025-09-27 onward)</summary>
 <!-- desc-stats:per_E:start -->
+<p class="tabcap" id="table-9"><strong>Table 9 &mdash; Panel E per wallet: cross-margin perp account value in kUSD, 2025-09-27 onward.</strong> One row per roster MM; N is wallet-days with a snapshot. Same series as Table 2, row E. Source: <code>tables/desc_stats.csv</code>.</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
 <tr><td>MM01</td><td class="n">277</td><td class="n">13,498</td><td class="n">5,483</td><td class="n">5,906</td><td class="n">6,503</td><td class="n">16,004</td><td class="n">17,008</td><td class="n">25,791</td></tr>
@@ -917,6 +1086,7 @@
     <summary>Panel F — during shocks versus all times, per wallet</summary>
 <!-- desc-stats:per_F:start -->
 <p><strong>Inventory exposure |P| (kUSD)</strong> &mdash; each MM against itself, all active-day bins vs the bins inside its own detected shock windows:</p>
+<p class="tabcap" id="table-10"><strong>Table 10 &mdash; Panel F per wallet: inventory exposure |P| during the wallet's own shocks versus at all times.</strong> Two rows per roster MM: all active-day bins, and the bins inside its own detected shock windows. Source: <code>tables/desc_stats.csv</code>.</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
 <tr><td>MM01 &mdash; all times</td><td class="n">131,173</td><td class="n">637</td><td class="n">919</td><td class="n">0</td><td class="n">118</td><td class="n">294</td><td class="n">755</td><td class="n">7,427</td></tr>
@@ -940,6 +1110,7 @@
 <tr><td>MM10 &mdash; during its shocks</td><td class="n">18</td><td class="n">50</td><td class="n">47</td><td class="n">1</td><td class="n">20</td><td class="n">32</td><td class="n">52</td><td class="n">153</td></tr>
 </tbody></table></div>
 <p><strong>|deviation| from the trailing 6-hour median (kUSD)</strong> &mdash; each MM against itself, all active-day bins vs the bins inside its own detected shock windows:</p>
+<p class="tabcap" id="table-11"><strong>Table 11 &mdash; Panel F per wallet: |deviation| from the trailing 6-hour median, kUSD, during shocks versus at all times.</strong> Two rows per roster MM, as in Table 10. Source: <code>tables/desc_stats.csv</code>.</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
 <tr><td>MM01 &mdash; all times</td><td class="n">131,138</td><td class="n">313</td><td class="n">555</td><td class="n">0</td><td class="n">52</td><td class="n">135</td><td class="n">331</td><td class="n">9,076</td></tr>
@@ -963,6 +1134,7 @@
 <tr><td>MM10 &mdash; during its shocks</td><td class="n">18</td><td class="n">51</td><td class="n">48</td><td class="n">0</td><td class="n">20</td><td class="n">32</td><td class="n">58</td><td class="n">151</td></tr>
 </tbody></table></div>
 <p><strong>|z| (&sigma; &mdash; the detection z)</strong> &mdash; each MM against itself, all active-day bins vs the bins inside its own detected shock windows:</p>
+<p class="tabcap" id="table-12"><strong>Table 12 &mdash; Panel F per wallet: |z| during shocks versus at all times.</strong> Two rows per roster MM, as in Table 10; |z| is the detection z. Source: <code>tables/desc_stats.csv</code>.</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
 <tr><td>MM01 &mdash; all times</td><td class="n">131,581</td><td class="n">1.044</td><td class="n">1.321</td><td class="n">0.000</td><td class="n">0.264</td><td class="n">0.658</td><td class="n">1.356</td><td class="n">27.135</td></tr>
@@ -1031,7 +1203,8 @@
   Neither is fixable by moving a threshold.</p>
 
   <h3 id="b-final">B2. Parameters we settled on</h3>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-13"><strong>Table 13 &mdash; Detector parameters settled on for the frozen v2 catalogue.</strong> One row per parameter: the chosen value and why that value. Values live in <code>code/spec.json</code>.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th>Parameter</th><th>Chosen</th><th>Why this value</th></tr></thead>
       <tbody>
@@ -1115,7 +1288,8 @@
     efficiency, fill coverage, prominence, activity and merging are byte-identical to v2, so the
     difference between the two catalogues is the suddenness rule and nothing else.</p>
   </div>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-14"><strong>Table 14 &mdash; v2 versus v3 catalogue counts, 6-hour baseline.</strong> One row per count; v3 replaces the suddenness fraction with a velocity floor of 3.0 trailing sigmas per 30 minutes and changes nothing else. Source: <code>tables/shocks_6h_v3.csv</code>, <code>tables/v2_v3_overlap_v3.csv</code>.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th>6-hour baseline, <code>vel_min</code> = 3.0</th><th class="n">count</th></tr></thead>
       <tbody>
@@ -1133,7 +1307,8 @@
   floor at 3.0 could never bite on them. The 64 new events are the population the fraction
   rule was structurally excluding (quantiles p25 / <strong>median</strong> / p75;
   <code>tables/shocks_6h_v3.csv</code>):</p>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-15"><strong>Table 15 &mdash; What the 64 events new in v3 look like against the 181 v2 shocks.</strong> One row per event property; cells are p25 / median / p75 over the events in that column. Source: <code>tables/shocks_6h_v3.csv</code>.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th></th><th class="n">new in v3 (64)</th><th class="n">v2 (181)</th></tr></thead>
       <tbody>
@@ -1166,7 +1341,8 @@
   <details class="more">
     <summary>threshold sweep for the velocity floor</summary>
     <p><code>tables/vel_min_sweep_v3.csv</code>; retention is of the 181 v2 shocks.</p>
-    <div class="table-wrap">
+    <p class="tabcap" id="table-16"><strong>Table 16 &mdash; Sensitivity of the v3 catalogue to the velocity floor.</strong> One row per candidate floor: shocks found, how many of the 181 v2 shocks are retained, how many are new, and the Jaccard overlap with v2. Source: <code>tables/vel_min_sweep_v3.csv</code>.</p>
+<div class="table-wrap">
       <table>
         <thead><tr><th class="n"><code>vel_min</code></th><th class="n">shocks</th><th class="n">v2 retained</th><th class="n">new</th><th class="n">Jaccard</th></tr></thead>
         <tbody>
@@ -1196,7 +1372,8 @@
 <section id="cause">
   <h2>C. What causes a shock</h2>
   <p>All cause-side measurement is over the formation window — median 10 minutes.</p>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-17"><strong>Table 17 &mdash; What is happening in the market while a shock forms.</strong> One row per measured quantity, over the formation window of all 181 shocks; the median and its plain reading. Source: <code>data/shocks_measured.parquet</code>.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th>Measured over 181 shocks</th><th class="n">Median</th><th>Reading</th></tr></thead>
       <tbody>
@@ -1264,7 +1441,8 @@
   <details>
     <summary>Where every number in D1 comes from &mdash; the inputs, the two tables,
     and every column in them</summary>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-18"><strong>Table 18 &mdash; Where every number in D1 comes from.</strong> One row per input or output file: the file, what one row of it is, and which fields are used.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th>Input or output</th><th>The file</th><th>One row is</th></tr></thead>
       <tbody>
@@ -1471,7 +1649,8 @@
     <li><strong>Shocked wallet's share</strong> — median over the 181 shocks of the focal
     wallet's own share of that row's total.</li>
   </ul>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-19"><strong>Table 19 &mdash; How widely the burst was spread across market makers, six ways of counting.</strong> One row per definition of the absorbed quantity and the eligible wallet set; eff N is the effective number of wallets sharing it (quantiles over 181 shocks) and the last column is the shocked wallet's own median share. Source: <code>tables/shock_absorb_retain.csv</code>.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th>#</th><th>What is counted, per wallet</th><th>Over which wallets</th>
         <th class="n">wallets<br>elig. → counted</th>
@@ -1624,7 +1803,8 @@
   </figure>
 
   <h3 id="d-side">D2. Are the shocked MMs shocked on the same side</h3>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-20"><strong>Table 20 &mdash; Are the shocked MMs shocked on the same side as the event, three episodes.</strong> One row per episode: active MMs, how many were shocked, the share shocked on the event side versus the opposite side, and the lift over merely active MMs leaning that way. Source: <code>tables/pilot_mm_side_agreement.csv</code>.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th>Episode</th><th class="n">Active MMs</th><th class="n">Shocked</th>
         <th class="n">On event side</th><th class="n">Opposite</th>
@@ -1660,7 +1840,8 @@
   "more than usual"</strong>. Questions (1) and (2), and the baseline for (3), are queued
   in the follow-up plan. Until then this table reads as a description of where MM taker
   flow went during formation, not as evidence of unloading onto peers.</p>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-21"><strong>Table 21 &mdash; Where MM taker volume went during formation, three episodes.</strong> One row per share; columns are the three episodes. Counterparties from exact taker-maker pairing. Source: <code>tables/pilot_mm_to_mm.csv</code>.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th>Formation window</th><th class="n">2025-08-11</th>
         <th class="n">2025-08-22</th><th class="n">2025-10-10</th></tr></thead>
@@ -1724,7 +1905,8 @@
     a minority, and the peers moved together. <strong>FEW</strong>: everything else. Cutoffs
     were read off the observed distributions and applied to all 181.</dd>
   </dl>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-22"><strong>Table 22 &mdash; Alone, few, broad: the three classes of shock.</strong> One row per class: count, share of the 181, and medians of size, concentration C, peer agreement Dp, co-movers, hit-side surge, MM maker share and time to three-quarters back. Source: <code>data/shocks_measured.parquet</code>.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th>Class</th><th class="n">n</th><th class="n">share</th><th class="n">median size</th>
         <th class="n">median C</th><th class="n">median Dp</th><th class="n">median co-movers</th>
@@ -1770,7 +1952,8 @@
   <h3 id="e-path">E1. The path</h3>
   <p>Every shocked MM's inventory path, aligned on <em>its own</em> peak and divided by
   <em>its own</em> excursion, so all wallets share one vertical scale.</p>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-23"><strong>Table 23 &mdash; The unwind path after the peak: quantiles across shocked MMs.</strong> One row per number of minutes after the wallet's own peak; columns are the p5 to p95 of the remaining fraction of the excursion (1 = still at the peak, 0 = back to the start level) and the share of wallets that have reached 75% back. Source: <code>tables/shock_unwind_quantiles.csv</code>.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th>Minutes after own peak</th><th class="n">p5</th><th class="n">p25</th>
         <th class="n">Median</th><th class="n">p75</th><th class="n">p95</th>
@@ -1889,7 +2072,8 @@
     flattening at the peak</strong> in both. Without that correction the families partly
     cancel: the down-shock median would read +9.4 instead of −9.4 bps, and the pooled median
     +17.6 instead of +16.2. In full:
-      <div class="table-wrap">
+      <p class="tabcap" id="table-24"><strong>Table 24 &mdash; Sign convention for the price metric, by shock direction.</strong> One row per shock direction: the position, the reducing side, and what a + and a &minus; value mean.</p>
+<div class="table-wrap">
         <table>
           <thead><tr><th>Shock</th><th>Position</th><th>Reducing side</th>
             <th>A <strong>+</strong> value means</th><th>A <strong>&minus;</strong> value means</th></tr></thead>
@@ -1914,7 +2098,8 @@
     the <strong>Gap</strong> and <strong>Percentile</strong> columns and nothing else: those
     hold the window, the side and the reference price fixed and vary only the wallet.</dd>
   </dl>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-25"><strong>Table 25 &mdash; Execution of the shocked MM against MM peers trading the same side in the same hour, all shocks.</strong> One row per metric: shocked MM, MM peers, the paired gap, and the shocked MM's percentile among peers. Source: <code>tables/shock_execution_benchmark.csv</code>.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th>Metric</th><th class="n">Shocked MM</th><th class="n">MM peers</th>
         <th class="n">Gap</th><th class="n">Percentile among peers</th></tr></thead>
@@ -2008,7 +2193,8 @@
   <p>Pooling up and down shocks averages two different price regimes, and the absolute
   columns do not survive the split — two of the three change sign. The benchmarked columns
   barely move, which is the argument for reading only those.</p>
-  <div class="table-wrap">
+  <p class="tabcap" id="table-26"><strong>Table 26 &mdash; The same execution rows split by shock direction.</strong> One row per metric and direction, columns as in Table 25. Source: <code>tables/shock_execution_benchmark.csv</code>.</p>
+<div class="table-wrap">
     <table>
       <thead><tr><th>Metric</th><th>Shocks</th><th class="n">Shocked MM</th>
         <th class="n">MM peers</th><th class="n">Gap</th><th class="n">Percentile</th></tr></thead>
