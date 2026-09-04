@@ -318,80 +318,13 @@
     as a label (revert / partial / step) from the residual level shift 60 minutes after the
     window. The exact role of the two floors, and how often each one is the term that sets
     &sigma;<sub>t</sub>, is below.</p>
-    <details class="more"><summary>the two denominator floors: definition, why each is needed, how often each binds</summary>
-
-<!-- p0904b:rule:end -->
-    <h5 style="margin:1.1em 0 .35em">What &ldquo;floor&rdquo; means here</h5>
-    <p>A floor is a <strong>lower bound on the denominator &sigma;<sub>t</sub></strong> &mdash; not on
-    the move, the position, or z. Because &sigma;<sub>t</sub> is the largest of the three terms, a
-    floor can only push &sigma;<sub>t</sub> <em>up</em>, never down, so it can only make z
-    <em>smaller</em> and detection <em>harder</em>. A floor does nothing at all unless the trailing
-    MAD &sigma;<sup>7d</sup><sub>t</sub> has fallen below it. Throughout this report a floor
-    <strong>binds</strong> at a bin when it is the largest of the three &mdash; the term that
-    actually sets &sigma;<sub>t</sub> there.</p>
-
-    <h5 style="margin:1.1em 0 .35em">Why each floor is needed</h5>
-    <p>They answer two different failure modes, and neither is about
-    &sigma;<sup>7d</sup><sub>t</sub> being &ldquo;too small&rdquo; in the abstract:</p>
-    <ul>
-      <li><strong>$12,500 / m<sub>t</sub> &mdash; a divide-by-almost-zero guard.</strong>
-      A wallet that holds a near-constant position for a week has
-      median|dev|&nbsp;&asymp;&nbsp;0, so &sigma;<sup>7d</sup><sub>t</sub>&nbsp;&asymp;&nbsp;0 and z
-      explodes on <em>any</em> move at all, including one-coin rounding in the position series. The
-      floor says: if the measured scale is under $12.5k, z is reporting the <em>resolution</em> of
-      the position series, not risk. The constant is not free &mdash; <strong>$12,500 = $100k /
-      (z&nbsp;=&nbsp;6), rounded down</strong>. Since a candidate needs 6&sigma; and &sigma; can
-      never fall below the floor, the floor implies a minimum detectable move of
-      6&nbsp;&times;&nbsp;$12.5k&nbsp;=&nbsp;$75k, deliberately kept <em>below</em> the explicit
-      $100k size gate, so the floor only stops the division and never becomes a second, hidden
-      size rule.</li>
-
-      <li><strong>0.02 &times; p95(|P|)<sub>30d</sub> &mdash; a relative floor for wallets that are
-      quiet but big.</strong> A desk can run a large book with tiny intraday wiggle: its
-      &sigma;<sup>7d</sup><sub>t</sub> is small <em>relative to what it actually carries</em>. A
-      $300k move on such a wallet is 10&sigma; on the trailing-MAD yardstick but 5% of the book,
-      and 5% of the book is not a shock for that desk. This floor ties the scale to book size at
-      2%, so a move must be large against the wallet's own <em>capacity</em>, not only against its
-      recent calm. <code>p95(|P|)<sub>30d</sub></code> is recomputed once per UTC date over the
-      trailing 30 days and <strong>lagged one day, so it never sees the shock</strong>.
-      <strong>c&nbsp;=&nbsp;0.02</strong> removes 2 of 183 candidate events; c&nbsp;=&nbsp;0.05
-      would remove 12 (sensitivity: <code>tables/scale_floor_impact.csv</code>).</li>
-    </ul>
-
-    <h5 style="margin:1.1em 0 .35em">How often each one actually binds</h5>
-    <p>Across the 181 shocks (<code>tables/scale_diagnostics.csv</code>) the floors are guards, not
-    shapers of the catalogue &mdash; the measured trailing scale sets &sigma;<sub>t</sub> in almost
-    every case:</p>
-    <ul>
-      <li>&sigma;<sup>7d</sup><sub>t</sub> binds <strong>173 times (95.6%)</strong>; the p95 floor
-      binds <strong>5 times</strong>; the $12,500 floor binds <strong>3 times</strong>.</li>
-      <li><strong>2 of the 181</strong> have no trailing &sigma; at all &mdash; the wallet lacked the
-      288 valid trailing bins the MAD requires &mdash; and so rest entirely on the floors.</li>
-      <li>Median &sigma;<sup>7d</sup><sub>t</sub>&nbsp;/&nbsp;p95(|P|)<sub>30d</sub> is
-      <strong>0.124</strong> (p5 0.034, p95 0.333): the trailing MAD typically sits at about
-      <strong>12% of book size, six times clear of the 2% floor</strong>. Only 5 of the 174
-      measurable shocks fall under it.</li>
-      <li>The binding cases are the intended ones. The clearest is rank&nbsp;8 on 2025-12-17: a
-      &sigma;<sup>7d</sup><sub>t</sub> of $236k against a p95 position of <strong>$21.3m</strong>
-      &mdash; 1.1% of book &mdash; which the floor lifts to $426k. That is the quiet-but-big case
-      exactly.</li>
-    </ul>
-    <p>
-    The <strong>two windows do different jobs and coexist inside the same z</strong>: the 6-hour
-    median <em>centers</em> (what is this wallet's level right now), the 7-day MAD <em>scales</em>
-    (what is a normal-sized wobble for it). Neither replaced the other at any point. A 12-hour
-    centering window is run alongside as a robustness variant (132 shocks vs 181; section B).
-<!-- p0904b:ruletail:start -->
-    Exp5 differs only in using one full-sample scale per wallet instead of the trailing
-    &sigma;<sup>7d</sup><sub>t</sub>.</p>
-    </details>
   </div>
 
   <h4>Descriptive statistics of the core variables</h4>
 
 <!-- p0904b:ruletail:end -->
 <!-- desc-stats:pooled:start -->
-<p class="tabcap" id="table-2"><strong>Table 2 &mdash; Descriptive statistics of the core variables, pooled over the ten MMs.</strong> One row per variable, panels A to E; N is the number of underlying observations named in the row label (5-minute wallet-bins for A and B, shocks for C, market 5-minute bins for D, wallet-days for E). Columns are the count, mean, standard deviation, minimum, quartiles and maximum. Definitions of every panel are in the bullets after Table 5; per-wallet versions are Tables 7 to 9. Source: <code>tables/desc_stats.csv</code>.</p>
+<p class="tabcap" id="table-2"><strong>Table 2 &mdash; Descriptive statistics of the core variables, pooled over the ten MMs.</strong> One row per variable, panels A to E; N is the number of underlying observations named in the row label (5-minute wallet-bins for A and B, shocks for C, market 5-minute bins for D, wallet-days for E). Columns are the count, mean, standard deviation, minimum, quartiles and maximum. Every panel is defined in the bullets below; per-wallet versions are in the appendix. Source: <code>tables/desc_stats.csv</code>.</p>
 <div class="table-wrap"><table>
 <thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
 <tr><td>A&nbsp; Inventory exposure |position| (kUSD)</td><td class="n">919,081</td><td class="n">1,906</td><td class="n">4,178</td><td class="n">0</td><td class="n">30</td><td class="n">160</td><td class="n">1,042</td><td class="n">25,730</td></tr>
@@ -541,7 +474,7 @@
   <ul class="tight">
     <li><strong>A</strong> — exposure = |position| valued at the bin-open mid, so long and
       short bins do not cancel; ALL active-day bins (919,081 wallet-bins across the 3,198
-      wallet-days), not shock windows. Per-MM panels in A1.</li>
+      wallet-days), not shock windows. Per-MM panels in appendix J2.</li>
     <li><strong>B</strong> — dev<sub>t</sub>/&sigma;<sub>t</sub> exactly as defined above,
       floors included: the same z the detector thresholds at 6.</li>
     <li><strong>C</strong> — the 181 catalogued shocks. |deviation| at peak = the position's
@@ -559,9 +492,10 @@
       and 195 for rank 7, over the 277 days <strong>2025-09-27 &rarr; 2026-06-30</strong> where
       the snapshot feed exists (99 of the 181 shocks fall inside it). Within a day the snapshot
       cadence is ~2&nbsp;h in 2025 degrading to ~5.5&nbsp;h by mid-2026. Zero-value snapshots are
-      exchange-reported (emptied accounts), kept as recorded. Per-wallet rows in Table 9.</li>
+      exchange-reported (emptied accounts), kept as recorded. Per-wallet rows are in the appendix.</li>
 <!-- p0904b:eqnote:end -->
   </ul>
+  <p>Per-wallet versions of every panel are in appendix J2.</p>
   <p>Both catalogues are frozen, and both precision figures are <strong>counts of human
   verdicts on rendered panels</strong>, not estimates from a model. That is the reason to
   trust the event lists at all.</p>
