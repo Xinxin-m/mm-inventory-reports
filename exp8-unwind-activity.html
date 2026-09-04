@@ -192,18 +192,23 @@
 <a href="exp8-report.html#b-final" class="sub">B2. Final parameters</a>
 <a href="exp8-report.html#b-v3" class="sub">B3. Velocity rule (v3)</a>
 <a href="exp8-report.html#cause">C. What causes a shock</a>
+<a href="exp8-report.html#c-flow181" class="sub">C, all 181 shocks: one-sided?</a>
 <a href="exp8-report.html#population">D. Who else was there</a>
+<a href="exp8-report.html#d-absorb181" class="sub">D, how wide is the absorbing side?</a>
 <a href="exp8-report.html#d-side" class="sub">D1. Same side?</a>
 <a href="exp8-report.html#d-each" class="sub">D2. Trading each other</a>
+<a href="exp8-report.html#d-cp181" class="sub">D2, all 181: who is on the other side</a>
 <a href="exp8-report.html#d-axis" class="sub">D3. Alone / few / broad</a>
+<a href="exp8-report.html#d-pop181" class="sub">D3, against all active MMs</a>
 <a href="exp8-report.html#d-take" class="sub">D4. Take or quote out? (all shocked MMs)</a>
 <a href="exp8-report.html#unwind">E. Getting out</a>
 <a href="exp8-report.html#e-path" class="sub">E1. The path</a>
 <a href="exp8-report.html#e-price" class="sub">E2. The price</a>
 <a href="exp8-report.html#e-chain" class="sub">E3. Archetypes → outcomes</a>
+<a href="exp8-report.html#e-drivers" class="sub">E4. What decides recovery speed</a>
 <a href="exp8-report.html#atlas">F. Shock atlas</a>
 <a href="exp8-report.html#quoting">G. Book response</a>
-<a href="exp8-report.html#g-evolution" class="sub">G, 5-min grid: Figure 18</a>
+<a href="exp8-report.html#g-evolution" class="sub">G, 5-min grid: Figure 20</a>
 <a href="exp8-report.html#limits">H. Limits</a>
 <a href="exp8-report.html#gallery">I. Figure gallery</a>
 <a href="exp8-report.html#g-audit" class="sub">I1. A sample of shocks</a>
@@ -323,8 +328,8 @@
     two hours, and what it picks up is the reject count. <em>Filled orders</em> = orders with at least one
     fill in the bin, by wallet side.</dd>
     <dt>Paired statistics</dt>
-    <dd>For each wallet the POST value minus its own BASE value; then across wallets the median, the share
-    with the stated sign, and a Wilcoxon signed-rank p. Quantiles reported as p25 / <strong>p50</strong> / p75.</dd>
+    <dd>For each wallet the POST value minus its own BASE value; then the median across wallets.
+    Quantiles are reported as p25 / <strong>p50</strong> / p75.</dd>
   </dl>
 </section>
 
@@ -333,12 +338,12 @@
   <p class="tabcap" id="table-u1"><strong>Table U1 &mdash; Taker (spread-crossing) volume in the two hours after the wallet's own peak, against its own 24-hour baseline, by role.</strong> Rates are USD per 5-minute bin. The ratio column is per wallet and defined only when the wallet took at all in BASE (n in brackets). Source: <code>tables/unwind_activity_summary.csv</code>, <code>group_by = role</code>.</p>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>role</th><th class="n">rows</th><th>BASE taker rate, $ / 5 min<br>p25 / <strong>p50</strong> / p75</th><th>POST taker rate</th><th>POST &divide; BASE ratio<br>p25 / <strong>p50</strong> / p75 [n, share &gt; 1]</th><th class="n">zero taker in BASE</th><th class="n">zero taker in POST</th><th class="n">POST1 &divide; BASE p50</th><th class="n">TAIL &divide; BASE p50</th><th class="n">pooled &Sigma;POST &divide; &Sigma;BASE</th></tr></thead>
+      <thead><tr><th>role</th><th class="n">rows</th><th>BASE taker rate, $ / 5 min<br>p25 / <strong>p50</strong> / p75</th><th>POST taker rate</th><th>POST &divide; BASE ratio<br>p25 / <strong>p50</strong> / p75</th><th class="n">zero taker in BASE</th><th class="n">zero taker in POST</th><th class="n">POST1 &divide; BASE p50</th><th class="n">TAIL &divide; BASE p50</th><th class="n">pooled &Sigma;POST &divide; &Sigma;BASE</th></tr></thead>
       <tbody>
-        <tr class="hi"><td>catalogue wallet (roster)</td><td class="n">181</td><td>191 / <strong>1,112</strong> / 9,321</td><td>0 / <strong>1,905</strong> / 13,588</td><td>0.08 / <strong>0.91</strong> / 1.91 [157, 45%]</td><td class="n">13%</td><td class="n">27%</td><td class="n">0.64</td><td class="n">0.72</td><td class="n">1.49</td></tr>
-        <tr><td>shocked roster peer</td><td class="n">244</td><td>53 / <strong>418</strong> / 2,488</td><td>0 / <strong>474</strong> / 6,313</td><td>0.03 / <strong>0.87</strong> / 3.26 [203, 49%]</td><td class="n">17%</td><td class="n">36%</td><td class="n">1.32</td><td class="n">0.58</td><td class="n">1.84</td></tr>
-        <tr><td>shocked non-roster MM</td><td class="n">1,539</td><td>0 / <strong>159</strong> / 2,257</td><td>0 / <strong>189</strong> / 5,831</td><td>0.36 / <strong>1.40</strong> / 3.73 [960, 59%]</td><td class="n">38%</td><td class="n">43%</td><td class="n">1.81</td><td class="n">0.87</td><td class="n">2.03</td></tr>
-        <tr><td>all</td><td class="n">1,964</td><td>0 / <strong>260</strong> / 3,004</td><td>0 / <strong>338</strong> / 7,026</td><td>0.26 / <strong>1.28</strong> / 3.50 [1,320, 56%]</td><td class="n">33%</td><td class="n">40%</td><td class="n">1.51</td><td class="n">0.79</td><td class="n">1.90</td></tr>
+        <tr class="hi"><td>catalogue wallet (roster)</td><td class="n">181</td><td>191 / <strong>1,112</strong> / 9,321</td><td>0 / <strong>1,905</strong> / 13,588</td><td>0.08 / <strong>0.91</strong> / 1.91</td><td class="n">13%</td><td class="n">27%</td><td class="n">0.64</td><td class="n">0.72</td><td class="n">1.49</td></tr>
+        <tr><td>shocked roster peer</td><td class="n">244</td><td>53 / <strong>418</strong> / 2,488</td><td>0 / <strong>474</strong> / 6,313</td><td>0.03 / <strong>0.87</strong> / 3.26</td><td class="n">17%</td><td class="n">36%</td><td class="n">1.32</td><td class="n">0.58</td><td class="n">1.84</td></tr>
+        <tr><td>shocked non-roster MM</td><td class="n">1,539</td><td>0 / <strong>159</strong> / 2,257</td><td>0 / <strong>189</strong> / 5,831</td><td>0.36 / <strong>1.40</strong> / 3.73</td><td class="n">38%</td><td class="n">43%</td><td class="n">1.81</td><td class="n">0.87</td><td class="n">2.03</td></tr>
+        <tr><td>all</td><td class="n">1,964</td><td>0 / <strong>260</strong> / 3,004</td><td>0 / <strong>338</strong> / 7,026</td><td>0.26 / <strong>1.28</strong> / 3.50</td><td class="n">33%</td><td class="n">40%</td><td class="n">1.51</td><td class="n">0.79</td><td class="n">1.90</td></tr>
       </tbody>
     </table>
   </div>
@@ -358,11 +363,11 @@
   <p class="tabcap" id="table-u2"><strong>Table U2 &mdash; Which side the post-peak taker dollars are on, among wallets with any taker fill in POST.</strong> Unwind-side share = unwind-side taker USD &divide; all taker USD in the window. Paired difference is POST minus the same wallet's BASE share. Source: as Table U1.</p>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>role</th><th class="n">n with POST taker</th><th>unwind-side share of POST taker USD<br>p25 / <strong>p50</strong> / p75</th><th class="n">BASE share p50</th><th>paired POST &minus; BASE p50 [share &gt; 0, p]</th><th class="n">POST1 share p50</th><th>pooled unwind share, POST / BASE</th></tr></thead>
+      <thead><tr><th>role</th><th class="n">n with POST taker</th><th>unwind-side share of POST taker USD<br>p25 / <strong>p50</strong> / p75</th><th class="n">BASE share p50</th><th>paired POST &minus; BASE, median</th><th class="n">POST1 share p50</th><th>pooled unwind share, POST / BASE</th></tr></thead>
       <tbody>
-        <tr class="hi"><td>catalogue wallet (roster)</td><td class="n">133</td><td>0.50 / <strong>0.67</strong> / 0.98</td><td class="n">0.51</td><td>+0.13 [73%, 2e&minus;7]</td><td class="n">0.75</td><td>0.59 / 0.50</td></tr>
-        <tr><td>shocked roster peer</td><td class="n">156</td><td>0.40 / <strong>0.65</strong> / 0.98</td><td class="n">0.50</td><td>+0.11 [63%, 4e&minus;5]</td><td class="n">0.77</td><td>0.58 / 0.52</td></tr>
-        <tr><td>shocked non-roster MM</td><td class="n">871</td><td>0.30 / <strong>0.55</strong> / 0.78</td><td class="n">0.50</td><td>+0.02 [54%, 0.008]</td><td class="n">0.57</td><td>0.57 / 0.51</td></tr>
+        <tr class="hi"><td>catalogue wallet (roster)</td><td class="n">133</td><td>0.50 / <strong>0.67</strong> / 0.98</td><td class="n">0.51</td><td>+0.13</td><td class="n">0.75</td><td>0.59 / 0.50</td></tr>
+        <tr><td>shocked roster peer</td><td class="n">156</td><td>0.40 / <strong>0.65</strong> / 0.98</td><td class="n">0.50</td><td>+0.11</td><td class="n">0.77</td><td>0.58 / 0.52</td></tr>
+        <tr><td>shocked non-roster MM</td><td class="n">871</td><td>0.30 / <strong>0.55</strong> / 0.78</td><td class="n">0.50</td><td>+0.02</td><td class="n">0.57</td><td>0.57 / 0.51</td></tr>
       </tbody>
     </table>
   </div>
@@ -390,24 +395,24 @@
   <p class="tabcap" id="table-u3"><strong>Table U3 &mdash; Order submits per 5-minute bin, POST against BASE, by role.</strong> Cancels run at 95&ndash;98% of submits for the roster and 90&ndash;94% for non-roster MMs in every window, and their ratios are within 0.03 of the submit ratios, so they are not repeated. Source: as Table U1.</p>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>role</th><th>BASE submits / 5 min<br>p25 / <strong>p50</strong> / p75</th><th>POST submits</th><th>POST &divide; BASE ratio<br>p25 / <strong>p50</strong> / p75 [share &gt; 1]</th><th class="n">POST1 &divide; BASE p50</th><th class="n">POST &divide; PRE p50</th><th class="n">active-bin median ratio p50</th></tr></thead>
+      <thead><tr><th>role</th><th>BASE submits / 5 min<br>p25 / <strong>p50</strong> / p75</th><th>POST submits</th><th>POST &divide; BASE ratio<br>p25 / <strong>p50</strong> / p75</th><th class="n">POST1 &divide; BASE p50</th><th class="n">POST &divide; PRE p50</th><th class="n">active-bin median ratio p50</th></tr></thead>
       <tbody>
-        <tr class="hi"><td>catalogue wallet (roster)</td><td>467 / <strong>867</strong> / 1,535</td><td>562 / <strong>933</strong> / 2,079</td><td>0.84 / <strong>1.07</strong> / 1.53 [57%]</td><td class="n">1.14</td><td class="n">1.03</td><td class="n">1.13</td></tr>
-        <tr><td>shocked roster peer</td><td>392 / <strong>579</strong> / 937</td><td>435 / <strong>694</strong> / 1,099</td><td>0.92 / <strong>1.20</strong> / 1.59 [62%]</td><td class="n">1.33</td><td class="n">1.03</td><td class="n">1.23</td></tr>
-        <tr><td>shocked non-roster MM</td><td>24 / <strong>144</strong> / 357</td><td>46 / <strong>196</strong> / 480</td><td>0.97 / <strong>1.40</strong> / 2.43 [73%]</td><td class="n">1.72</td><td class="n">1.08</td><td class="n">1.38</td></tr>
-        <tr><td>all</td><td>39 / <strong>214</strong> / 542</td><td>71 / <strong>282</strong> / 725</td><td>0.94 / <strong>1.33</strong> / 2.17 [70%]</td><td class="n">1.59</td><td class="n">1.07</td><td class="n">1.32</td></tr>
+        <tr class="hi"><td>catalogue wallet (roster)</td><td>467 / <strong>867</strong> / 1,535</td><td>562 / <strong>933</strong> / 2,079</td><td>0.84 / <strong>1.07</strong> / 1.53</td><td class="n">1.14</td><td class="n">1.03</td><td class="n">1.13</td></tr>
+        <tr><td>shocked roster peer</td><td>392 / <strong>579</strong> / 937</td><td>435 / <strong>694</strong> / 1,099</td><td>0.92 / <strong>1.20</strong> / 1.59</td><td class="n">1.33</td><td class="n">1.03</td><td class="n">1.23</td></tr>
+        <tr><td>shocked non-roster MM</td><td>24 / <strong>144</strong> / 357</td><td>46 / <strong>196</strong> / 480</td><td>0.97 / <strong>1.40</strong> / 2.43</td><td class="n">1.72</td><td class="n">1.08</td><td class="n">1.38</td></tr>
+        <tr><td>all</td><td>39 / <strong>214</strong> / 542</td><td>71 / <strong>282</strong> / 725</td><td>0.94 / <strong>1.33</strong> / 2.17</td><td class="n">1.59</td><td class="n">1.07</td><td class="n">1.32</td></tr>
       </tbody>
     </table>
   </div>
   <p class="tabcap" id="table-u4"><strong>Table U4 &mdash; Which side the orders go to: unwind-side share of submits and of cancels, by window and role.</strong> Paired differences are against the same wallet's BASE share. Source: as Table U1.</p>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>role</th><th class="n">submits: BASE p50</th><th>POST p50 (p25 / p75)</th><th>paired POST &minus; BASE [share &gt; 0, p]</th><th>POST1 p50, paired [share &gt; 0]</th><th>TAIL paired [share &gt; 0]</th><th>cancels: POST p50, paired [share &gt; 0]</th></tr></thead>
+      <thead><tr><th>role</th><th class="n">submits: BASE p50</th><th>POST p50 (p25 / p75)</th><th>paired POST &minus; BASE</th><th>POST1 p50, paired</th><th>TAIL paired</th><th>cancels: POST p50, paired</th></tr></thead>
       <tbody>
-        <tr class="hi"><td>catalogue wallet (roster)</td><td class="n">0.497</td><td><strong>0.508</strong> (0.490 / 0.555)</td><td>+0.010 [63%, 1e&minus;9]</td><td>0.531, +0.038 [69%]</td><td>+0.001 [52%]</td><td>0.508, +0.008 [59%]</td></tr>
-        <tr><td>shocked roster peer</td><td class="n">0.501</td><td><strong>0.504</strong> (0.490 / 0.525)</td><td>+0.004 [59%, 1e&minus;4]</td><td>0.514, +0.010 [67%]</td><td>0.000 [51%]</td><td>0.503, +0.004 [57%]</td></tr>
-        <tr><td>shocked non-roster MM</td><td class="n">0.500</td><td><strong>0.509</strong> (0.461 / 0.577)</td><td>+0.012 [58%, 2e&minus;13]</td><td>0.513, +0.016 [58%]</td><td>+0.003 [52%]</td><td>0.507, +0.011 [57%]</td></tr>
-        <tr><td>all</td><td class="n">0.500</td><td><strong>0.508</strong> (0.479 / 0.565)</td><td>+0.010 [58%, 8e&minus;22]</td><td>0.515, +0.017 [60%]</td><td>+0.002 [52%]</td><td>0.506, +0.009 [57%]</td></tr>
+        <tr class="hi"><td>catalogue wallet (roster)</td><td class="n">0.497</td><td><strong>0.508</strong> (0.490 / 0.555)</td><td>+0.010</td><td>0.531, +0.038</td><td>+0.001</td><td>0.508, +0.008</td></tr>
+        <tr><td>shocked roster peer</td><td class="n">0.501</td><td><strong>0.504</strong> (0.490 / 0.525)</td><td>+0.004</td><td>0.514, +0.010</td><td>0.000</td><td>0.503, +0.004</td></tr>
+        <tr><td>shocked non-roster MM</td><td class="n">0.500</td><td><strong>0.509</strong> (0.461 / 0.577)</td><td>+0.012</td><td>0.513, +0.016</td><td>+0.003</td><td>0.507, +0.011</td></tr>
+        <tr><td>all</td><td class="n">0.500</td><td><strong>0.508</strong> (0.479 / 0.565)</td><td>+0.010</td><td>0.515, +0.017</td><td>+0.002</td><td>0.506, +0.009</td></tr>
       </tbody>
     </table>
   </div>
@@ -416,7 +421,7 @@
     catalogue wallet barely changes (+7%), non-roster MMs +40%; the first 30 minutes are the busiest (+59%
     overall). Against the two hours just before formation the rise is 7%: most of it is already present in PRE.</li>
     <li><strong>Counts tilt to the unwind side by about one percentage point</strong> over the two hours: 50.8%
-    of submits against 50.0% in the baseline. Real (p &lt; 1e&minus;9 in every role) and small; four times larger
+    of submits against 50.0% in the baseline. Real and small; four times larger
     in the first 30 minutes for the catalogue wallet (53.1%); gone in TAIL. The pooled event-time curve
     (Figure 3a below) puts the catalogue wallet's unwind-side share of submits at 0.65 in the peak bin, 0.73 at
     +5 min, 0.60 at +20, 0.53 at +45 and 0.50 by +60 min.</li>
@@ -437,11 +442,11 @@
   <p class="tabcap" id="table-u5"><strong>Table U5 &mdash; Filled orders per 5-minute bin by side, and the unwind-side share of filled orders and of maker fill USD, BASE &rarr; POST, by role.</strong> Medians across wallets; paired columns against the same wallet's BASE. Source: <code>data/unwind_activity_5m_wide.parquet</code>.</p>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>role</th><th>filled orders / 5 min, unwind side<br>BASE &rarr; POST</th><th>shock side<br>BASE &rarr; POST</th><th>unwind-side share of filled orders<br>BASE &rarr; POST (paired p50 [share &gt; 0])</th><th class="n">share of rows above 0.5 in POST</th><th>unwind-side share of maker fill USD<br>BASE &rarr; POST (paired p50 [share &gt; 0])</th></tr></thead>
+      <thead><tr><thead><tr><th>role</th><th>filled orders / 5 min, unwind side<br>BASE &rarr; POST</th><th>shock side<br>BASE &rarr; POST</th><th>unwind-side share of filled orders<br>BASE &rarr; POST (paired median)</th><th>unwind-side share of maker fill USD<br>BASE &rarr; POST (paired median)</th></tr></thead>
       <tbody>
-        <tr class="hi"><td>catalogue wallet (roster)</td><td><strong>9.4 &rarr; 15.7</strong></td><td>9.0 &rarr; 9.3</td><td>0.51 &rarr; <strong>0.61</strong> (+0.10 [90%])</td><td class="n">91%</td><td>0.50 &rarr; <strong>0.61</strong> (+0.10 [92%])</td></tr>
-        <tr><td>shocked roster peer</td><td><strong>3.3 &rarr; 7.0</strong></td><td>3.1 &rarr; 5.4</td><td>0.51 &rarr; <strong>0.59</strong> (+0.07 [81%])</td><td class="n">81%</td><td>0.50 &rarr; <strong>0.54</strong> (+0.05 [80%])</td></tr>
-        <tr><td>shocked non-roster MM</td><td><strong>1.3 &rarr; 2.8</strong></td><td>1.2 &rarr; 2.6</td><td>0.51 &rarr; <strong>0.56</strong> (+0.04 [63%])</td><td class="n">67%</td><td>0.50 &rarr; <strong>0.55</strong> (+0.04 [65%])</td></tr>
+        <tr class="hi"><td>catalogue wallet (roster)</td><td><strong>9.4 &rarr; 15.7</strong></td><td>9.0 &rarr; 9.3</td><td>0.51 &rarr; <strong>0.61</strong> (+0.10)</td><td>0.50 &rarr; <strong>0.61</strong> (+0.10)</td></tr>
+        <tr><td>shocked roster peer</td><td><strong>3.3 &rarr; 7.0</strong></td><td>3.1 &rarr; 5.4</td><td>0.51 &rarr; <strong>0.59</strong> (+0.07)</td><td>0.50 &rarr; <strong>0.54</strong> (+0.05)</td></tr>
+        <tr><td>shocked non-roster MM</td><td><strong>1.3 &rarr; 2.8</strong></td><td>1.2 &rarr; 2.6</td><td>0.51 &rarr; <strong>0.56</strong> (+0.04)</td><td>0.50 &rarr; <strong>0.55</strong> (+0.04)</td></tr>
       </tbody>
     </table>
   </div>
@@ -496,18 +501,18 @@
   <p class="tabcap" id="table-u6"><strong>Table U6 &mdash; The roster wallets one by one (catalogue and peer rows together), POST against BASE.</strong> Rank is the wallet's lifetime-volume identity, not a performance order. Source: <code>tables/unwind_activity_by_rank.csv</code>.</p>
   <div class="table-wrap">
     <table>
-      <thead><tr><th class="n">rank</th><th class="n">rows</th><th class="n">taker rate POST &divide; BASE p50 [share &gt; 1]</th><th class="n">unwind-side share of POST taker USD p50</th><th class="n">taker share of own volume BASE &rarr; POST p50</th><th class="n">submits POST &divide; BASE p50</th><th class="n">unwind-side share of submits POST p50</th><th class="n">paired submit tilt p50 [share &gt; 0]</th></tr></thead>
+      <thead><tr><th class="n">rank</th><th class="n">rows</th><th class="n">taker rate POST &divide; BASE p50</th><th class="n">unwind-side share of POST taker USD p50</th><th class="n">taker share of own volume BASE &rarr; POST p50</th><th class="n">submits POST &divide; BASE p50</th><th class="n">unwind-side share of submits POST p50</th><th class="n">paired submit tilt p50</th></tr></thead>
       <tbody>
-        <tr><td class="n">1</td><td class="n">89</td><td class="n">0.67 [43%]</td><td class="n">0.69</td><td class="n">0.005 &rarr; 0.001</td><td class="n">1.25</td><td class="n">0.497</td><td class="n">&minus;0.001 [46%]</td></tr>
-        <tr class="hi"><td class="n">2</td><td class="n">77</td><td class="n">0.84 [43%]</td><td class="n">0.62</td><td class="n">0.043 &rarr; 0.032</td><td class="n">1.00</td><td class="n">0.547</td><td class="n">+0.047 [80%]</td></tr>
-        <tr><td class="n">3</td><td class="n">63</td><td class="n">0.62 [41%]</td><td class="n">0.60</td><td class="n">0.005 &rarr; 0.003</td><td class="n">1.13</td><td class="n">0.501</td><td class="n">&minus;0.001 [49%]</td></tr>
-        <tr><td class="n">4</td><td class="n">38</td><td class="n">0.60 [35%]</td><td class="n">0.84</td><td class="n">0.010 &rarr; 0.000</td><td class="n">1.19</td><td class="n">0.505</td><td class="n">+0.006 [58%]</td></tr>
-        <tr class="hi"><td class="n">5</td><td class="n">54</td><td class="n">1.70 [62%]</td><td class="n">0.94</td><td class="n">0.106 &rarr; 0.101</td><td class="n">1.14</td><td class="n">0.531</td><td class="n">+0.031 [76%]</td></tr>
-        <tr><td class="n">6</td><td class="n">12</td><td class="n">0.00 [14%]</td><td class="n">0.45</td><td class="n">0.003 &rarr; 0.000</td><td class="n">1.49</td><td class="n">0.487</td><td class="n">&minus;0.008 [42%]</td></tr>
-        <tr class="hi"><td class="n">7</td><td class="n">26</td><td class="n">1.18 [58%]</td><td class="n">0.53</td><td class="n">0.772 &rarr; 0.771</td><td class="n">1.02</td><td class="n">0.509</td><td class="n">+0.026 [77%]</td></tr>
-        <tr><td class="n">8</td><td class="n">8</td><td class="n">0.00 [43%]</td><td class="n">0.62</td><td class="n">0.017 &rarr; 0.000</td><td class="n">1.15</td><td class="n">0.486</td><td class="n">&minus;0.007 [25%]</td></tr>
-        <tr><td class="n">9</td><td class="n">46</td><td class="n">1.12 [57%]</td><td class="n">0.75</td><td class="n">0.013 &rarr; 0.014</td><td class="n">1.29</td><td class="n">0.502</td><td class="n">+0.002 [56%]</td></tr>
-        <tr><td class="n">10</td><td class="n">12</td><td class="n">1.22 [50%]</td><td class="n">0.56</td><td class="n">0.247 &rarr; 0.200</td><td class="n">1.05</td><td class="n">0.507</td><td class="n">+0.004 [67%]</td></tr>
+        <tr><td class="n">1</td><td class="n">89</td><td class="n">0.67</td><td class="n">0.69</td><td class="n">0.005 &rarr; 0.001</td><td class="n">1.25</td><td class="n">0.497</td><td class="n">&minus;0.001</td></tr>
+        <tr class="hi"><td class="n">2</td><td class="n">77</td><td class="n">0.84</td><td class="n">0.62</td><td class="n">0.043 &rarr; 0.032</td><td class="n">1.00</td><td class="n">0.547</td><td class="n">+0.047</td></tr>
+        <tr><td class="n">3</td><td class="n">63</td><td class="n">0.62</td><td class="n">0.60</td><td class="n">0.005 &rarr; 0.003</td><td class="n">1.13</td><td class="n">0.501</td><td class="n">&minus;0.001</td></tr>
+        <tr><td class="n">4</td><td class="n">38</td><td class="n">0.60</td><td class="n">0.84</td><td class="n">0.010 &rarr; 0.000</td><td class="n">1.19</td><td class="n">0.505</td><td class="n">+0.006</td></tr>
+        <tr class="hi"><td class="n">5</td><td class="n">54</td><td class="n">1.70</td><td class="n">0.94</td><td class="n">0.106 &rarr; 0.101</td><td class="n">1.14</td><td class="n">0.531</td><td class="n">+0.031</td></tr>
+        <tr><td class="n">6</td><td class="n">12</td><td class="n">0.00</td><td class="n">0.45</td><td class="n">0.003 &rarr; 0.000</td><td class="n">1.49</td><td class="n">0.487</td><td class="n">&minus;0.008</td></tr>
+        <tr class="hi"><td class="n">7</td><td class="n">26</td><td class="n">1.18</td><td class="n">0.53</td><td class="n">0.772 &rarr; 0.771</td><td class="n">1.02</td><td class="n">0.509</td><td class="n">+0.026</td></tr>
+        <tr><td class="n">8</td><td class="n">8</td><td class="n">0.00</td><td class="n">0.62</td><td class="n">0.017 &rarr; 0.000</td><td class="n">1.15</td><td class="n">0.486</td><td class="n">&minus;0.007</td></tr>
+        <tr><td class="n">9</td><td class="n">46</td><td class="n">1.12</td><td class="n">0.75</td><td class="n">0.013 &rarr; 0.014</td><td class="n">1.29</td><td class="n">0.502</td><td class="n">+0.002</td></tr>
+        <tr><td class="n">10</td><td class="n">12</td><td class="n">1.22</td><td class="n">0.56</td><td class="n">0.247 &rarr; 0.200</td><td class="n">1.05</td><td class="n">0.507</td><td class="n">+0.004</td></tr>
       </tbody>
     </table>
   </div>

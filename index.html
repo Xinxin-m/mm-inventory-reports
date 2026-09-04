@@ -151,18 +151,23 @@
 <a href="exp8-report.html#b-final" class="sub">B2. Final parameters</a>
 <a href="exp8-report.html#b-v3" class="sub">B3. Velocity rule (v3)</a>
 <a href="exp8-report.html#cause">C. What causes a shock</a>
+<a href="exp8-report.html#c-flow181" class="sub">C, all 181 shocks: one-sided?</a>
 <a href="exp8-report.html#population">D. Who else was there</a>
+<a href="exp8-report.html#d-absorb181" class="sub">D, how wide is the absorbing side?</a>
 <a href="exp8-report.html#d-side" class="sub">D1. Same side?</a>
 <a href="exp8-report.html#d-each" class="sub">D2. Trading each other</a>
+<a href="exp8-report.html#d-cp181" class="sub">D2, all 181: who is on the other side</a>
 <a href="exp8-report.html#d-axis" class="sub">D3. Alone / few / broad</a>
+<a href="exp8-report.html#d-pop181" class="sub">D3, against all active MMs</a>
 <a href="exp8-report.html#d-take" class="sub">D4. Take or quote out? (all shocked MMs)</a>
 <a href="exp8-report.html#unwind">E. Getting out</a>
 <a href="exp8-report.html#e-path" class="sub">E1. The path</a>
 <a href="exp8-report.html#e-price" class="sub">E2. The price</a>
 <a href="exp8-report.html#e-chain" class="sub">E3. Archetypes → outcomes</a>
+<a href="exp8-report.html#e-drivers" class="sub">E4. What decides recovery speed</a>
 <a href="exp8-report.html#atlas">F. Shock atlas</a>
 <a href="exp8-report.html#quoting">G. Book response</a>
-<a href="exp8-report.html#g-evolution" class="sub">G, 5-min grid: Figure 18</a>
+<a href="exp8-report.html#g-evolution" class="sub">G, 5-min grid: Figure 20</a>
 <a href="exp8-report.html#limits">H. Limits</a>
 <a href="exp8-report.html#gallery">I. Figure gallery</a>
 <a href="exp8-report.html#g-audit" class="sub">I1. A sample of shocks</a>
@@ -220,15 +225,15 @@
         <td>Complete. Inventory is reported as exposure |P| in kUSD so long and short bins do not cancel; the equity panel is cross-margin perp account value, ten roster MMs, one value per wallet-day, 2025-09-27 onward.</td></tr>
       <tr><td>4</td><td>Do shocks move equity or margin? What share of shocks cause a large equity drop?</td>
         <td><span class="st done">DONE</span> at hours resolution</td>
-        <td><a href="exp8-report.html#atlas">&sect;F Shock atlas</a> &middot; <a href="exp8-report.html#table-21">Table 21</a> &middot; <a href="exp8-report.html#around-shock">Table 5</a></td>
+        <td><a href="exp8-report.html#atlas">&sect;F Shock atlas</a> &middot; <a href="exp8-report.html#table-33">Table 33</a> &middot; <a href="exp8-report.html#around-shock">Table 5</a></td>
         <td>Of 138 covered shocks, 20.3% are followed by an equity drop worse than &minus;1% and 7.2% worse than &minus;5% (17.4% / 4.5% without 2025-10-10). Maintenance over equity rises by more than 2 pp in 13.1% and stays below 0.20 in 137 of 140. Snapshots are ~2 h apart, so this is an hours claim, never a 5-minute one. <strong>Missing:</strong> the link to Miao&rsquo;s equity and portfolio shocks; no shared event grain exists yet.</td></tr>
       <tr><td>5</td><td>The observed chain: price drops, takers sell, MM inventory rises, MMs unwind with limit orders.</td>
         <td><span class="st done">DONE</span> (confirmed on 181)</td>
-        <td><a href="exp8-report.html#cause">&sect;C</a> and <a href="exp8-report.html#table-10">Table 10</a> (flow) &middot; <a href="exp8-report.html#atlas">&sect;F</a> (price against the inventory) &middot; <a href="exp8-report.html#e-price">&sect;E2</a> and <a href="exp8-report.html#table-18">Table 18</a> (post-only unwind)</td>
+        <td><a href="exp8-report.html#cause">&sect;C</a> and <a href="exp8-report.html#table-10">Table 10</a> (flow) &middot; <a href="exp8-report.html#atlas">&sect;F</a> (price against the inventory) &middot; <a href="exp8-report.html#e-price">&sect;E2</a> and <a href="exp8-report.html#table-27">Table 27</a> (post-only unwind)</td>
         <td>Hit-side taker volume 5.3&times; its 24-hour rate, imbalance +0.44; the mid fell in 115 of 125 up shocks, median formation move &minus;85 bps; unwinding is 98% post-only at the median for the roster ten. Post-only unwinding is a property of these ten, not of shocked MMs generally (&sect;E2). <strong>Extended 2026-09-04 to all 1,964 shocked-MM rows</strong> (<a href="exp8-report.html#d-take">&sect;D4</a>, <a href="exp8-unwind-activity.html">full page</a>): the typical shocked MM of any role does not take more than its own normal after the peak; what the roster takes is two thirds on the unwind side; order counts tilt only one point; the unwind is carried by reducing-side filled orders (unwind-side share 0.51 &rarr; 0.61, above one half in 91% of catalogue rows).</td></tr>
       <tr><td>6</td><td>After a shock, measure quoting, not fills: net posted and net withdrawn liquidity at and away from the touch, 5-minute steps for 2 hours, against four predicted signs.</td>
         <td><span class="st done">DONE</span> on all 181 shocks (published 2026-09-04)</td>
-        <td><a href="exp8-report.html#quoting">&sect;G Book response</a> &middot; <a href="exp8-report.html#table-22">Table 22</a> (before / during / after) &middot; <a href="exp8-report.html#table-23">Table 23</a> (the four predicted signs) &middot; Figures 14&ndash;17</td>
+        <td><a href="exp8-report.html#quoting">&sect;G Book response</a> &middot; <a href="exp8-report.html#table-34">Table 34</a> (before / during / after) &middot; <a href="exp8-report.html#table-35">Table 35</a> (the four predicted signs) &middot; Figures 14&ndash;17</td>
         <td>The shocked MM moves <em>where</em> it quotes, not <em>how much</em>: the accumulating-side best quote backs off by 1.36 bps in 81% of shocks, depth stays balanced. Sign 1 (post more at the unwind touch) confirms, 70% of 180. Sign 2 (withdraw more from the accumulating touch) comes out opposite because these desks re-quote every ~1.3 s, so cancels travel with posts. Sign 3 (post less away) fails at 25, 50 and 100 bps. Sign 4 (withdrawal away &ge; 0) confirms. Grain is 1 minute, not 5, because the median formation is 20 minutes. Two design choices remain open: the touch band and where &ldquo;away&rdquo; starts.</td></tr>
     </tbody>
   </table></div>
@@ -243,11 +248,11 @@
         <td>The report gained a what-is-new list, numbered tables with captions, and an appendix. It is still ordered by history (sections A&ndash;J) and still mixes six samples: 181 shocks, three one-minute episodes, 57 wallet-episodes at 3&sigma;, 10 pilot shocks, 99&ndash;151 equity-covered subsets, and the 245-shock v3 catalogue. The rewrite into a reader document around five threads has not started.</td></tr>
       <tr><td>2(i)</td><td>One shock taxonomy: inventory, price, equity and portfolio shocks and how they connect (inventory shock + adverse price = equity stress?); idiosyncratic against systemic shocks.</td>
         <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-report.html#atlas">&sect;F</a> (inventory, price and equity z on one grid, Figures 12&ndash;13) &middot; <a href="exp8-report.html#d-axis">&sect;D3</a> and <a href="exp8-report.html#table-13">Table 13</a> (alone / few / broad), Figure 7</td>
+        <td><a href="exp8-report.html#atlas">&sect;F</a> (inventory, price and equity z on one grid, Figures 15&ndash;16) &middot; <a href="exp8-report.html#d-axis">&sect;D3</a> and <a href="exp8-report.html#table-19">Table 19</a> (alone / few / broad), Figure 8</td>
         <td>In the report: inventory and price shock sizes are uncorrelated (Spearman 0.00) yet 54% of formations hold a &ge;3&sigma; price move; BROAD shocks are price events (75% vs 32% for ALONE). <strong>Not yet in the report</strong>, only in <code>Exp8/analysis.md</code>: &sect;19 measures concentration against all active MMs (median 78, not the roster 7), finds the roster cutoffs dead (focal share median 0.073), and gets a monotone equity gradient (34.8 / 21.4 / 6.0% lose &gt;1%) that removes the report&rsquo;s &ldquo;FEW carries the equity tail&rdquo;; &sect;18 shows recovery speed is set by wallet identity and volatility, not absorption share; &sect;20 gives the full-catalogue flow split (64% one-sided). No shared grain with Miao yet.</td></tr>
       <tr><td>2(ii)</td><td>MM archetypes by initial inventory and mean-reversion speed.</td>
         <td><span class="st done">DONE</span> as a proposal</td>
-        <td><a href="exp8-report.html#e-chain">&sect;E3</a> &middot; <a href="exp8-report.html#table-20">Table 20</a> &middot; Figure 11</td>
+        <td><a href="exp8-report.html#e-chain">&sect;E3</a> &middot; <a href="exp8-report.html#table-29">Table 29</a> &middot; Figure 13</td>
         <td>Nine wallets. Book size and deviation half-life (3 min to 1,162 min) move together and predict reversion (&rho; &minus;0.93 with half-back-by-60-min); post-only against crossing is a second, nearly independent axis. Naming the axes is left to the author.</td></tr>
       <tr><td>2(iii)</td><td>Archetype &rarr; actions (limit vs market, refill speed, size) &rarr; outcomes (reversion, loss, PnL, time back to normal liquidity).</td>
         <td><span class="st partial">PARTIAL</span></td>
@@ -262,7 +267,7 @@
 
   <h2 id="exp9">Where the new Exp9 quoting results are</h2>
   <ul>
-    <li><strong>In this site:</strong> report <a href="exp8-report.html#quoting">&sect;G</a>, with <a href="exp8-report.html#table-22">Table 22</a>, <a href="exp8-report.html#table-23">Table 23</a>, the away-cutoff sweep at 25 / 50 / 100 bps, the subset splits (up / down, revert / step / partial, alone / few / broad), reaction latency and refill, Figures 14&ndash;17, and the validation gates in a toggle.</li>
+    <li><strong>In this site:</strong> report <a href="exp8-report.html#quoting">&sect;G</a>, with <a href="exp8-report.html#table-34">Table 34</a>, <a href="exp8-report.html#table-35">Table 35</a>, the away-cutoff sweep at 25 / 50 / 100 bps, the subset splits (up / down, revert / step / partial, alone / few / broad), reaction latency and refill, Figures 14&ndash;17, and the validation gates in a toggle.</li>
     <li><strong>In the repository</strong> (not published here): <code>experiments/Exp9_post_shock_quoting/analysis.md</code> &sect;2&ndash;&sect;9 is the full record, Appendix A the superseded 10-shock pilot; tables in <code>Exp9/tables/</code> (<code>pre_vs_post_windows.csv</code>, <code>pre_vs_post_windows_by_subset.csv</code>, <code>olga_four_cells.csv</code>, <code>far_cutoff_sensitivity.csv</code>, <code>reaction_latency.csv</code>, <code>reaction_by_wallet.csv</code>, <code>validation.csv</code>); figures in <code>Exp9/figures/</code>; setup, run ledger and validation ledger in <code>Exp9/README.md</code>. Build: Slurm 17261556 (56 min, 181 of 181 shocks); tables and figures: 17262226.</li>
     <li><strong>Two pilot readings did not survive the full run</strong> and are superseded in &sect;G: the unwind side and the accumulating side no longer move by similar amounts (the accumulating-side move is seven times larger), and the third predicted sign is absent at every cutoff rather than weakly present at 25 bps.</li>
   </ul>
