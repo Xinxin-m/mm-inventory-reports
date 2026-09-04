@@ -33,6 +33,10 @@
   h2 { margin-top:54px; padding-bottom:6px; border-bottom:1px solid var(--line); }
   h3 { margin-top:34px; font-size:18px; }
   h4 { margin:28px 0 6px; font-size:15.5px; }
+  .eqbox { border:1px solid var(--line); border-left:5px solid var(--accent);
+    padding:14px 18px; margin:14px 0; background:var(--surface); border-radius:6px; }
+  .eqbox .eq { font-size:15px; margin:9px 0; font-variant-numeric:tabular-nums; }
+  .eqbox .eqnote { display:block; color:var(--muted); font-size:12.5px; margin:2px 0 0 22px; }
   .lede { color:var(--muted); max-width:74ch; }
   .toolbar { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; }
   button { padding:8px 11px; color:var(--text); background:var(--surface);
@@ -98,6 +102,7 @@
     <a href="#brief-bridge" class="sub">Why two catalogues</a>
     <a href="#brief-limits" class="sub">What neither establishes</a>
     <a href="#definitions">A. Definitions</a>
+    <a href="#a-stats" class="sub">A1. Descriptive statistics</a>
     <a href="#detector">B. What a shock is</a>
     <a href="#b-tried" class="sub">B1. What we tried</a>
     <a href="#b-final" class="sub">B2. Final parameters</a>
@@ -198,8 +203,8 @@
           rates are comparable.</td></tr>
         <tr><td>What is measured on</td>
           <td colspan="2">The wallet's HYPE position in five-minute bins, rebuilt from its
-          own fills, minus its trailing six-hour rolling median — and divided by how far
-          that wallet's position normally strays. <strong>Every desk is judged against
+          own fills, minus its trailing six-hour rolling median — divided by the wallet's
+          own trailing robust scale &sigma; (exact equations directly below this table). <strong>Every desk is judged against
           itself.</strong></td></tr>
         <tr class="hi"><td>What counts as an event</td>
           <td><strong>Spike</strong>: ≥8× the wallet's own normal deviation, ≥$100k, peak
@@ -236,6 +241,53 @@
       </tbody>
     </table>
   </div>
+
+  <h4>The exact construction</h4>
+  <div class="eqbox">
+    <p>For one wallet at five-minute bin <i>t</i> (all quantities are per-wallet), with
+    position <i>P<sub>t</sub></i> in HYPE coins and mid price <i>m<sub>t</sub></i>:</p>
+    <p class="eq">dev<sub>t</sub> &nbsp;=&nbsp; P<sub>t</sub> &minus; median(P<sub>t&minus;72</sub>, &hellip;, P<sub>t&minus;1</sub>)
+      <span class="eqnote">trailing 6-hour median: 72 bins, &ge;36 valid — centers the position at the wallet's own current level</span></p>
+    <p class="eq">&sigma;<sup>7d</sup><sub>t</sub> &nbsp;=&nbsp; 1.4826 &times; median( |dev<sub>s</sub>| : <i>s</i> an active-day bin in the trailing 7 days )
+      <span class="eqnote">2,016 bins, &ge;288 valid — a robust (MAD) spread of the deviation; sets the unit</span></p>
+    <p class="eq">&sigma;<sub>t</sub> &nbsp;=&nbsp; max(&nbsp;&sigma;<sup>7d</sup><sub>t</sub>,&nbsp;&nbsp;0.02 &times; p95(|P|)<sub>30d</sub>,&nbsp;&nbsp;$12,500 / m<sub>t</sub>&nbsp;)
+      <span class="eqnote">p95 of |position| over the trailing 30 days, lagged one day so it never sees the shock</span></p>
+    <p class="eq">z<sub>t</sub> &nbsp;=&nbsp; dev<sub>t</sub> / &sigma;<sub>t</sub>&nbsp;, &nbsp;&nbsp;shock candidate when |z<sub>t</sub>| &ge; 6</p>
+    <p>So z is a <strong>robust z-score</strong> — median/MAD, not mean/standard-deviation — with
+    two floors on the denominator: the p95 term keeps a wallet that has been unusually flat for a
+    week from generating shocks out of noise, and the $12,500 floor does the same for small books.
+    The <strong>two windows do different jobs and coexist inside the same z</strong>: the 6-hour
+    median <em>centers</em> (what is this wallet's level right now), the 7-day MAD <em>scales</em>
+    (what is a normal-sized wobble for it). Neither replaced the other at any point. A 12-hour
+    centering window is run alongside as a robustness variant (132 shocks vs 181; section B).
+    Exp5 differs only in using one full-sample scale per wallet instead of the trailing
+    &sigma;<sup>7d</sup><sub>t</sub>.</p>
+  </div>
+
+  <h4>Descriptive statistics of the core variables</h4>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
+<tr><td>A&nbsp; Inventory level (kUSD)</td><td class="n">919,081</td><td class="n">-1,657</td><td class="n">4,283</td><td class="n">-25,730</td><td class="n">-732</td><td class="n">-35</td><td class="n">25</td><td class="n">10,685</td></tr>
+<tr><td>B&nbsp; Standardized inventory z (&sigma;)</td><td class="n">920,407</td><td class="n">0.008</td><td class="n">1.690</td><td class="n">-60.943</td><td class="n">-0.614</td><td class="n">0.000</td><td class="n">0.626</td><td class="n">86.254</td></tr>
+<tr><td>C&nbsp; Shock |deviation| at peak (kUSD)</td><td class="n">181</td><td class="n">1,169</td><td class="n">1,432</td><td class="n">103</td><td class="n">249</td><td class="n">732</td><td class="n">1,397</td><td class="n">9,076</td></tr>
+<tr><td>C&nbsp; Shock |z| at peak (&sigma;)</td><td class="n">181</td><td class="n">9.980</td><td class="n">8.527</td><td class="n">6.011</td><td class="n">6.652</td><td class="n">7.657</td><td class="n">10.298</td><td class="n">86.254</td></tr>
+<tr><td>D&nbsp; Taker imbalance / 5-min bin</td><td class="n">132,333</td><td class="n">0.013</td><td class="n">0.437</td><td class="n">-0.995</td><td class="n">-0.334</td><td class="n">0.018</td><td class="n">0.360</td><td class="n">0.998</td></tr>
+<tr><td>E&nbsp; MM account equity (kUSD)</td><td class="n">2,641</td><td class="n">9,138</td><td class="n">12,476</td><td class="n">0</td><td class="n">1,419</td><td class="n">3,563</td><td class="n">13,274</td><td class="n">93,687</td></tr>
+</tbody></table></div>
+  <ul class="tight">
+    <li><strong>A</strong> — position valued at the bin-open mid; active-day bins only
+      (919,081 wallet-bins across the 3,198 wallet-days). Per-wallet panels in
+      <a href="#a-stats">A1</a>.</li>
+    <li><strong>B</strong> — dev<sub>t</sub>/&sigma;<sub>t</sub> exactly as defined above,
+      floors included: the same z the detector thresholds at 6.</li>
+    <li><strong>C</strong> — the 181 catalogued shocks, measured at each shock's peak.</li>
+    <li><strong>D</strong> — whole-market taker imbalance (buy&minus;sell)/(buy+sell) per
+      5-minute bin, 132,333 bins.</li>
+    <li><strong>E</strong> — exchange-reported account value, last snapshot per UTC day.
+      <strong>Coverage 2025-09-27 &rarr; 2026-06-30 only</strong> (99 of the 181 shocks fall
+      inside it), snapshot cadence ~2&nbsp;h in 2025 degrading to ~5.5&nbsp;h by mid-2026.
+      Zero-value snapshots are exchange-reported (emptied accounts), kept as recorded.</li>
+  </ul>
   <p>Both catalogues are frozen, and both precision figures are <strong>counts of human
   verdicts on rendered panels</strong>, not estimates from a model. That is the reason to
   trust the event lists at all, and it is worth one sentence in the talk.</p>
@@ -615,6 +667,62 @@
     <dd>Identity only: rank 1 is the highest-lifetime-volume MM of the ten. Not a
     performance or within-event ranking.</dd>
   </dl>
+
+  <h3 id="a-stats">A1. Descriptive statistics per wallet</h3>
+  <p>The pooled table is in the overview above. Per-wallet panels here; the full long-form
+  table (every panel, pooled and per wallet) is
+  <a href="tables/desc_stats.csv"><code>tables/desc_stats.csv</code></a>, built by
+  <code>code/desc_stats.py</code>. Wallets are the roster ranks (identity, not performance).</p>
+  <details>
+    <summary>Panel A — inventory level per wallet, kUSD (active-day 5-min bins)</summary>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
+<tr><td>MM01</td><td class="n">131,173</td><td class="n">118</td><td class="n">1,112</td><td class="n">-7,230</td><td class="n">-330</td><td class="n">-82</td><td class="n">215</td><td class="n">7,427</td></tr>
+<tr><td>MM02</td><td class="n">110,097</td><td class="n">2</td><td class="n">126</td><td class="n">-1,614</td><td class="n">-34</td><td class="n">-2</td><td class="n">28</td><td class="n">2,026</td></tr>
+<tr><td>MM03</td><td class="n">83,507</td><td class="n">20</td><td class="n">115</td><td class="n">-499</td><td class="n">-36</td><td class="n">0</td><td class="n">45</td><td class="n">518</td></tr>
+<tr><td>MM04</td><td class="n">67,634</td><td class="n">23</td><td class="n">190</td><td class="n">-494</td><td class="n">-98</td><td class="n">3</td><td class="n">156</td><td class="n">515</td></tr>
+<tr><td>MM05</td><td class="n">94,619</td><td class="n">-972</td><td class="n">1,324</td><td class="n">-6,806</td><td class="n">-1,219</td><td class="n">-612</td><td class="n">-144</td><td class="n">2,186</td></tr>
+<tr><td>MM06</td><td class="n">113,844</td><td class="n">-1,520</td><td class="n">3,025</td><td class="n">-11,191</td><td class="n">-3,062</td><td class="n">-486</td><td class="n">118</td><td class="n">10,685</td></tr>
+<tr><td>MM07</td><td class="n">49,636</td><td class="n">5</td><td class="n">75</td><td class="n">-941</td><td class="n">-25</td><td class="n">0</td><td class="n">28</td><td class="n">977</td></tr>
+<tr><td>MM08</td><td class="n">131,013</td><td class="n">-9,763</td><td class="n">6,278</td><td class="n">-25,730</td><td class="n">-14,906</td><td class="n">-10,059</td><td class="n">-3,730</td><td class="n">63</td></tr>
+<tr><td>MM09</td><td class="n">70,262</td><td class="n">23</td><td class="n">141</td><td class="n">-423</td><td class="n">-52</td><td class="n">6</td><td class="n">83</td><td class="n">934</td></tr>
+<tr><td>MM10</td><td class="n">67,296</td><td class="n">1</td><td class="n">14</td><td class="n">-150</td><td class="n">-3</td><td class="n">0</td><td class="n">4</td><td class="n">174</td></tr>
+</tbody></table></div>
+  </details>
+  <details>
+    <summary>Panel B — standardized inventory z per wallet (&sigma; units)</summary>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
+<tr><td>MM01</td><td class="n">131,581</td><td class="n">0.049</td><td class="n">1.683</td><td class="n">-17.800</td><td class="n">-0.667</td><td class="n">-0.007</td><td class="n">0.650</td><td class="n">27.135</td></tr>
+<tr><td>MM02</td><td class="n">110,269</td><td class="n">0.063</td><td class="n">2.060</td><td class="n">-60.943</td><td class="n">-0.652</td><td class="n">0.000</td><td class="n">0.693</td><td class="n">86.254</td></tr>
+<tr><td>MM03</td><td class="n">83,520</td><td class="n">-0.003</td><td class="n">1.599</td><td class="n">-36.467</td><td class="n">-0.682</td><td class="n">0.000</td><td class="n">0.676</td><td class="n">27.315</td></tr>
+<tr><td>MM04</td><td class="n">67,605</td><td class="n">0.008</td><td class="n">1.520</td><td class="n">-20.007</td><td class="n">-0.687</td><td class="n">0.000</td><td class="n">0.690</td><td class="n">19.650</td></tr>
+<tr><td>MM05</td><td class="n">94,834</td><td class="n">-0.017</td><td class="n">1.751</td><td class="n">-28.383</td><td class="n">-0.650</td><td class="n">-0.005</td><td class="n">0.672</td><td class="n">22.399</td></tr>
+<tr><td>MM06</td><td class="n">114,013</td><td class="n">-0.012</td><td class="n">1.809</td><td class="n">-48.461</td><td class="n">-0.668</td><td class="n">0.000</td><td class="n">0.658</td><td class="n">15.580</td></tr>
+<tr><td>MM07</td><td class="n">49,803</td><td class="n">0.005</td><td class="n">1.324</td><td class="n">-12.044</td><td class="n">-0.681</td><td class="n">-0.000</td><td class="n">0.680</td><td class="n">10.209</td></tr>
+<tr><td>MM08</td><td class="n">131,005</td><td class="n">-0.048</td><td class="n">1.668</td><td class="n">-41.936</td><td class="n">-0.503</td><td class="n">0.013</td><td class="n">0.556</td><td class="n">11.399</td></tr>
+<tr><td>MM09</td><td class="n">70,272</td><td class="n">0.024</td><td class="n">1.827</td><td class="n">-30.200</td><td class="n">-0.676</td><td class="n">0.000</td><td class="n">0.695</td><td class="n">57.755</td></tr>
+<tr><td>MM10</td><td class="n">67,505</td><td class="n">0.011</td><td class="n">1.001</td><td class="n">-8.317</td><td class="n">-0.294</td><td class="n">0.000</td><td class="n">0.298</td><td class="n">9.595</td></tr>
+</tbody></table></div>
+  </details>
+  <details>
+    <summary>Panel E — account equity per wallet, kUSD (2025-09-27 onward)</summary>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
+<tr><td>MM01</td><td class="n">277</td><td class="n">13,498</td><td class="n">5,483</td><td class="n">5,906</td><td class="n">6,503</td><td class="n">16,004</td><td class="n">17,008</td><td class="n">25,791</td></tr>
+<tr><td>MM02</td><td class="n">271</td><td class="n">2,479</td><td class="n">3,426</td><td class="n">0</td><td class="n">1,441</td><td class="n">1,789</td><td class="n">2,108</td><td class="n">19,169</td></tr>
+<tr><td>MM03</td><td class="n">271</td><td class="n">3,461</td><td class="n">572</td><td class="n">0</td><td class="n">3,062</td><td class="n">3,551</td><td class="n">3,774</td><td class="n">4,741</td></tr>
+<tr><td>MM04</td><td class="n">271</td><td class="n">7,773</td><td class="n">2,052</td><td class="n">2,949</td><td class="n">6,459</td><td class="n">7,796</td><td class="n">9,680</td><td class="n">10,744</td></tr>
+<tr><td>MM05</td><td class="n">276</td><td class="n">1,326</td><td class="n">970</td><td class="n">191</td><td class="n">681</td><td class="n">1,208</td><td class="n">1,607</td><td class="n">5,051</td></tr>
+<tr><td>MM06</td><td class="n">268</td><td class="n">17,775</td><td class="n">6,367</td><td class="n">1,003</td><td class="n">13,499</td><td class="n">16,561</td><td class="n">21,504</td><td class="n">37,375</td></tr>
+<tr><td>MM07</td><td class="n">195</td><td class="n">774</td><td class="n">482</td><td class="n">400</td><td class="n">475</td><td class="n">524</td><td class="n">703</td><td class="n">2,039</td></tr>
+<tr><td>MM08</td><td class="n">271</td><td class="n">38,537</td><td class="n">12,871</td><td class="n">21,650</td><td class="n">29,107</td><td class="n">33,546</td><td class="n">43,882</td><td class="n">93,687</td></tr>
+<tr><td>MM09</td><td class="n">270</td><td class="n">3,394</td><td class="n">990</td><td class="n">0</td><td class="n">2,939</td><td class="n">3,332</td><td class="n">3,658</td><td class="n">7,426</td></tr>
+<tr><td>MM10</td><td class="n">271</td><td class="n">142</td><td class="n">100</td><td class="n">49</td><td class="n">87</td><td class="n">118</td><td class="n">147</td><td class="n">466</td></tr>
+</tbody></table></div>
+    <p>MM08's equity is an order of magnitude above the median desk; it is also the
+    persistent-short desk of Panel A. Rank is identity, not size of book.</p>
+  </details>
 </section>
 
 <section id="detector">

@@ -33,6 +33,10 @@
   h2 { margin-top:54px; padding-bottom:6px; border-bottom:1px solid var(--line); }
   h3 { margin-top:34px; font-size:18px; }
   h4 { margin:28px 0 6px; font-size:15.5px; }
+  .eqbox { border:1px solid var(--line); border-left:5px solid var(--accent);
+    padding:14px 18px; margin:14px 0; background:var(--surface); border-radius:6px; }
+  .eqbox .eq { font-size:15px; margin:9px 0; font-variant-numeric:tabular-nums; }
+  .eqbox .eqnote { display:block; color:var(--muted); font-size:12.5px; margin:2px 0 0 22px; }
   .lede { color:var(--muted); max-width:74ch; }
   .toolbar { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; }
   button { padding:8px 11px; color:var(--text); background:var(--surface);
@@ -162,8 +166,8 @@
           rates are comparable.</td></tr>
         <tr><td>What is measured on</td>
           <td colspan="2">The wallet's HYPE position in five-minute bins, rebuilt from its
-          own fills, minus its trailing six-hour rolling median — and divided by how far
-          that wallet's position normally strays. <strong>Every desk is judged against
+          own fills, minus its trailing six-hour rolling median — divided by the wallet's
+          own trailing robust scale &sigma; (exact equations directly below this table). <strong>Every desk is judged against
           itself.</strong></td></tr>
         <tr class="hi"><td>What counts as an event</td>
           <td><strong>Spike</strong>: ≥8× the wallet's own normal deviation, ≥$100k, peak
@@ -200,6 +204,53 @@
       </tbody>
     </table>
   </div>
+
+  <h4>The exact construction</h4>
+  <div class="eqbox">
+    <p>For one wallet at five-minute bin <i>t</i> (all quantities are per-wallet), with
+    position <i>P<sub>t</sub></i> in HYPE coins and mid price <i>m<sub>t</sub></i>:</p>
+    <p class="eq">dev<sub>t</sub> &nbsp;=&nbsp; P<sub>t</sub> &minus; median(P<sub>t&minus;72</sub>, &hellip;, P<sub>t&minus;1</sub>)
+      <span class="eqnote">trailing 6-hour median: 72 bins, &ge;36 valid — centers the position at the wallet's own current level</span></p>
+    <p class="eq">&sigma;<sup>7d</sup><sub>t</sub> &nbsp;=&nbsp; 1.4826 &times; median( |dev<sub>s</sub>| : <i>s</i> an active-day bin in the trailing 7 days )
+      <span class="eqnote">2,016 bins, &ge;288 valid — a robust (MAD) spread of the deviation; sets the unit</span></p>
+    <p class="eq">&sigma;<sub>t</sub> &nbsp;=&nbsp; max(&nbsp;&sigma;<sup>7d</sup><sub>t</sub>,&nbsp;&nbsp;0.02 &times; p95(|P|)<sub>30d</sub>,&nbsp;&nbsp;$12,500 / m<sub>t</sub>&nbsp;)
+      <span class="eqnote">p95 of |position| over the trailing 30 days, lagged one day so it never sees the shock</span></p>
+    <p class="eq">z<sub>t</sub> &nbsp;=&nbsp; dev<sub>t</sub> / &sigma;<sub>t</sub>&nbsp;, &nbsp;&nbsp;shock candidate when |z<sub>t</sub>| &ge; 6</p>
+    <p>So z is a <strong>robust z-score</strong> — median/MAD, not mean/standard-deviation — with
+    two floors on the denominator: the p95 term keeps a wallet that has been unusually flat for a
+    week from generating shocks out of noise, and the $12,500 floor does the same for small books.
+    The <strong>two windows do different jobs and coexist inside the same z</strong>: the 6-hour
+    median <em>centers</em> (what is this wallet's level right now), the 7-day MAD <em>scales</em>
+    (what is a normal-sized wobble for it). Neither replaced the other at any point. A 12-hour
+    centering window is run alongside as a robustness variant (132 shocks vs 181; section B).
+    Exp5 differs only in using one full-sample scale per wallet instead of the trailing
+    &sigma;<sup>7d</sup><sub>t</sub>.</p>
+  </div>
+
+  <h4>Descriptive statistics of the core variables</h4>
+<div class="table-wrap"><table>
+<thead><tr><th></th><th class="n">N</th><th class="n">mean</th><th class="n">std</th><th class="n">min</th><th class="n">p25</th><th class="n">median</th><th class="n">p75</th><th class="n">max</th></tr></thead><tbody>
+<tr><td>A&nbsp; Inventory level (kUSD)</td><td class="n">919,081</td><td class="n">-1,657</td><td class="n">4,283</td><td class="n">-25,730</td><td class="n">-732</td><td class="n">-35</td><td class="n">25</td><td class="n">10,685</td></tr>
+<tr><td>B&nbsp; Standardized inventory z (&sigma;)</td><td class="n">920,407</td><td class="n">0.008</td><td class="n">1.690</td><td class="n">-60.943</td><td class="n">-0.614</td><td class="n">0.000</td><td class="n">0.626</td><td class="n">86.254</td></tr>
+<tr><td>C&nbsp; Shock |deviation| at peak (kUSD)</td><td class="n">181</td><td class="n">1,169</td><td class="n">1,432</td><td class="n">103</td><td class="n">249</td><td class="n">732</td><td class="n">1,397</td><td class="n">9,076</td></tr>
+<tr><td>C&nbsp; Shock |z| at peak (&sigma;)</td><td class="n">181</td><td class="n">9.980</td><td class="n">8.527</td><td class="n">6.011</td><td class="n">6.652</td><td class="n">7.657</td><td class="n">10.298</td><td class="n">86.254</td></tr>
+<tr><td>D&nbsp; Taker imbalance / 5-min bin</td><td class="n">132,333</td><td class="n">0.013</td><td class="n">0.437</td><td class="n">-0.995</td><td class="n">-0.334</td><td class="n">0.018</td><td class="n">0.360</td><td class="n">0.998</td></tr>
+<tr><td>E&nbsp; MM account equity (kUSD)</td><td class="n">2,641</td><td class="n">9,138</td><td class="n">12,476</td><td class="n">0</td><td class="n">1,419</td><td class="n">3,563</td><td class="n">13,274</td><td class="n">93,687</td></tr>
+</tbody></table></div>
+  <ul class="tight">
+    <li><strong>A</strong> — position valued at the bin-open mid; active-day bins only
+      (919,081 wallet-bins across the 3,198 wallet-days). Per-wallet panels in
+      A1.</li>
+    <li><strong>B</strong> — dev<sub>t</sub>/&sigma;<sub>t</sub> exactly as defined above,
+      floors included: the same z the detector thresholds at 6.</li>
+    <li><strong>C</strong> — the 181 catalogued shocks, measured at each shock's peak.</li>
+    <li><strong>D</strong> — whole-market taker imbalance (buy&minus;sell)/(buy+sell) per
+      5-minute bin, 132,333 bins.</li>
+    <li><strong>E</strong> — exchange-reported account value, last snapshot per UTC day.
+      <strong>Coverage 2025-09-27 &rarr; 2026-06-30 only</strong> (99 of the 181 shocks fall
+      inside it), snapshot cadence ~2&nbsp;h in 2025 degrading to ~5.5&nbsp;h by mid-2026.
+      Zero-value snapshots are exchange-reported (emptied accounts), kept as recorded.</li>
+  </ul>
   <p>Both catalogues are frozen, and both precision figures are <strong>counts of human
   verdicts on rendered panels</strong>, not estimates from a model. That is the reason to
   trust the event lists at all, and it is worth one sentence in the talk.</p>
