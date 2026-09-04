@@ -1393,20 +1393,30 @@
 <td class="n">20</td><td class="n">44</td><td class="n">57</td><td class="n">74</td><td class="n">85</td></tr>
 </tbody></table></div>
 
-  <ul class="tight">
-    <li><strong>Effective number of MMs</strong> &mdash; how many equal-sized MMs would give
-    the same concentration. One wallet taking everything gives 1; ten wallets at a tenth each
-    give 10. The first two rows are the same wallets and the same fills, so the drop from 11.3
-    to 7.4 is round-tripping and nothing else. The second row is the lower one in
-    <strong>93%</strong> of shocks.</li>
-    <li><strong>HYPE kept per 100 bought</strong> &mdash; what the absorbers still hold at the
-    peak, over what they bought on the shock side in the same window. In the median shock they
-    buy <strong>248,700 HYPE</strong> and are still holding <strong>145,100</strong>.</li>
-    <li><strong>Whose figures these are.</strong> The peak is the <em>shocked</em> wallet's own
-    inventory extremum, so its own ratio is high by construction and is not reported here. For
-    the other absorbers &mdash; a median of 71 per shock &mdash; the peak is an ordinary moment
-    in their day, and their figures carry no such bias.</li>
-  </ul>
+<!-- p0904f:eqbox:start -->
+  <div class="eqbox">
+    <p>One shock. HYPE, summed per wallet <i>i</i> over the formation window
+    [t<sub>0</sub>, t<sub>1</sub>], shock side positive:</p>
+    <p class="eq">M<sub>i</sub> = bought on a resting quote &nbsp;&middot;&nbsp;
+      A<sub>i</sub> = bought, resting or crossing &nbsp;&middot;&nbsp;
+      D<sub>i</sub> = sold back &nbsp;&middot;&nbsp;
+      N<sub>i</sub> = A<sub>i</sub> &minus; D<sub>i</sub>
+      <span class="eqnote">absorbers P = { i : M<sub>i</sub> &gt; 0 }, median 71 per shock</span></p>
+    <p class="eq">eff N(q) &nbsp;=&nbsp; 1 / &Sigma;<sub>i&isin;P</sub> p<sub>i</sub><sup>2</sup>&nbsp;,
+      &nbsp;&nbsp; p<sub>i</sub> = q<sub>i</sub> / &Sigma;<sub>i&isin;P</sub> q<sub>i</sub>
+      <span class="eqnote">row 1 = eff N(M), row 2 = eff N(max(N, 0)); same wallets, same fills,
+      so 11.3 &rarr; 7.4 is round-tripping alone. Row 2 &lt; row 1 in <strong>93%</strong> of
+      shocks. <a href="#definitions">&sect;A</a></span></p>
+    <p class="eq">R &nbsp;=&nbsp; 100 &times; &Sigma;<sub>i&isin;P</sub> N<sub>i</sub> &nbsp;/&nbsp;
+      &Sigma;<sub>i&isin;P</sub> A<sub>i</sub>
+      <span class="eqnote">row 3. Median shock &Sigma;A<sub>i</sub> = 248,700 HYPE. The next
+      table's per-wallet N<sub>i</sub>/A<sub>i</sub> is null below A<sub>i</sub> = 100</span></p>
+    <p class="eq">N<sub>f</sub> / A<sub>f</sub> &nbsp;&mdash;&nbsp; not reported
+      <span class="eqnote">t<sub>1</sub> is wallet <i>f</i>'s own inventory extremum, so
+      N<sub>f</sub>/A<sub>f</sub> is maximal by construction. <i>f</i> is in P and enters every
+      row above; t<sub>1</sub> is exogenous to the others</span></p>
+  </div>
+<!-- p0904f:eqbox:end -->
 
   <p>That median hides two opposite habits.</p>
 
