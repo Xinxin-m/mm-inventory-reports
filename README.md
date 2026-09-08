@@ -7,6 +7,8 @@ HYPE** (Hyperliquid perpetuals), covering 2025-03-27 to 2026-06-30 UTC.
 - **[The story so far](https://xinxin-m.github.io/mm-inventory-reports/briefing.html)** - five observation threads with figures, the candidate story, six tests, order of work
 - **[Exp8 - Sudden MM inventory shocks, full report](https://xinxin-m.github.io/mm-inventory-reports/exp8-report.html)**
 - **[Exp8 D4 - Do shocked MMs take, or quote, their way out?](https://xinxin-m.github.io/mm-inventory-reports/exp8-unwind-activity.html)** - all 1,964 shocked-MM rows, two hours after their own peak against their own baseline
+- **[Exp8 - Shock redefinition v1: original trigger](https://xinxin-m.github.io/mm-inventory-reports/exp8-shock-redefinition.html)** - market-level imbalance trigger, MM population around every event, MM profile, two tick replays with an animated book
+- **[Exp8 - Shock redefinition v2: absolute price gate, matched controls](https://xinxin-m.github.io/mm-inventory-reports/exp8-shock-redefinition-v2.html)**
 - **[About these pages](https://xinxin-m.github.io/mm-inventory-reports/overview.html)**
 
 Site: <https://xinxin-m.github.io/mm-inventory-reports/>
@@ -22,7 +24,7 @@ are detected on ten wallets only, so counts and rates describe those ten.
 Detector precision (92-98%) is a count of human verdicts on rendered panels,
 not a model estimate. The report carries its own limits section.
 
-Wallet identities are not published; desks appear only as a volume rank.
+Wallet identities are not published; MMs appear only as a volume rank.
 
 ## About these files
 
