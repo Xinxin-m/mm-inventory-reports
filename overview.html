@@ -65,6 +65,26 @@
   .card:hover { border-color:var(--accent); }
   .card strong { display:block; font-size:17px; margin-bottom:4px; color:var(--accent); }
   .card span { color:var(--muted); font-size:14.5px; }
+  /* hub: one box per page, two across on a wide screen */
+  .cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:22px 0 6px; }
+  .cards .card { margin:0; display:flex; flex-direction:column; }
+  .cards .card span { flex:1; }
+  .card .when { display:inline-block; margin-bottom:7px; padding:1px 9px; border-radius:999px;
+          font-size:11.5px; font-weight:600; letter-spacing:.02em;
+          color:var(--muted); border:1px solid var(--line);
+          background:color-mix(in srgb, var(--text) 4%, transparent); }
+  .card .when.now { color:#fff; background:var(--good); border-color:transparent; }
+  /* a card that carries its own sub-link: the box is a <div> (anchors cannot nest),
+     with a block link filling it and the sub-link below the rule */
+  div.card { display:flex; flex-direction:column; }
+  div.card > .cardmain { text-decoration:none; color:inherit; display:block; flex:1; }
+  div.card:hover { border-color:var(--accent); }
+  .card .also { display:block; margin-top:11px; padding-top:9px; border-top:1px solid var(--line);
+          color:var(--muted); font-size:13px; }
+  .card .also a { color:var(--accent); }
+  h2.hubgroup { margin-top:44px; font-size:15px; letter-spacing:.06em; text-transform:uppercase;
+          color:var(--muted); border-bottom:1px solid var(--line); }
+  @media (max-width:820px) { .cards { grid-template-columns:1fr; } }
   footer { margin-top:40px; padding-top:16px; border-top:1px solid var(--line);
            color:var(--muted); font-size:14px; }
   @media (max-width:900px) { .metadata, .findings { grid-template-columns:repeat(2,minmax(0,1fr)); } }
@@ -77,9 +97,17 @@
                color:var(--text); background:var(--surface); border:1px solid var(--line);
                border-radius:8px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.12); }
   main { margin-left:262px; }   /* the report pages' own rule is 246px; the menu is wider */
+  #navhome { position:fixed; top:11px; left:96px; z-index:40; font-size:17px; line-height:1;
+             padding:5px 11px 7px; text-decoration:none;
+             color:var(--accent); background:var(--surface); border:1px solid var(--line);
+             border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,.12); }
+  #navhome:hover { border-color:var(--accent); }
   html[data-nav="off"] aside.sitenav { display:none; }
   html[data-nav="off"] main { margin-left:0; padding-top:62px; }
-  aside.sitenav > strong { display:block; font-size:15px; line-height:1.35; margin-bottom:4px; }
+  aside.sitenav > .homelink { display:block; font-size:15px; line-height:1.35; margin-bottom:4px;
+          font-weight:700; color:var(--text); text-decoration:none; }
+  aside.sitenav > .homelink:hover { color:var(--accent); }
+  aside.sitenav > .homelink span { color:var(--accent); margin-right:5px; }
   aside.sitenav > .sub { color:var(--muted); font-size:12.5px; margin:0 0 14px; }
   aside.sitenav details { margin:2px 0; padding:0; background:none; border:0; border-radius:0; }
   aside.sitenav summary { list-style:none; cursor:pointer; padding:8px 9px; border-radius:7px;
@@ -111,33 +139,71 @@
 </head>
 <body>
 <button id="navtoggle" type="button" aria-expanded="true" aria-controls="sitenav" title="Show or hide the menu">&#10005; Menu</button>
-<aside class="sitenav" id="sitenav"><strong>MM inventory shocks on HYPE</strong>
-<p class="sub">Exp8 and Exp9, 2025-03-27 &rarr; 2026-06-30. Ten roster MMs against all labelled MMs.</p>
-<details><summary>Review status</summary>
-<nav aria-label="Review status">
-<a class="open" href="index.html">Open Review status &rarr;</a>
-<a href="index.html#olga">Olga's six points</a>
-<a href="index.html#ruizhe">Ruizhe's five points</a>
-<a href="index.html#exp9">Where the Exp9 results are</a>
-<a href="index.html#notyet">Not in the report yet</a>
+<a id="navhome" href="#" title="All reports (home)" aria-label="All reports (home)">&#8962;</a>
+<aside class="sitenav" id="sitenav"><a class="homelink" href="#"><span aria-hidden="true">&#8962;</span> MM inventory shocks on HYPE</a>
+<p class="sub">Exp8, Exp9 and Exp10, 2025-03-27 &rarr; 2026-06-30. Ten roster MMs against all labelled MMs.</p>
+<details class="current" open><summary>Home &mdash; all reports</summary>
+<nav aria-label="Home &mdash; all reports">
+<a class="open" href="#">This page, top &uarr;</a>
 </nav></details>
-<details><summary>The story so far</summary>
-<nav aria-label="The story so far">
-<a class="open" href="briefing.html">Open The story so far &rarr;</a>
-<a href="briefing.html#story">The story in one paragraph</a>
-<a href="briefing.html#thread-a">A. Anatomy of a shock</a>
-<a href="briefing.html#thread-b">B. Getting out</a>
-<a href="briefing.html#thread-c">C. Who is hit</a>
-<a href="briefing.html#thread-d">D. Equity and constraint</a>
-<a href="briefing.html#thread-e">E. The desks differ</a>
-<a href="briefing.html#hypotheses">Six tests</a>
-<a href="briefing.html#next">Order of work</a>
-<a href="briefing.html#limits">What it does not establish</a>
-<a href="briefing.html#runsheet">15-minute running order</a>
+<details><summary>Exp8 &mdash; Inventory shocks, redefinition (2026-09-08)</summary>
+<nav aria-label="Exp8 &mdash; Inventory shocks, redefinition (2026-09-08)">
+<a class="open" href="exp8-inventory-shock-09-08.html">Open Exp8 &mdash; Inventory shocks, redefinition (2026-09-08) &rarr;</a>
+<a href="exp8-inventory-shock-09-08.html#summary-h">Summary</a>
+<a href="exp8-inventory-shock-09-08.html#notation-h">Notation and shared definitions</a>
+<a href="exp8-inventory-shock-09-08.html#axes-h">1. The three axes, and what each step did for them</a>
+<a href="exp8-inventory-shock-09-08.html#lit-h">2. What the literature does with order imbalance</a>
+<a href="exp8-inventory-shock-09-08.html#imb-h">3. Market taker-imbalance shocks: which measure, which cutoff, which bin</a>
+<a href="exp8-inventory-shock-09-08.html#imb-def" class="sub">3.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#imb-cutoffs" class="sub">3.2 Which rule</a>
+<a href="exp8-inventory-shock-09-08.html#imb-3way" class="sub">3.3 The three-way split on the recommended rule</a>
+<a href="exp8-inventory-shock-09-08.html#imb-alt" class="sub">3.4 A price-first trigger, as the literature defines it, at the same selectivity</a>
+<a href="exp8-inventory-shock-09-08.html#pop-h">4. The HYPE MM population around events and matched controls</a>
+<a href="exp8-inventory-shock-09-08.html#pop-def" class="sub">4.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#pop-summary" class="sub">4.2 Broad absorption, concentrated inventory displacement</a>
+<a href="exp8-inventory-shock-09-08.html#pop-state" class="sub">4.3 State before the event at two horizons</a>
+<a href="exp8-inventory-shock-09-08.html#pop-unwind" class="sub">4.4 Early and late unwinders</a>
+<a href="exp8-inventory-shock-09-08.html#pop-aggr" class="sub">4.5 Aggressiveness of the unwind</a>
+<a href="exp8-inventory-shock-09-08.html#pop-peers" class="sub">4.6 Shocked against unshocked MMs, before and after</a>
+<a href="exp8-inventory-shock-09-08.html#pop-equity" class="sub">4.7 Equity, closed PnL and cross-coin context</a>
+<a href="exp8-inventory-shock-09-08.html#pop-counterparty" class="sub">4.8 Who is on the other side of the unwind? Not the other MMs.</a>
+<a href="exp8-inventory-shock-09-08.html#prof-h">5. The MM profile: state variables across all active HYPE market makers</a>
+<a href="exp8-inventory-shock-09-08.html#prof-def" class="sub">5.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#prof-table" class="sub">5.2 Population distribution</a>
+<a href="exp8-inventory-shock-09-08.html#prof-scale" class="sub">5.3 Inventory scale and outcomes</a>
+<a href="exp8-inventory-shock-09-08.html#prof-frequency" class="sub">5.4 Population-wide shock frequency and unwind speed</a>
+<a href="exp8-inventory-shock-09-08.html#ticka-h">6. Tick replay A: a +7.6% move with no liquidations</a>
+<a href="exp8-inventory-shock-09-08.html#ticka-anatomy" class="sub">6.1 Did takers consume the book, or did makers cancel and re-quote away?</a>
+<a href="exp8-inventory-shock-09-08.html#ticka-order" class="sub">6.2 Did the taker surge lead the price, or follow it?</a>
+<a href="exp8-inventory-shock-09-08.html#ticka-age" class="sub">6.3 The book that absorbed the move was seconds old</a>
+<a href="exp8-inventory-shock-09-08.html#ticka-partb" class="sub">6.4 Part B: the two shocked MMs, end to end</a>
+<a href="exp8-inventory-shock-09-08.html#ticka-replay-h" class="sub">6.5 The move every 10 seconds</a>
+<a href="exp8-inventory-shock-09-08.html#ticka-replay-1s" class="sub">6.6 The five biggest 10-second slices, second by second</a>
+<a href="exp8-inventory-shock-09-08.html#ticka-replay-ticks" class="sub">6.7 The five biggest single ticks: what was filled, cancelled and posted in one millisecond</a>
+<a href="exp8-inventory-shock-09-08.html#ticka-replay-anim" class="sub">6.8 Animation: price, top of book and depth</a>
+<a href="exp8-inventory-shock-09-08.html#liq-h">7. Tick replay B: a −3.6% move with liquidations</a>
+<a href="exp8-inventory-shock-09-08.html#liq-pick" class="sub">7.1 Why this event</a>
+<a href="exp8-inventory-shock-09-08.html#liq-seq" class="sub">7.2 What came first</a>
+<a href="exp8-inventory-shock-09-08.html#liq-cross" class="sub">7.3 HYPE-driven, not cross-margin</a>
+<a href="exp8-inventory-shock-09-08.html#liq-absorb" class="sub">7.4 Who absorbed the forced flow, and what the roster shocks were made of</a>
+<a href="exp8-inventory-shock-09-08.html#tickb-h" class="sub">7.5 Replay B on the order stream: the same engine, a slower move, a third of it vacated by cancels</a>
+<a href="exp8-inventory-shock-09-08.html#data-h">8. Four things about the data that change how earlier results must be read</a>
+<a href="exp8-inventory-shock-09-08.html#synthesis-h">Synthesis: what the study establishes</a>
+<a href="exp8-inventory-shock-09-08.html#syn-trigger" class="sub">The trigger is stable; the price label is a sensitivity choice</a>
+<a href="exp8-inventory-shock-09-08.html#syn-mech" class="sub">The population result is a separation between quoting and carrying</a>
+<a href="exp8-inventory-shock-09-08.html#syn-controls" class="sub">Controls narrow the claims</a>
+<a href="exp8-inventory-shock-09-08.html#syn-ticks" class="sub">The event clock hides a two-stage microstructure</a>
+<a href="exp8-inventory-shock-09-08.html#syn-boundary" class="sub">What remains descriptive</a>
+<a href="exp8-inventory-shock-09-08.html#limits-h">9. What this does not establish</a>
+<a href="exp8-inventory-shock-09-08.html#decisions-h">10. Decisions for Xinmeng, and open questions</a>
+<a href="exp8-inventory-shock-09-08.html#dec-rules" class="sub">10.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#dec-labels" class="sub">10.2 Labels and framing</a>
+<a href="exp8-inventory-shock-09-08.html#dec-followups" class="sub">10.3 Follow-ups the results point to</a>
+<a href="exp8-inventory-shock-09-08.html#appendix-h">Appendix: sources, code, validation, reproduction</a>
 </nav></details>
-<details><summary>Full Exp8 report</summary>
-<nav aria-label="Full Exp8 report">
-<a class="open" href="exp8-report.html">Open Full Exp8 report &rarr;</a>
+<details><summary>Exp8 &mdash; Full report (2026-09-04)</summary>
+<nav aria-label="Exp8 &mdash; Full report (2026-09-04)">
+<a class="open" href="exp8-report.html">Open Exp8 &mdash; Full report (2026-09-04) &rarr;</a>
 <a href="exp8-report.html#summary">Summary</a>
 <a href="exp8-report.html#brief">Overview: both studies</a>
 <a href="exp8-report.html#brief-scope" class="sub">Scope of each</a>
@@ -176,187 +242,118 @@
 <a href="exp8-report.html#g-ep47" class="sub">I3. Episode 47</a>
 <a href="exp8-report.html#g-ep71" class="sub">I4. Episode 71</a>
 <a href="exp8-report.html#appendix">J. Appendix</a>
+<a href="exp8-unwind-activity.html">D4 in full &mdash; take, or quote, their way out?</a>
+<a href="exp8-unwind-activity.html#summary" class="sub">Summary</a>
+<a href="exp8-unwind-activity.html#defs" class="sub">Definitions</a>
+<a href="exp8-unwind-activity.html#taker" class="sub">1. Taker volume</a>
+<a href="exp8-unwind-activity.html#orders" class="sub">2. Orders: counts and sides</a>
+<a href="exp8-unwind-activity.html#fills" class="sub">3. Where the unwind shows up</a>
+<a href="exp8-unwind-activity.html#curves" class="sub">4. Event-time figures</a>
+<a href="exp8-unwind-activity.html#ranks" class="sub">5. By roster rank</a>
+<a href="exp8-unwind-activity.html#validation" class="sub">6. Validation</a>
+<a href="exp8-unwind-activity.html#limits" class="sub">7. Not established</a>
+<a href="exp8-unwind-activity.html#provenance" class="sub">Provenance</a>
 </nav></details>
-<details><summary>D4. Take or quote their way out?</summary>
-<nav aria-label="D4. Take or quote their way out?">
-<a class="open" href="exp8-unwind-activity.html">Open D4. Take or quote their way out? &rarr;</a>
-<a href="exp8-unwind-activity.html#summary">Summary</a>
-<a href="exp8-unwind-activity.html#defs">Definitions</a>
-<a href="exp8-unwind-activity.html#taker">1. Taker volume</a>
-<a href="exp8-unwind-activity.html#orders">2. Orders: counts and sides</a>
-<a href="exp8-unwind-activity.html#fills">3. Where the unwind shows up</a>
-<a href="exp8-unwind-activity.html#curves">4. Event-time figures</a>
-<a href="exp8-unwind-activity.html#ranks">5. By roster rank</a>
-<a href="exp8-unwind-activity.html#validation">6. Validation</a>
-<a href="exp8-unwind-activity.html#limits">7. Not established</a>
-<a href="exp8-unwind-activity.html#provenance">Provenance</a>
+<details><summary>The story so far (2026-09-04)</summary>
+<nav aria-label="The story so far (2026-09-04)">
+<a class="open" href="briefing.html">Open The story so far (2026-09-04) &rarr;</a>
+<a href="briefing.html#story">The story in one paragraph</a>
+<a href="briefing.html#thread-a">A. Anatomy of a shock</a>
+<a href="briefing.html#thread-b">B. Getting out</a>
+<a href="briefing.html#thread-c">C. Who is hit</a>
+<a href="briefing.html#thread-d">D. Equity and constraint</a>
+<a href="briefing.html#thread-e">E. The MMs differ</a>
+<a href="briefing.html#hypotheses">Six tests</a>
+<a href="briefing.html#next">Order of work</a>
+<a href="briefing.html#limits">What it does not establish</a>
+<a href="briefing.html#runsheet">15-minute running order</a>
 </nav></details>
-<details><summary>Shock redefinition v1: original trigger</summary>
-<nav aria-label="Shock redefinition v1: original trigger">
-<a class="open" href="exp8-shock-redefinition.html">Open Shock redefinition v1: original trigger &rarr;</a>
-<a href="exp8-shock-redefinition.html#summary-h">Summary</a>
-<a href="exp8-shock-redefinition.html#notation-h">Notation and shared definitions</a>
-<a href="exp8-shock-redefinition.html#axes-h">1. The three axes, and what each step did for them</a>
-<a href="exp8-shock-redefinition.html#lit-h">2. What the literature does with order imbalance</a>
-<a href="exp8-shock-redefinition.html#imb-h">3. Market taker-imbalance shocks: which measure, which cutoff, which bin</a>
-<a href="exp8-shock-redefinition.html#imb-def" class="sub">3.1 Definitions</a>
-<a href="exp8-shock-redefinition.html#imb-cutoffs" class="sub">3.2 What each rule selects</a>
-<a href="exp8-shock-redefinition.html#imb-3way" class="sub">3.3 The three-way split on the recommended rule</a>
-<a href="exp8-shock-redefinition.html#pop-h">4. The HYPE MM population around market imbalance events</a>
-<a href="exp8-shock-redefinition.html#pop-def" class="sub">4.1 Definitions</a>
-<a href="exp8-shock-redefinition.html#pop-who" class="sub">4.2 Who is there, who absorbs, who is shocked</a>
-<a href="exp8-shock-redefinition.html#pop-pre" class="sub">4.3 Pre-shock: who gets shocked</a>
-<a href="exp8-shock-redefinition.html#pop-post" class="sub">4.4 Post-shock: how they get out, and the early-versus-late test</a>
-<a href="exp8-shock-redefinition.html#pop-peers" class="sub">4.5 Do the other MMs absorb the unwind, or trade against it? Neither.</a>
-<a href="exp8-shock-redefinition.html#pop-equity" class="sub">4.6 Equity</a>
-<a href="exp8-shock-redefinition.html#prof-h">5. The MM profile: state variables across all active HYPE market makers</a>
-<a href="exp8-shock-redefinition.html#prof-def" class="sub">5.1 Definitions</a>
-<a href="exp8-shock-redefinition.html#prof-table" class="sub">5.2 Population distribution</a>
-<a href="exp8-shock-redefinition.html#prof-scale" class="sub">5.3 Inventory scale and outcomes</a>
-<a href="exp8-shock-redefinition.html#ticka-h">6. Tick replay A: a +7.6% move with no liquidations</a>
-<a href="exp8-shock-redefinition.html#ticka-anatomy" class="sub">6.1 Did takers consume the book, or did makers cancel and re-quote away?</a>
-<a href="exp8-shock-redefinition.html#ticka-order" class="sub">6.2 Did the taker surge lead the price, or follow it?</a>
-<a href="exp8-shock-redefinition.html#ticka-age" class="sub">6.3 The book that absorbed the move was seconds old</a>
-<a href="exp8-shock-redefinition.html#ticka-partb" class="sub">6.4 Part B: the two shocked MMs, end to end</a>
-<a href="exp8-shock-redefinition.html#ticka-replay-h" class="sub">6.5 The move every 10 seconds</a>
-<a href="exp8-shock-redefinition.html#ticka-replay-1s" class="sub">6.6 The five biggest 10-second slices, second by second</a>
-<a href="exp8-shock-redefinition.html#ticka-replay-ticks" class="sub">6.7 The five biggest single ticks: what was filled, cancelled and posted in one millisecond</a>
-<a href="exp8-shock-redefinition.html#ticka-replay-anim" class="sub">6.8 Animation: price, top of book and depth</a>
-<a href="exp8-shock-redefinition.html#liq-h">7. Tick replay B: a −3.6% move with liquidations</a>
-<a href="exp8-shock-redefinition.html#liq-pick" class="sub">7.1 Why this event</a>
-<a href="exp8-shock-redefinition.html#liq-seq" class="sub">7.2 What came first</a>
-<a href="exp8-shock-redefinition.html#liq-cross" class="sub">7.3 HYPE-driven, not cross-margin</a>
-<a href="exp8-shock-redefinition.html#liq-absorb" class="sub">7.4 Who absorbed the forced flow, and what the roster shocks were made of</a>
-<a href="exp8-shock-redefinition.html#tickb-h" class="sub">7.5 Replay B on the order stream: the same engine, a slower move, a third of it vacated by cancels</a>
-<a href="exp8-shock-redefinition.html#data-h">8. Four things about the data that change how earlier results must be read</a>
-<a href="exp8-shock-redefinition.html#synthesis-h">Synthesis: what the study settles about the shock definition</a>
-<a href="exp8-shock-redefinition.html#syn-trigger" class="sub">The trigger axis: two objects, not one</a>
-<a href="exp8-shock-redefinition.html#syn-size" class="sub">The size axis: the measure and the bin, then the cutoff</a>
-<a href="exp8-shock-redefinition.html#syn-price" class="sub">The price and equity axis: order, impact, and who pays</a>
-<a href="exp8-shock-redefinition.html#syn-mm" class="sub">The MMs are the finding, in three sentences</a>
-<a href="exp8-shock-redefinition.html#limits-h">9. What this does not establish</a>
-<a href="exp8-shock-redefinition.html#decisions-h">10. Decisions for Xinmeng, and open questions</a>
-<a href="exp8-shock-redefinition.html#dec-rules" class="sub">10.1 Definitions</a>
-<a href="exp8-shock-redefinition.html#dec-labels" class="sub">10.2 Labels and framing</a>
-<a href="exp8-shock-redefinition.html#dec-followups" class="sub">10.3 Follow-ups the results point to</a>
-<a href="exp8-shock-redefinition.html#appendix-h">Appendix: sources, code, validation, reproduction</a>
-</nav></details>
-<details><summary>Shock redefinition v2: absolute gate, matched controls</summary>
-<nav aria-label="Shock redefinition v2: absolute gate, matched controls">
-<a class="open" href="exp8-shock-redefinition-v2.html">Open Shock redefinition v2: absolute gate, matched controls &rarr;</a>
-<a href="exp8-shock-redefinition-v2.html#summary-h">Summary</a>
-<a href="exp8-shock-redefinition-v2.html#notation-h">Notation and shared definitions</a>
-<a href="exp8-shock-redefinition-v2.html#axes-h">1. The three axes, and what each step did for them</a>
-<a href="exp8-shock-redefinition-v2.html#lit-h">2. What the literature does with order imbalance</a>
-<a href="exp8-shock-redefinition-v2.html#imb-h">3. Market taker-imbalance shocks: which measure, which cutoff, which bin</a>
-<a href="exp8-shock-redefinition-v2.html#imb-def" class="sub">3.1 Definitions</a>
-<a href="exp8-shock-redefinition-v2.html#imb-cutoffs" class="sub">3.2 Which rule</a>
-<a href="exp8-shock-redefinition-v2.html#imb-3way" class="sub">3.3 The three-way split on the recommended rule</a>
-<a href="exp8-shock-redefinition-v2.html#imb-alt" class="sub">3.4 A price-first trigger, as the literature defines it, at the same selectivity</a>
-<a href="exp8-shock-redefinition-v2.html#pop-h">4. The HYPE MM population around v2 events and matched controls</a>
-<a href="exp8-shock-redefinition-v2.html#pop-def" class="sub">4.1 Definitions</a>
-<a href="exp8-shock-redefinition-v2.html#pop-summary" class="sub">4.2 Broad absorption, concentrated inventory displacement</a>
-<a href="exp8-shock-redefinition-v2.html#pop-state" class="sub">4.3 State before the event at two horizons</a>
-<a href="exp8-shock-redefinition-v2.html#pop-unwind" class="sub">4.4 Early and late unwinders</a>
-<a href="exp8-shock-redefinition-v2.html#pop-aggr" class="sub">4.5 Aggressiveness and own liquidation</a>
-<a href="exp8-shock-redefinition-v2.html#pop-peers" class="sub">4.6 Shocked against unshocked MMs, before and after</a>
-<a href="exp8-shock-redefinition-v2.html#pop-equity" class="sub">4.7 Equity, closed PnL and cross-coin context</a>
-<a href="exp8-shock-redefinition-v2.html#prof-h">5. The MM profile: state variables across all active HYPE market makers</a>
-<a href="exp8-shock-redefinition-v2.html#prof-def" class="sub">5.1 Definitions</a>
-<a href="exp8-shock-redefinition-v2.html#prof-table" class="sub">5.2 Population distribution</a>
-<a href="exp8-shock-redefinition-v2.html#prof-scale" class="sub">5.3 Inventory scale and outcomes</a>
-<a href="exp8-shock-redefinition-v2.html#prof-frequency" class="sub">5.4 Population-wide shock frequency and unwind speed</a>
-<a href="exp8-shock-redefinition-v2.html#ticka-h">6. Tick replay A: a +7.6% move with no liquidations</a>
-<a href="exp8-shock-redefinition-v2.html#ticka-anatomy" class="sub">6.1 Did takers consume the book, or did makers cancel and re-quote away?</a>
-<a href="exp8-shock-redefinition-v2.html#ticka-order" class="sub">6.2 Did the taker surge lead the price, or follow it?</a>
-<a href="exp8-shock-redefinition-v2.html#ticka-age" class="sub">6.3 The book that absorbed the move was seconds old</a>
-<a href="exp8-shock-redefinition-v2.html#ticka-partb" class="sub">6.4 Part B: the two shocked MMs, end to end</a>
-<a href="exp8-shock-redefinition-v2.html#ticka-replay-h" class="sub">6.5 The move every 10 seconds</a>
-<a href="exp8-shock-redefinition-v2.html#ticka-replay-1s" class="sub">6.6 The five biggest 10-second slices, second by second</a>
-<a href="exp8-shock-redefinition-v2.html#ticka-replay-ticks" class="sub">6.7 The five biggest single ticks: what was filled, cancelled and posted in one millisecond</a>
-<a href="exp8-shock-redefinition-v2.html#ticka-replay-anim" class="sub">6.8 Animation: price, top of book and depth</a>
-<a href="exp8-shock-redefinition-v2.html#liq-h">7. Tick replay B: a −3.6% move with liquidations</a>
-<a href="exp8-shock-redefinition-v2.html#liq-pick" class="sub">7.1 Why this event</a>
-<a href="exp8-shock-redefinition-v2.html#liq-seq" class="sub">7.2 What came first</a>
-<a href="exp8-shock-redefinition-v2.html#liq-cross" class="sub">7.3 HYPE-driven, not cross-margin</a>
-<a href="exp8-shock-redefinition-v2.html#liq-absorb" class="sub">7.4 Who absorbed the forced flow, and what the roster shocks were made of</a>
-<a href="exp8-shock-redefinition-v2.html#tickb-h">7.5 Replay B on the order stream: the same engine, a slower move, a third of it vacated by cancels</a>
-<a href="exp8-shock-redefinition-v2.html#data-h">8. Four things about the data that change how earlier results must be read</a>
-<a href="exp8-shock-redefinition-v2.html#synthesis-h">Synthesis: what v1 and v2 jointly establish</a>
-<a href="exp8-shock-redefinition-v2.html#syn-trigger" class="sub">The trigger is stable; the price label is a sensitivity choice</a>
-<a href="exp8-shock-redefinition-v2.html#syn-mech" class="sub">The population result is a separation between quoting and carrying</a>
-<a href="exp8-shock-redefinition-v2.html#syn-controls" class="sub">Controls narrow the claims</a>
-<a href="exp8-shock-redefinition-v2.html#syn-ticks" class="sub">The event clock hides a two-stage microstructure</a>
-<a href="exp8-shock-redefinition-v2.html#syn-boundary" class="sub">What remains descriptive</a>
-<a href="exp8-shock-redefinition-v2.html#limits-h">9. What this does not establish</a>
-<a href="exp8-shock-redefinition-v2.html#decisions-h">10. Decisions for Xinmeng, and open questions</a>
-<a href="exp8-shock-redefinition-v2.html#dec-rules" class="sub">10.1 Definitions</a>
-<a href="exp8-shock-redefinition-v2.html#dec-labels" class="sub">10.2 Labels and framing</a>
-<a href="exp8-shock-redefinition-v2.html#dec-followups" class="sub">10.3 Follow-ups the results point to</a>
-<a href="exp8-shock-redefinition-v2.html#appendix-h">Appendix: sources, code, validation, reproduction</a>
-</nav></details>
-<details class="current" open><summary>About these pages</summary>
-<nav aria-label="About these pages">
-<a class="open" href="#">This page, top &uarr;</a>
+<details><summary>Review status, 2026-09-02 points (2026-09-04)</summary>
+<nav aria-label="Review status, 2026-09-02 points (2026-09-04)">
+<a class="open" href="review-status.html">Open Review status, 2026-09-02 points (2026-09-04) &rarr;</a>
+<a href="review-status.html#olga">Olga's six points</a>
+<a href="review-status.html#ruizhe">Ruizhe's five points</a>
+<a href="review-status.html#exp9">Where the Exp9 results are</a>
+<a href="review-status.html#notyet">Not in the report yet</a>
 </nav></details>
 <p class="foot">Descriptive, not causal. Wallets by roster rank only. Generated by <code>make_public_site.py</code>.</p></aside>
 <main id="top">
   <h1>Market-maker inventory events on HYPE</h1>
-  <p class="lede">Two descriptive studies of how ten top-volume Hyperliquid HYPE
-  market makers change inventory around sudden events, measured against the whole
-  labeled market-maker population. 2025-03-27 to 2026-06-30 UTC.</p>
+  <p class="lede">Descriptive studies of how top-volume Hyperliquid HYPE market makers change
+  inventory around sudden events, measured against the whole labelled market-maker population.
+  2025-03-27 to 2026-06-30 UTC. Every page below opens in place; the
+  <span aria-hidden="true">&#8962;</span> icon at the top left of any page comes back here.</p>
 
-  <a class="card" href="index.html">
-    <strong>Review status &rarr;</strong>
-    <span>Each point of the 2026-09-02 review, its state (done / partial / not done), and a link
-    to the table or section of the report that answers it.</span></a>
+  <h2 class="hubgroup" id="reports">Reports</h2>
+  <div class="cards">
+
+  <a class="card" href="exp8-inventory-shock-09-08.html">
+    <span class="when now">2026-09-08 &middot; newest</span>
+    <strong>Exp8 &mdash; Inventory shocks, redefinition &rarr;</strong>
+    <span>The current Exp8 page, and the one to read first. Events are triggered on
+    <strong>market</strong> taker flow rather than on one wallet's inventory: 915 half-hours at
+    |z| &ge; 3.70, each labelled by an absolute 168-bps price gate, each with a clock-time-matched
+    non-event control window. Then the whole HYPE MM population around every event (who is shocked,
+    who absorbs, how concentrated), a 148-wallet MM profile, equity and closed-PnL paths, and two
+    tick-by-tick replays with an animated order book. Supersedes the three earlier redefinition
+    drafts (v1, v2, v3), which are archived.</span></a>
+
+  <div class="card">
+    <a class="cardmain" href="exp8-report.html">
+      <span class="when">2026-09-04</span>
+      <strong>Exp8 &mdash; Sudden MM inventory shocks, full report &rarr;</strong>
+      <span>The original study, on the wallet-inventory trigger: definitions, how the detector was
+      built and audited, what causes a shock, who else absorbed it, how the position is unwound,
+      the shock atlas, the book response on the order stream (this is where the Exp9 results live),
+      the limits, and the figure gallery.</span></a>
+    <span class="also">One section is long enough to be its own file:
+      <a href="exp8-unwind-activity.html">&sect;D4 in full &mdash; do shocked MMs take, or quote, their way out?</a>
+      (1,964 shock &times; wallet rows). It is part of this report, not a separate study.</span>
+  </div>
+
+  </div>
+
+  <h2 class="hubgroup" id="planning">Where the work stands</h2>
+  <div class="cards">
 
   <a class="card" href="briefing.html">
+    <span class="when">2026-09-04</span>
     <strong>The story so far &rarr;</strong>
-    <span>Five observation threads with the report's figures, the candidate story, the six tests
-    that would confirm or break it, the order of work, the limits, and a 15-minute running
-    order.</span></a>
+    <span>Five observation threads with the report's figures, the candidate story in one paragraph,
+    the six tests that would confirm or break it, the order of work, the limits, and a 15-minute
+    running order.</span></a>
 
-  <a class="card" href="exp8-report.html">
-    <strong>Exp8 &mdash; Sudden MM inventory shocks, full report &rarr;</strong>
-    <span>The complete report: definitions, how the detector was built and audited, what causes a
-    shock, who else absorbed it, how the position is unwound, the shock atlas, the book response
-    on the order stream, what the study does not establish, and the figure gallery.</span></a>
+  <a class="card" href="review-status.html">
+    <span class="when">2026-09-04</span>
+    <strong>Review status &rarr;</strong>
+    <span>Each point of the 2026-09-02 review, its state (done / partial / not done), and a link to
+    the table or section that answers it. Written against the 2026-09-04 report, so points about the
+    event definition are answered again, differently, on the redefinition page above.</span></a>
 
-  <a class="card" href="exp8-unwind-activity.html">
-    <strong>Exp8 &sect;D4 &mdash; Do shocked MMs take, or quote, their way out? &rarr;</strong>
-    <span>Every shocked MM in every shock (1,964 shock &times; wallet rows), two hours after its own
-    peak against its own baseline: taker volume, which side it is on, order submits and cancels by
-    side, and where the unwind shows up. Six tables, three figures.</span></a>
-
-  <a class="card" href="exp8-shock-redefinition.html">
-    <strong>Exp8 &mdash; Shock redefinition v1: original trigger &rarr;</strong>
-    <span>The market-level taker-imbalance trigger (915 events), the literature check, the whole HYPE MM
-    population around every event, the 148-MM profile, and two tick-by-tick replays with an animated
-    order book. Original definitions, revised for readability on 2026-09-08.</span></a>
-
-  <a class="card" href="exp8-shock-redefinition-v2.html">
-    <strong>Exp8 &mdash; Shock redefinition v2: absolute price gate, matched controls &rarr;</strong>
-    <span>The same events re-classed on an absolute 168-bps price gate, each with a matched non-event
-    control window; resting-order state, equity and PnL paths, cross-coin context.</span></a>
+  </div>
 
   <div class="note"><strong>How to read these.</strong> Everything here is a
-  <strong>descriptive association measured on a five-minute grid</strong> (one minute for the
-  order-stream section) &mdash; no causal claim is made or implied. Events are detected on
-  <strong>ten wallets only</strong>, so counts and rates describe those ten; every cross-sectional
-  comparison is against the full labeled market-maker population. Detector precision is
-  92&ndash;98%, established by reading every detected panel and recording one verdict each, and
-  the residual failure modes are listed rather than tuned away. The report carries its own limits
-  section and is a reading of an <code>analysis.md</code> that is the authoritative record.</div>
+  <strong>descriptive association</strong> &mdash; no causal claim is made or implied. The two
+  studies use different event definitions and should not be pooled: the 2026-09-04 report detects
+  events on <strong>ten wallets</strong> and its counts describe those ten, while the redefinition
+  page detects events on <strong>market-wide taker flow</strong> and reads the whole labelled MM
+  population against them. Cross-sectional comparisons are always against the full labelled
+  market-maker population. Detector precision on the wallet-inventory detector is 92&ndash;98%,
+  established by reading every detected panel and recording one verdict each, and the residual
+  failure modes are listed rather than tuned away. Each page carries its own limits section and is
+  a reading of an <code>analysis.md</code> that is the authoritative record.</div>
 
   <p>Numbers that changed during review, and why, are kept in the reports rather than quietly
   corrected: the report records a retracted absorption-versus-retention comparison and the reason,
-  and the quoting section records two pilot readings that the full run reversed.</p>
+  the quoting section records two pilot readings that the full run reversed, and the redefinition
+  page keeps the weekly-relative price gate as a labelled sensitivity beside the absolute one it
+  replaced.</p>
 
   <footer>Working research output, not a paper. Wallet identities are never published: MMs are
   referred to only by a volume rank. Built from <code>report.html</code>,
-  <code>report_unwind_activity.html</code>, <code>code/site_status.html</code> and
-  <code>code/site_briefing.html</code> by <code>make_public_site.py</code>.</footer>
+  <code>report_inventory_shock_09-08.html</code>, <code>report_unwind_activity.html</code>,
+  <code>code/site_status.html</code> and <code>code/site_briefing.html</code> by
+  <code>make_public_site.py</code>.</footer>
 </main>
 <script>
   (function () {
