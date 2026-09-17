@@ -316,6 +316,13 @@
   /* toggles stack in one column. A bullet list written as <ul class="findings"> must not pick up the
      two-column grid of the Summary's .findings cards. */
   main ul.findings { display:block; margin:14px 0 20px; padding-left:24px; }
+  /* a table's "Column key and source" sits below the table (2026-09-17), in the light capfold style everywhere */
+  main details.capfold { margin:6px 0 18px; border:0; background:transparent; padding:0; max-width:88ch; }
+  main details.capfold > summary { font-size:13px; font-weight:500; color:var(--muted); cursor:pointer; list-style:none; padding:0; }
+  main details.capfold > summary::-webkit-details-marker { display:none; }
+  main details.capfold > div { margin-top:6px; font-size:13.5px; color:var(--muted); }
+  main :is(.table-wrap, .tablewrap):has(+ details.capfold) { margin-bottom:0; }
+  main p.tabcap + :is(.table-wrap, .tablewrap) { margin-top:6px; }
   main .callout.remarks > ul { margin:8px 0 0; padding-left:24px; }
   main .callout.remarks li { max-width:none; }
   li.tg { list-style:none; position:relative; }
@@ -857,6 +864,7 @@
 <li><span class="kind k-site">Site</span><a href="exp8-inventory-shock-09-08.html#summary-h">One page per market-flow definition</a> <span class="logtext">Section 9, the 922 one-sided taker surges, moved to its own page, so the main page reads only the taker-imbalance events (|z<sub>NET</sub>| &ge; 3.70), and both page titles name their convention. The spot-quotes page now carries the same side menu as every other page. A slider on this page sets how many days count as new, and pages split out of published sections are never marked new. No text, number or section number changed; old links forward.</span></li>
 <li><span class="kind k-split">Split out</span><a href="exp8-one-sided-surges.html">Exp8 &mdash; One-sided surges</a> <span class="logtext">Section 9 moved out of the Exp8 page. The text is unchanged.</span></li>
 <li data-new="2026-09-17"><span class="kind k-revised">Revised</span><a href="exp8-unwinders.html#pop-unwind-skew">4.4 Order skew by timing class: findings kept apart from remarks</a> <span class="logtext">The five bullets after Figure 10 are now three findings, each led by the claim tied to the timing class, and a separate box of two remarks that need attention, each with the test that would settle it. No number changed.</span></li>
+<li><span class="kind k-site">Site</span><a href="exp8-inventory-shock-09-08.html#pop-h">Column keys moved below their tables</a> <span class="logtext">All 82 &ldquo;Column key and source&rdquo; toggles of the Exp8 record, and the 2 on the Exp10 page, now sit below the table they describe. The text is unchanged.</span></li>
 </ul>
 <h3>Review status: new sections</h3><ul class="logl">
 <li data-new="2026-09-17"><span class="kind k-new">New section</span><a href="review-status.html#r0917">What changed on 2026-09-17</a></li>

@@ -316,6 +316,13 @@
   /* toggles stack in one column. A bullet list written as <ul class="findings"> must not pick up the
      two-column grid of the Summary's .findings cards. */
   main ul.findings { display:block; margin:14px 0 20px; padding-left:24px; }
+  /* a table's "Column key and source" sits below the table (2026-09-17), in the light capfold style everywhere */
+  main details.capfold { margin:6px 0 18px; border:0; background:transparent; padding:0; max-width:88ch; }
+  main details.capfold > summary { font-size:13px; font-weight:500; color:var(--muted); cursor:pointer; list-style:none; padding:0; }
+  main details.capfold > summary::-webkit-details-marker { display:none; }
+  main details.capfold > div { margin-top:6px; font-size:13.5px; color:var(--muted); }
+  main :is(.table-wrap, .tablewrap):has(+ details.capfold) { margin-bottom:0; }
+  main p.tabcap + :is(.table-wrap, .tablewrap) { margin-top:6px; }
   main .callout.remarks > ul { margin:8px 0 0; padding-left:24px; }
   main .callout.remarks li { max-width:none; }
   li.tg { list-style:none; position:relative; }

@@ -331,6 +331,13 @@
   /* toggles stack in one column. A bullet list written as <ul class="findings"> must not pick up the
      two-column grid of the Summary's .findings cards. */
   main ul.findings { display:block; margin:14px 0 20px; padding-left:24px; }
+  /* a table's "Column key and source" sits below the table (2026-09-17), in the light capfold style everywhere */
+  main details.capfold { margin:6px 0 18px; border:0; background:transparent; padding:0; max-width:88ch; }
+  main details.capfold > summary { font-size:13px; font-weight:500; color:var(--muted); cursor:pointer; list-style:none; padding:0; }
+  main details.capfold > summary::-webkit-details-marker { display:none; }
+  main details.capfold > div { margin-top:6px; font-size:13.5px; color:var(--muted); }
+  main :is(.table-wrap, .tablewrap):has(+ details.capfold) { margin-bottom:0; }
+  main p.tabcap + :is(.table-wrap, .tablewrap) { margin-top:6px; }
   main .callout.remarks > ul { margin:8px 0 0; padding-left:24px; }
   main .callout.remarks li { max-width:none; }
   li.tg { list-style:none; position:relative; }
@@ -884,12 +891,7 @@
 <h2 id="s-2-the-surge-is-a-few-very-large-taker-orders">2. The surge is a few very large taker orders</h2>
 <p>One order of $9.29m carries 26 % of episode 39's hit-side flow, and one wallet's 14 market buys carry 79 % of episode 47's. Each of them walks 83 to 366 price levels in one millisecond, so no maker reacts inside the order; the makers that are filled are the ones whose orders were already resting deep.</p>
 <p class="tabcap"><strong>Table 1.</strong> The hit-side taker orders of at least $1m inside the replay windows.</p>
-<details class="fold">
-<summary>Column key and source</summary>
-<div>
-<p>One row per order (the 14 clips of episode 47 as one row). <code>levels</code> = price levels filled; <code>worst fill</code> = the worst fill against the mid strictly before the order; <code>filled against</code> = the split of the order's size by maker, the three largest observed MMs named and makers with no MM label as non-MM. Takers are coded by hit-side USD in the union window. Source <code>tables/tick_ep0*_prints.csv</code>, <code>tick_ep0*_takers.csv</code>.</p>
-</div>
-</details>
+
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -961,7 +963,12 @@
 <td style="text-align: left;">MM01 12–38 %, X01 0–22 %, X04 0–52 %, MM02 3–18 %, non-MM 0–25 %</td>
 </tr>
 </tbody>
-</table></div>
+</table></div><details class="capfold">
+<summary>Column key and source</summary>
+<div>
+<p>One row per order (the 14 clips of episode 47 as one row). <code>levels</code> = price levels filled; <code>worst fill</code> = the worst fill against the mid strictly before the order; <code>filled against</code> = the split of the order's size by maker, the three largest observed MMs named and makers with no MM label as non-MM. Takers are coded by hit-side USD in the union window. Source <code>tables/tick_ep0*_prints.csv</code>, <code>tick_ep0*_takers.csv</code>.</p>
+</div>
+</details>
 <ul>
 <li class="tg"><details><summary><strong>Orders of at least $1m carry 36 % and 73 % of the surge.</strong></summary><div class="tgb"> Episode 39's surge window holds $42.1m of taker sells in 3,364 orders; the four orders of at least $1m carry 36 % of it and the orders of at least $250k carry 48 %. Liquidations are 13 %. Episode 47's surge window holds $30.3m of taker buys in 2,098 orders; the 15 orders of at least $1m carry 73 %, and T01's 14 clips are all of them. There is no forced flow.</div></details></li>
 <li class="tg"><details><summary><strong>The held class takes a third of the large orders.</strong></summary><div class="tgb"> Across the orders of at least $1m, the held class took 35 % (episode 39) and 34 % (episode 47) of the size, the fast class 11 % and 23 %, other labelled MMs 7 % and 13 %, and makers with no MM label 41 % and 9 %. The non-MM orders hit in episode 39 had rested a median 37 hours; every MM order hit had rested 1 to 14 seconds.</div></details></li>
@@ -984,12 +991,7 @@
 <h2 id="s-3-same-taker-orders-two-outcomes">3. Same taker orders, two outcomes</h2>
 <p>The same order fills the MMs that are flat again in minutes and the MMs that hold for hours. What separates them is what they do after the order: fast MMs either sell the position back as takers or keep large resting orders on both sides so the exit fills passively, while held MMs keep their quotes where they were and wait.</p>
 <p class="tabcap"><strong>Table 2.</strong> Every big absorber of both episodes (surge-window share of at least 2 %): what it absorbed, how long it took to give 60 % back, and how.</p>
-<details class="fold">
-<summary>Column key and source</summary>
-<div>
-<p><code>absorbed</code> and <code>share</code> over the surge window; <code>peak</code> in kHYPE; T60 in minutes after the peak (<code>&gt; 6 h</code> = not reached); <code>taker share of give-back</code> = own exit-side taker HYPE over all exit-side HYPE traded between the peak and T60; <code>kept SAME depth</code> = resting SAME-side HYPE within 25 bps of the mid 60 s after the peak over its value at the onset; <code>d_SAME pre</code> = median distance of the wallet's best SAME quote behind the market best over the 2 h before the onset; <code>skew post</code> = median skew over the 10 minutes after the peak, positive = tilted toward getting out. Source <code>tables/tick_ep0*_recovery.csv</code>.</p>
-</div>
-</details>
+
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -1177,7 +1179,12 @@
 <td style="text-align: right;">asks only</td>
 </tr>
 </tbody>
-</table></div>
+</table></div><details class="capfold">
+<summary>Column key and source</summary>
+<div>
+<p><code>absorbed</code> and <code>share</code> over the surge window; <code>peak</code> in kHYPE; T60 in minutes after the peak (<code>&gt; 6 h</code> = not reached); <code>taker share of give-back</code> = own exit-side taker HYPE over all exit-side HYPE traded between the peak and T60; <code>kept SAME depth</code> = resting SAME-side HYPE within 25 bps of the mid 60 s after the peak over its value at the onset; <code>d_SAME pre</code> = median distance of the wallet's best SAME quote behind the market best over the 2 h before the onset; <code>skew post</code> = median skew over the 10 minutes after the peak, positive = tilted toward getting out. Source <code>tables/tick_ep0*_recovery.csv</code>.</p>
+</div>
+</details>
 <ul>
 <li class="tg"><details><summary><strong>The same order hits both classes.</strong></summary><div class="tgb"> In the surge seconds the held class and the fast class are filled by the same order: 31 % and 18 % of the $9.29m order, 24 % and 51 % of the 01:14:55 clip, 50 % and 17 % of the 01:15:28 clip. Both groups quoted 3 to 8 bps behind the best before the burst, except X04 and X05, whose resting orders sat 20 to 43 bps away, and both had among the largest resting sizes.</div></details></li>
 <li class="tg"><details><summary><strong>Fast MMs get the position back in two ways: by taking, or by keeping both sides posted.</strong></summary><div class="tgb"> X05 sells the position itself, 91 % of its give-back in own taker trades inside four minutes. X01 and X04 are passive, at most 20 % of their give-back in taker trades; the rest is exit-side maker fills within four to seven minutes, because they keep large resting orders on both sides through the burst and the price moves back through their exit-side orders.</div></details></li>
