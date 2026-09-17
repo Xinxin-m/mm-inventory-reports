@@ -278,6 +278,11 @@
 
   /* analysis bullets as toggles (make_public_site.py, 2026-09-17): the bold lead sentence is the
      summary, the explanation opens under it. Scoped to li.tg so the pages' own details keep their look. */
+  /* toggles stack in one column. A bullet list written as <ul class="findings"> must not pick up the
+     two-column grid of the Summary's .findings cards. */
+  main ul.findings { display:block; margin:14px 0 20px; padding-left:24px; }
+  main .callout.remarks > ul { margin:8px 0 0; padding-left:24px; }
+  main .callout.remarks li { max-width:none; }
   li.tg { list-style:none; position:relative; }
   li.tg > details { margin:0; padding:0; border:0; border-radius:0; background:none; box-shadow:none; }
   li.tg > details > summary { list-style:none; cursor:pointer; font-weight:inherit; color:inherit; }
@@ -309,8 +314,8 @@
 <aside class="sitenav" id="toc" aria-label="Site menu"><div class="navhead"><a class="navbrand homelink" href="overview.html">HYPE MM inventory</a><button class="navbtn" type="button" data-navtheme title="Light or dark" aria-label="Light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" stroke="none"/></svg></button><label class="navbtn" for="navoff" title="Hide the menu" aria-label="Hide the menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg></label></div>
 <div class="navscroll">
 <a class="navitem" href="overview.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4.5 20 11"/><path d="M6.5 9.5V19.5h11V9.5"/></svg>All reports</a>
-<p class="navgroup">Net taker imbalance &middot; |z<sub>NET</sub>|</p>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-inventory-shock-09-08.html"><span class="t">Exp8 &mdash; Net-flow events</span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<p class="navgroup">Reports</p>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-inventory-shock-09-08.html"><span class="t">Exp8 &mdash; Taker imbalance, z<sub>NET</sub></span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <a class="navsec" href="exp8-inventory-shock-09-08.html#summary-h"><span class="n"></span><span class="x">Summary</span></a>
@@ -348,7 +353,6 @@
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-summary">Broad absorption, few carriers</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-state">State before the event</a>
 <a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-orders">How they had their orders placed, absorption side against opposite side<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#pop-unwind">Early and late unwinders<span class="navnew">NEW</span></a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-aggr">Unwind aggressiveness</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-peers">Shocked against unshocked</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-equity">Equity and closed PnL</a>
@@ -401,25 +405,7 @@
 <div class="navsubs"><div>
 </div></div></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-unwinders.html"><span class="t">Exp8 &mdash; Unwinders</span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#pop-unwind"><span class="n">4.4</span><span class="x">Early and late unwinders<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#pop-unwind-skew">Order skew by timing class<span class="navnew">NEW</span></a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-h"><span class="n">12</span><span class="x">Quoting during the unwind<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-unwinders.html#x9-unwind-def">Definitions</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-window">No tilt over the whole window<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-state">Fast unwinders lean while holding<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-tests">Between MMs, not within one<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-absorbers">Fast and slow accumulators<span class="navnew">NEW</span></a>
-</div></div></div>
-</div></div></div></div>
-<p class="navgroup">One-sided taker surges &middot; F1</p>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-one-sided-surges.html"><span class="t">Exp8 &mdash; One-sided surges</span><span class="d">2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-one-sided-surges.html"><span class="t">Exp8 &mdash; One-sided taker surges</span><span class="d">2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <div class="navsrow"><a class="navsec" data-new="2026-09-16" href="exp8-one-sided-surges.html#families-h"><span class="n">9</span><span class="x">Taker-surge families<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
@@ -433,7 +419,6 @@
 <a class="navsub" data-new="2026-09-16" href="exp8-one-sided-surges.html#families-f1-pop">F1 population statistics<span class="navnew">NEW</span></a>
 </div></div></div>
 </div></div></div></div>
-<p class="navgroup">Wallet inventory shocks</p>
 <div class="navpage"><div class="navrow"><a class="navlink" href="exp8-event-studies.html"><span class="t">Exp8 &mdash; Event studies</span><span class="d">2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
@@ -475,25 +460,39 @@
 <a class="navsub" data-new="2026-09-16" href="exp8-event-studies.html#x10-tick-seconds">Around the $9.29m sell<span class="navnew">NEW</span></a>
 </div></div></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-resting-orders-recovery.html"><span class="t">Exp8 &mdash; Resting orders, recovery</span><span class="d">2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-unwinders.html"><span class="t">Exp8 &mdash; Unwinders</span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-16" href="exp8-resting-orders-recovery.html#x9-book-h"><span class="n">10</span><span class="x">A shocked MM's resting orders<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#pop-unwind"><span class="n">4.4</span><span class="x">Early and late unwinders<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
-<a class="navsub" href="exp8-resting-orders-recovery.html#x9-book-def">Definitions</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-resting-orders-recovery.html#x9-book-headline">Accumulating-side quote backs off<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-resting-orders-recovery.html#x9-book-cells">Olga's four predicted signs<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-resting-orders-recovery.html#x9-book-latency">Reaction and refill times<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-resting-orders-recovery.html#x9-book-grid">5-minute grid<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-resting-orders-recovery.html#x9-book-valid">Limits<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#pop-unwind-skew">Order skew by timing class<span class="navnew">NEW</span></a>
 </div></div></div>
 <div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-16" href="exp8-resting-orders-recovery.html#x9-pop-h"><span class="n">11</span><span class="x">Recovery speed, quote skew<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" data-new="2026-09-16" href="exp8-unwinders.html#x9-book-h"><span class="n">10</span><span class="x">A shocked MM's resting orders<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
-<a class="navsub" href="exp8-resting-orders-recovery.html#x9-pop-def">Definitions</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-resting-orders-recovery.html#x9-pop-funnel">812 shocks on 88 MMs<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-resting-orders-recovery.html#x9-pop-recovery">Half recover in 30 minutes<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-resting-orders-recovery.html#x9-pop-skew">Skew orders speed across MMs<span class="navnew">NEW</span></a>
+<a class="navsub" href="exp8-unwinders.html#x9-book-def">Definitions</a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-book-headline">Accumulating-side quote backs off<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-book-cells">Olga's four predicted signs<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-book-latency">Reaction and refill times<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-book-grid">5-minute grid<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-book-valid">Limits<span class="navnew">NEW</span></a>
+</div></div></div>
+<div class="navgrp">
+<div class="navsrow"><a class="navsec" data-new="2026-09-16" href="exp8-unwinders.html#x9-pop-h"><span class="n">11</span><span class="x">Recovery speed, quote skew<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsubs"><div>
+<a class="navsub" href="exp8-unwinders.html#x9-pop-def">Definitions</a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-pop-funnel">812 shocks on 88 MMs<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-pop-recovery">Half recover in 30 minutes<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-pop-skew">Skew orders speed across MMs<span class="navnew">NEW</span></a>
+</div></div></div>
+<div class="navgrp">
+<div class="navsrow"><a class="navsec" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-h"><span class="n">12</span><span class="x">Quoting during the unwind<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsubs"><div>
+<a class="navsub" href="exp8-unwinders.html#x9-unwind-def">Definitions</a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-window">No tilt over the whole window<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-state">Fast unwinders lean while holding<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-tests">Between MMs, not within one<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-absorbers">Fast and slow accumulators<span class="navnew">NEW</span></a>
 </div></div></div>
 </div></div></div></div>
 <div class="navpage"><div class="navrow"><a class="navlink" data-new="2026-09-10" href="exp10-tick-level-09-10.html"><span class="t">Exp10 &mdash; Tick level<span class="navnew">NEW</span></span><span class="d">rev. 2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
@@ -542,28 +541,28 @@
 <div class="navpage"><div class="navrow"><a class="navlink" data-new="2026-09-16" href="exp8-spot-quote-12-17.html"><span class="t">Exp8 &mdash; Spot quotes<span class="navnew">NEW</span></span><span class="d">2026-09-10</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
-<div class="navsrow"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-spot-quotes-and-perp-price-discovery-in-the-december-17-replay"><span class="n"></span><span class="x">Spot quotes and perp price discovery in the December 17 replay</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-spot-quotes-and-perp-price-discovery-in-the-december-17-replay"><span class="n">36</span><span class="x">Spot quotes, perp price discovery</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
 <a class="navsub" href="exp8-spot-quote-12-17.html#s-36-1-what-is-measured">What is measured</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-2-spot-and-perp-rise-together-with-much-greater-perp-buying">Spot and perp rise together, with much greater perp buying</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-3-the-largest-perp-jumps-are-one-wallet-s-one-million-dollar-market-buys">The largest perp jumps are one wallet's one-million-dollar market buys</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-4-what-one-clip-does-to-the-two-books">What one clip does to the two books</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-5-are-cancellations-catching-up-to-a-higher-spot-price">Are cancellations catching up to a higher spot price?</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-6-does-spot-help-forecast-the-perp-beyond-its-own-taker-flow">Does spot help forecast the perp beyond its own taker flow?</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-7-what-can-be-said-about-individual-market-makers">What can be said about individual market makers?</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-8-the-spot-reconstruction-is-stable-and-endpoint-semantics-change-the-fastest-window-figure">The spot reconstruction is stable, and endpoint semantics change the fastest-window figure</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-9-the-next-discriminating-test">The next discriminating test</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-2-spot-and-perp-rise-together-with-much-greater-perp-buying">Spot and perp rise together</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-3-the-largest-perp-jumps-are-one-wallet-s-one-million-dollar-market-buys">One wallet's $1m market buys</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-4-what-one-clip-does-to-the-two-books">One clip, two books</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-5-are-cancellations-catching-up-to-a-higher-spot-price">Cancellations and the spot price</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-6-does-spot-help-forecast-the-perp-beyond-its-own-taker-flow">Does spot forecast the perp?</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-7-what-can-be-said-about-individual-market-makers">Individual market makers</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-8-the-spot-reconstruction-is-stable-and-endpoint-semantics-change-the-fastest-window-figure">Reconstruction checks</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-9-the-next-discriminating-test">Next discriminating test</a>
 </div></div></div>
 <div class="navgrp">
-<div class="navsrow"><a class="navsec" href="exp8-spot-quote-12-17.html#s-37-why-some-hype-perp-jumps-hold-and-others-snap-back"><span class="n"></span><span class="x">Why some HYPE perp jumps hold and others snap back</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" href="exp8-spot-quote-12-17.html#s-37-why-some-hype-perp-jumps-hold-and-others-snap-back"><span class="n">37</span><span class="x">Jumps that hold, jumps that snap back</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
 <a class="navsub" href="exp8-spot-quote-12-17.html#s-what-is-measured">What is measured</a>
 <a class="navsub" href="exp8-spot-quote-12-17.html#s-the-1-minute-jumps">The 1-minute jumps</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-which-up-ticks-hold-and-which-snap-back">Which up-ticks hold and which snap back</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-where-makers-put-their-quotes-relative-to-the-spot-mid">Where makers put their quotes relative to the spot mid</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-the-same-addresses-make-markets-on-both-venues">The same addresses make markets on both venues</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-which-up-ticks-hold-and-which-snap-back">Which up-ticks hold</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-where-makers-put-their-quotes-relative-to-the-spot-mid">Maker quotes against the spot mid</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-the-same-addresses-make-markets-on-both-venues">Same addresses on both venues</a>
 <a class="navsub" href="exp8-spot-quote-12-17.html#s-validation">Validation</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-what-this-does-not-establish">What this does not establish</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-what-this-does-not-establish">Limits</a>
 </div></div></div>
 </div></div></div></div>
 <p class="navgroup">Where the work stands</p>

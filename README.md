@@ -7,18 +7,12 @@ Start at the hub, which lists every page:
 <https://hype-mm-inventory.vercel.app/> (also served at <https://xinxin-m.github.io/mm-inventory-reports/>)
 
 Reports
-The report pages are grouped by the event definition they read. The one Exp8 working file is published as five pages; section, table and figure numbers are those of the single record, and an old link into a section that moved is sent on to its new page.
+The one Exp8 working file is published as four pages. Each market-flow definition has its own page and the page title names it. Section, table and figure numbers are those of the single record, and an old link into a section that moved is sent on to its new page.
 
-Net taker imbalance, |z_NET| >= 3.70 on 30-minute boxes (event sets 1 and 2)
-- **[Exp8 - Net-flow events](exp8-inventory-shock-09-08.html)** (2026-09-08, revised 2026-09-17) - the Summary, notation and event-set key for every definition; the shock definition, every actively market-making MM around all 914 events, the 148-MM profile, absorbers against flagged MMs, the data caveats, synthesis, limits and decisions. The file keeps its `09-08` name so the shared link stays live.
-- **[Exp8 - Unwinders](exp8-unwinders.html)** (split out 2026-09-17) - sections 4.4 and 12: early and late unwinders among the 25,705 absorbers that accumulated, and how fast and slow unwinders quote.
-
-One-sided taker surges, family F1 (event set 3)
-- **[Exp8 - One-sided surges](exp8-one-sided-surges.html)** (split out 2026-09-17) - section 9: the 922 side surges against the net rule, with the section 4 statistics rerun on F1.
-
-Wallet inventory shocks, |z| >= 6 on a wallet's own inventory (event sets 4 and 5)
-- **[Exp8 - Event studies](exp8-event-studies.html)** (split out 2026-09-17) - sections 6, 7, 13 and 14: two tick replays, and episodes 39 and 47 at one minute and at tick level.
-- **[Exp8 - Resting orders, recovery](exp8-resting-orders-recovery.html)** (split out 2026-09-17) - sections 10 and 11: a shocked roster MM's resting orders, and recovery speed over the 812 population shocks.
+- **[Exp8 - Taker imbalance, z_NET](exp8-inventory-shock-09-08.html)** (2026-09-08, revised 2026-09-17) - 915 half hours with |z_NET| >= 3.70 (event set 1): the shock definition, every actively market-making MM around all 914 events, the 148-MM profile, absorbers against flagged MMs; plus the Summary, notation, event-set key, synthesis, limits and decisions for every page. The file keeps its `09-08` name so the shared link stays live.
+- **[Exp8 - One-sided taker surges](exp8-one-sided-surges.html)** (split out 2026-09-17) - section 9: the 922 side surges (event set 3) against the net rule, with the section 4 statistics rerun on them.
+- **[Exp8 - Event studies](exp8-event-studies.html)** (split out 2026-09-17) - sections 6, 7, 13 and 14: two tick replays, and episodes 39 and 47 at one minute and at tick level, each chosen from the 181 roster wallet shocks.
+- **[Exp8 - Unwinders](exp8-unwinders.html)** (split out 2026-09-17) - sections 4.4 and 12 on the taker-imbalance events, sections 10 and 11 on wallet inventory shocks.
 - **[Exp10 - Absorbers at tick level](exp10-tick-level-09-10.html)** (2026-09-10, revised 2026-09-16) - episodes 39 and 47 order by order.
 - **[Exp8 - Spot quotes and price discovery, 2025-12-17](exp8-spot-quote-12-17.html)** (2026-09-10) - sections 36 and 37 of the Exp8 record.
 
