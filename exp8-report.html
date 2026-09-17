@@ -116,7 +116,13 @@
           background:var(--surface); border-right:1px solid var(--line); overflow-y:auto; }
   #navtoggle { position:fixed; top:11px; left:11px; z-index:40; font-size:13px; padding:7px 10px;
                color:var(--text); background:var(--surface); border:1px solid var(--line);
-               border-radius:8px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.12); }
+               border-radius:8px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.12);
+               user-select:none; line-height:1.3; }
+  /* the menu is a CSS checkbox: it hides and shows without scripts (2026-09-16) */
+  #navoff { position:fixed; top:0; left:0; width:1px; height:1px; opacity:0; pointer-events:none; }
+  #navoff:focus-visible + #navtoggle { outline:3px solid var(--accent); outline-offset:3px; }
+  #navoff:checked ~ aside.sitenav { display:none; }
+  #navoff:checked ~ main { margin-left:0; padding-top:62px; }
   main { margin-left:262px; }   /* the report pages' own rule is 246px; the menu is wider */
   #navhome { position:fixed; top:11px; left:96px; z-index:40; font-size:17px; line-height:1;
              padding:5px 11px 7px; text-decoration:none;
@@ -161,7 +167,8 @@
 <!-- p0904:reletter:start --><!-- p0904:reletter:end -->
 </head>
 <body>
-<button id="navtoggle" type="button" aria-expanded="true" aria-controls="toc" title="Show or hide the menu">&#10005; Menu</button>
+<input type="checkbox" id="navoff" aria-label="Hide the menu">
+<label id="navtoggle" for="navoff" title="Show or hide the menu">&#9776; Menu</label>
 <a id="navhome" href="overview.html" title="All reports (home)" aria-label="All reports (home)">&#8962;</a>
 <aside class="sitenav" id="toc"><a class="homelink" href="overview.html"><span aria-hidden="true">&#8962;</span> MM inventory shocks on HYPE</a>
 <p class="sub">Exp8, Exp9 and Exp10, 2025-03-27 &rarr; 2026-06-30. Ten roster MMs against all labelled MMs.</p>
@@ -169,37 +176,24 @@
 <nav aria-label="Home &mdash; all reports">
 <a class="open" href="overview.html">Open Home &mdash; all reports &rarr;</a>
 </nav></details>
-<details><summary>Exp10 &mdash; Absorbers at tick level (2026-09-10)</summary>
-<nav aria-label="Exp10 &mdash; Absorbers at tick level (2026-09-10)">
-<a class="open" href="exp10-tick-level-09-10.html">Open Exp10 &mdash; Absorbers at tick level (2026-09-10) &rarr;</a>
-<a href="exp10-tick-level-09-10.html#s-summary">Summary</a>
-<a href="exp10-tick-level-09-10.html#s-1-what-was-measured">1. What was measured</a>
-<a href="exp10-tick-level-09-10.html#s-2-the-surge-is-a-few-very-large-prints">2. The surge is a few very large prints</a>
-<a href="exp10-tick-level-09-10.html#s-3-same-prints-two-outcomes">3. Same prints, two outcomes</a>
-<a href="exp10-tick-level-09-10.html#s-4-second-by-second-tick-by-tick">4. Second by second, tick by tick</a>
-<a href="exp10-tick-level-09-10.html#s-5-animation">5. Animation</a>
-<a href="exp10-tick-level-09-10.html#s-6-the-whole-mm-population-recovery-speed-and-quote-skew">6. The whole MM population: recovery speed and quote skew</a>
-<a href="exp10-tick-level-09-10.html#s-7-what-this-does-not-establish">7. What this does not establish</a>
-<a href="exp10-tick-level-09-10.html#s-8-decisions-for-xinmeng">8. Decisions for Xinmeng</a>
-<a href="exp10-tick-level-09-10.html#s-appendix-sources-code-validation-reproduction">Appendix: sources, code, validation, reproduction</a>
-</nav></details>
-<details><summary>Exp8 &mdash; Inventory shocks, redefinition (2026-09-08)</summary>
-<nav aria-label="Exp8 &mdash; Inventory shocks, redefinition (2026-09-08)">
-<a class="open" href="exp8-inventory-shock-09-08.html">Open Exp8 &mdash; Inventory shocks, redefinition (2026-09-08) &rarr;</a>
+<details><summary>Exp8 &mdash; Inventory shocks, redefinition (rev. 2026-09-16)</summary>
+<nav aria-label="Exp8 &mdash; Inventory shocks, redefinition (rev. 2026-09-16)">
+<a class="open" href="exp8-inventory-shock-09-08.html">Open Exp8 &mdash; Inventory shocks, redefinition (rev. 2026-09-16) &rarr;</a>
 <a href="exp8-inventory-shock-09-08.html#summary-h">Summary</a>
 <a href="exp8-inventory-shock-09-08.html#notation-h">Notation and shared definitions</a>
-<a href="exp8-inventory-shock-09-08.html#axes-h">1. The three axes, and what each step did for them</a>
+<a href="exp8-inventory-shock-09-08.html#events-h">Event definitions: five event sets</a>
+<a href="exp8-inventory-shock-09-08.html#axes-h">1. The three axes of the shock definition</a>
 <a href="exp8-inventory-shock-09-08.html#lit-h">2. What the literature does with order imbalance</a>
 <a href="exp8-inventory-shock-09-08.html#imb-h">3. Market taker-imbalance shocks: which measure, which cutoff, which bin</a>
 <a href="exp8-inventory-shock-09-08.html#imb-def" class="sub">3.1 Definitions</a>
 <a href="exp8-inventory-shock-09-08.html#imb-cutoffs" class="sub">3.2 Which rule</a>
 <a href="exp8-inventory-shock-09-08.html#imb-3way" class="sub">3.3 The three-way split on the recommended rule</a>
-<a href="exp8-inventory-shock-09-08.html#imb-alt" class="sub">3.4 A price-first trigger, as the literature defines it, at the same selectivity</a>
+<a href="exp8-inventory-shock-09-08.html#imb-alt" class="sub">3.4 Two shock definitions: price-first and flow-first</a>
 <a href="exp8-inventory-shock-09-08.html#pop-h">4. The HYPE MM population around events and matched controls</a>
 <a href="exp8-inventory-shock-09-08.html#pop-def" class="sub">4.1 Definitions</a>
 <a href="exp8-inventory-shock-09-08.html#pop-summary" class="sub">4.2 Broad absorption, concentrated inventory displacement</a>
 <a href="exp8-inventory-shock-09-08.html#pop-state" class="sub">4.3 State before the event at two horizons</a>
-<a href="exp8-inventory-shock-09-08.html#pop-unwind" class="sub">4.4 Early and late unwinders</a>
+<a href="exp8-inventory-shock-09-08.html#pop-unwind" class="sub">4.4 Early and late unwinders among absorbers that accumulated inventory</a>
 <a href="exp8-inventory-shock-09-08.html#pop-aggr" class="sub">4.5 Aggressiveness of the unwind</a>
 <a href="exp8-inventory-shock-09-08.html#pop-peers" class="sub">4.6 Shocked against unshocked MMs, before and after</a>
 <a href="exp8-inventory-shock-09-08.html#pop-equity" class="sub">4.7 Equity, closed PnL and cross-coin context</a>
@@ -224,19 +218,117 @@
 <a href="exp8-inventory-shock-09-08.html#liq-cross" class="sub">7.3 HYPE-driven, not cross-margin</a>
 <a href="exp8-inventory-shock-09-08.html#liq-absorb" class="sub">7.4 Who absorbed the forced flow, and what the roster shocks were made of</a>
 <a href="exp8-inventory-shock-09-08.html#tickb-h" class="sub">7.5 Replay B on the order stream: the same engine, a slower move, a third of it vacated by cancels</a>
-<a href="exp8-inventory-shock-09-08.html#data-h">8. Four things about the data that change how earlier results must be read</a>
+<a href="exp8-inventory-shock-09-08.html#absorbers-h">8. Who absorbs the flow, and who the shock rule flags</a>
+<a href="exp8-inventory-shock-09-08.html#absorbers-def" class="sub">8.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#absorbers-escape" class="sub">8.2 In 38.6% of events the rule flags none of the five biggest absorbers</a>
+<a href="exp8-inventory-shock-09-08.html#absorbers-scale" class="sub">8.3 The absorbers move the most inventory and carry the largest own scale</a>
+<a href="exp8-inventory-shock-09-08.html#absorbers-roundtrip" class="sub">8.4 Three quarters never reach the threshold; the rest reach it and give it back</a>
+<a href="exp8-inventory-shock-09-08.html#absorbers-rule" class="sub">8.5 What the peak rule would flag that the end rule does not</a>
+<a href="exp8-inventory-shock-09-08.html#families-h">9. Taker-surge event families: what a one-sided rule sees that the net rule does not</a>
+<a href="exp8-inventory-shock-09-08.html#families-def" class="sub">9.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#families-sets" class="sub">9.2 The two rules disagree about which half hours matter</a>
+<a href="exp8-inventory-shock-09-08.html#families-timing" class="sub">9.3 The 30-minute bin label is not the event</a>
+<a href="exp8-inventory-shock-09-08.html#families-price" class="sub">9.4 Price: the surge almost never runs against the move, and a third of big moves come back</a>
+<a href="exp8-inventory-shock-09-08.html#families-status" class="sub">9.5 What exists and what is still open</a>
+<a href="exp8-inventory-shock-09-08.html#families-f1-def" class="sub">9.6 The one-sided family F1, as implemented</a>
+<a href="exp8-inventory-shock-09-08.html#families-f1-pop" class="sub">9.7 The section 4 statistics on F1, shocked against unshocked</a>
+<a href="exp8-inventory-shock-09-08.html#x9-book-h">10. What a shocked roster MM does to its own resting orders</a>
+<a href="exp8-inventory-shock-09-08.html#x9-book-def" class="sub">10.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#x9-book-headline" class="sub">10.2 After the peak the accumulating-side quote moves away and the unwind-side quote barely moves</a>
+<a href="exp8-inventory-shock-09-08.html#x9-book-cells" class="sub">10.3 Olga's four predicted signs: touch posts confirm, touch cancels come out with the opposite sign</a>
+<a href="exp8-inventory-shock-09-08.html#x9-book-latency" class="sub">10.4 The book reacts within 9 minutes at the median and is refilled within 30 minutes in 87% of shocks</a>
+<a href="exp8-inventory-shock-09-08.html#x9-book-grid" class="sub">10.5 On a 5-minute grid the SAME quote is furthest out 5 minutes after the peak and back within an hour</a>
+<a href="exp8-inventory-shock-09-08.html#x9-book-valid" class="sub">10.6 Limits</a>
+<a href="exp8-inventory-shock-09-08.html#x9-pop-h">11. Population shocks: how fast MMs recover, and what quote skew says about it</a>
+<a href="exp8-inventory-shock-09-08.html#x9-pop-def" class="sub">11.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#x9-pop-funnel" class="sub">11.2 812 shocks on 88 of 148 MMs, 5.2 per wallet per 100 active days</a>
+<a href="exp8-inventory-shock-09-08.html#x9-pop-recovery" class="sub">11.3 Half of the shocks have 60% of the excursion back within 30 minutes; 11.9% never do within six hours</a>
+<a href="exp8-inventory-shock-09-08.html#x9-pop-skew" class="sub">11.4 Exit-side quoting orders recovery speed across MMs, not shock by shock</a>
+<a href="exp8-inventory-shock-09-08.html#x9-unwind-h">12. How MMs quote while they unwind, by recovery speed</a>
+<a href="exp8-inventory-shock-09-08.html#x9-unwind-def" class="sub">12.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#x9-unwind-window" class="sub">12.2 Over the whole unwind window the median wallet-event shows no tilt</a>
+<a href="exp8-inventory-shock-09-08.html#x9-unwind-state" class="sub">12.3 While at least 75% of the position is still on, fast unwinders lean toward the exit</a>
+<a href="exp8-inventory-shock-09-08.html#x9-unwind-tests" class="sub">12.4 Faster unwinders lean more, between MMs and hardly within one</a>
+<a href="exp8-inventory-shock-09-08.html#x9-unwind-absorbers" class="sub">12.5 Timing and speed classes on the accumulated absorbers</a>
+<a href="exp8-inventory-shock-09-08.html#x10-min-h">13. Why a few MMs absorb most of a shock: two episodes at one minute</a>
+<a href="exp8-inventory-shock-09-08.html#x10-min-def" class="sub">13.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#x10-min-who" class="sub">13.2 The largest absorbers quoted closer than their peers or rested far more size</a>
+<a href="exp8-inventory-shock-09-08.html#x10-min-stories" class="sub">13.3 MM01 did not pull, the far resting orders were run through, and small MMs were refilled</a>
+<a href="exp8-inventory-shock-09-08.html#x10-min-build" class="sub">13.4 Nearly every observed MM builds in each burst, and half are reducing ten minutes later</a>
+<a href="exp8-inventory-shock-09-08.html#x10-min-valid" class="sub">13.5 Limits</a>
+<a href="exp8-inventory-shock-09-08.html#x10-tick-h">14. The same two episodes at tick level: a few large taker orders, two outcomes</a>
+<a href="exp8-inventory-shock-09-08.html#x10-tick-def" class="sub">14.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#x10-tick-orders" class="sub">14.2 The surge is a few single taker orders, each crossing 80 to 370 price levels in one millisecond</a>
+<a href="exp8-inventory-shock-09-08.html#x10-tick-outcomes" class="sub">14.3 The same orders fill both groups; what the MM does next separates them</a>
+<a href="exp8-inventory-shock-09-08.html#x10-tick-seconds" class="sub">14.4 Second by second around the $9.29m sell</a>
+<a href="exp8-inventory-shock-09-08.html#data-h">15. Four things about the data that change how earlier results must be read</a>
 <a href="exp8-inventory-shock-09-08.html#synthesis-h">Synthesis: what the study establishes</a>
-<a href="exp8-inventory-shock-09-08.html#syn-trigger" class="sub">The trigger is stable; the price label is a sensitivity choice</a>
-<a href="exp8-inventory-shock-09-08.html#syn-mech" class="sub">The population result is a separation between quoting and carrying</a>
-<a href="exp8-inventory-shock-09-08.html#syn-controls" class="sub">Controls narrow the claims</a>
+<a href="exp8-inventory-shock-09-08.html#syn-mech" class="sub">Quoting is broad, carrying is not</a>
+<a href="exp8-inventory-shock-09-08.html#syn-controls" class="sub">Controls turn several apparent responses into ordinary market making</a>
 <a href="exp8-inventory-shock-09-08.html#syn-ticks" class="sub">The event clock hides a two-stage microstructure</a>
+<a href="exp8-inventory-shock-09-08.html#syn-flag" class="sub">Absorbing the flow and being flagged for it are different measurements</a>
+<a href="exp8-inventory-shock-09-08.html#syn-trigger" class="sub">The trigger is stable; the price label is a choice</a>
 <a href="exp8-inventory-shock-09-08.html#syn-boundary" class="sub">What remains descriptive</a>
-<a href="exp8-inventory-shock-09-08.html#limits-h">9. What this does not establish</a>
-<a href="exp8-inventory-shock-09-08.html#decisions-h">10. Decisions for Xinmeng, and open questions</a>
-<a href="exp8-inventory-shock-09-08.html#dec-rules" class="sub">10.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#dec-labels" class="sub">10.2 Labels and framing</a>
-<a href="exp8-inventory-shock-09-08.html#dec-followups" class="sub">10.3 Follow-ups the results point to</a>
-<a href="exp8-inventory-shock-09-08.html#appendix-h">Appendix: sources, code, validation, reproduction</a>
+<a href="exp8-inventory-shock-09-08.html#limits-h">16. What this does not establish</a>
+<a href="exp8-inventory-shock-09-08.html#decisions-h">17. Decisions for Xinmeng, and open questions</a>
+<a href="exp8-inventory-shock-09-08.html#dec-rules" class="sub">17.1 Definitions</a>
+<a href="exp8-inventory-shock-09-08.html#dec-labels" class="sub">17.2 Labels and framing</a>
+<a href="exp8-inventory-shock-09-08.html#dec-followups" class="sub">17.3 Follow-ups the results point to</a>
+<a href="exp8-inventory-shock-09-08.html#appendix-h">Appendix: data sources</a>
+</nav></details>
+<details><summary>Exp10 &mdash; Absorbers at tick level (rev. 2026-09-16)</summary>
+<nav aria-label="Exp10 &mdash; Absorbers at tick level (rev. 2026-09-16)">
+<a class="open" href="exp10-tick-level-09-10.html">Open Exp10 &mdash; Absorbers at tick level (rev. 2026-09-16) &rarr;</a>
+<a href="exp10-tick-level-09-10.html#s-summary">Summary</a>
+<a href="exp10-tick-level-09-10.html#s-1-what-was-measured">1. What was measured</a>
+<a href="exp10-tick-level-09-10.html#s-2-the-surge-is-a-few-very-large-taker-orders">2. The surge is a few very large taker orders</a>
+<a href="exp10-tick-level-09-10.html#s-3-same-taker-orders-two-outcomes">3. Same taker orders, two outcomes</a>
+<a href="exp10-tick-level-09-10.html#s-4-second-by-second-order-by-order">4. Second by second, order by order</a>
+<a href="exp10-tick-level-09-10.html#s-5-animation">5. Animation</a>
+<a href="exp10-tick-level-09-10.html#s-6-the-whole-mm-population-recovery-speed-and-quote-skew">6. The whole MM population: recovery speed and quote skew</a>
+<a href="exp10-tick-level-09-10.html#s-7-what-this-does-not-establish">7. What this does not establish</a>
+<a href="exp10-tick-level-09-10.html#s-8-decisions-for-xinmeng">8. Decisions for Xinmeng</a>
+<a href="exp10-tick-level-09-10.html#s-appendix-data-sources">Appendix: data sources</a>
+</nav></details>
+<details><summary>Exp8 &mdash; Spot quotes and price discovery, 2025-12-17 (2026-09-10)</summary>
+<nav aria-label="Exp8 &mdash; Spot quotes and price discovery, 2025-12-17 (2026-09-10)">
+<a class="open" href="exp8-spot-quote-12-17.html">Open Exp8 &mdash; Spot quotes and price discovery, 2025-12-17 (2026-09-10) &rarr;</a>
+<a href="exp8-spot-quote-12-17.html#s-36-spot-quotes-and-perp-price-discovery-in-the-december-17-replay">Spot quotes and perp price discovery in the December 17 replay</a>
+<a href="exp8-spot-quote-12-17.html#s-36-1-what-is-measured" class="sub">What is measured</a>
+<a href="exp8-spot-quote-12-17.html#s-36-2-spot-and-perp-rise-together-with-much-greater-perp-buying" class="sub">Spot and perp rise together, with much greater perp buying</a>
+<a href="exp8-spot-quote-12-17.html#s-36-3-the-largest-perp-jumps-are-one-wallet-s-one-million-dollar-market-buys" class="sub">The largest perp jumps are one wallet's one-million-dollar market buys</a>
+<a href="exp8-spot-quote-12-17.html#s-36-4-what-one-clip-does-to-the-two-books" class="sub">What one clip does to the two books</a>
+<a href="exp8-spot-quote-12-17.html#s-36-5-are-cancellations-catching-up-to-a-higher-spot-price" class="sub">Are cancellations catching up to a higher spot price?</a>
+<a href="exp8-spot-quote-12-17.html#s-36-6-does-spot-help-forecast-the-perp-beyond-its-own-taker-flow" class="sub">Does spot help forecast the perp beyond its own taker flow?</a>
+<a href="exp8-spot-quote-12-17.html#s-36-7-what-can-be-said-about-individual-market-makers" class="sub">What can be said about individual market makers?</a>
+<a href="exp8-spot-quote-12-17.html#s-36-8-the-spot-reconstruction-is-stable-and-endpoint-semantics-change-the-fastest-window-figure" class="sub">The spot reconstruction is stable, and endpoint semantics change the fastest-window figure</a>
+<a href="exp8-spot-quote-12-17.html#s-36-9-the-next-discriminating-test" class="sub">The next discriminating test</a>
+<a href="exp8-spot-quote-12-17.html#s-37-why-some-hype-perp-jumps-hold-and-others-snap-back">Why some HYPE perp jumps hold and others snap back</a>
+<a href="exp8-spot-quote-12-17.html#s-what-is-measured" class="sub">What is measured</a>
+<a href="exp8-spot-quote-12-17.html#s-the-1-minute-jumps" class="sub">The 1-minute jumps</a>
+<a href="exp8-spot-quote-12-17.html#s-which-up-ticks-hold-and-which-snap-back" class="sub">Which up-ticks hold and which snap back</a>
+<a href="exp8-spot-quote-12-17.html#s-where-makers-put-their-quotes-relative-to-the-spot-mid" class="sub">Where makers put their quotes relative to the spot mid</a>
+<a href="exp8-spot-quote-12-17.html#s-the-same-addresses-make-markets-on-both-venues" class="sub">The same addresses make markets on both venues</a>
+<a href="exp8-spot-quote-12-17.html#s-validation" class="sub">Validation</a>
+<a href="exp8-spot-quote-12-17.html#s-what-this-does-not-establish" class="sub">What this does not establish</a>
+</nav></details>
+<details><summary>The taker-surge storyline (2026-09-15)</summary>
+<nav aria-label="The taker-surge storyline (2026-09-15)">
+<a class="open" href="storyline.html">Open The taker-surge storyline (2026-09-15) &rarr;</a>
+<a href="storyline.html#story-figure">The flow chart</a>
+<a href="storyline.html#story-evidence">Evidence behind each node</a>
+<a href="storyline.html#story-map">Read against the draft's Figure 1</a>
+</nav></details>
+<details><summary>Review status (updated 2026-09-16)</summary>
+<nav aria-label="Review status (updated 2026-09-16)">
+<a class="open" href="review-status.html">Open Review status (updated 2026-09-16) &rarr;</a>
+<a href="review-status.html#r0916">The 2026-09-11 and 2026-09-15 reviews</a>
+<a href="review-status.html#r0916-exp8" class="sub">Exp8 page points</a>
+<a href="review-status.html#r0916-exp10" class="sub">Exp10 page points</a>
+<a href="review-status.html#r0916-asks" class="sub">Analysis requests</a>
+<a href="review-status.html#r0916-plans" class="sub">Plans: executed and open</a>
+<a href="review-status.html#r0916-decisions" class="sub">Decisions waiting for Xinmeng</a>
+<a href="review-status.html#r0902">The 2026-09-02 review</a>
 </nav></details>
 <details class="current" open><summary>Exp8 &mdash; Full report (2026-09-04)</summary>
 <nav aria-label="Exp8 &mdash; Full report (2026-09-04)">
@@ -304,14 +396,6 @@
 <a href="briefing.html#next">Order of work</a>
 <a href="briefing.html#limits">What it does not establish</a>
 <a href="briefing.html#runsheet">15-minute running order</a>
-</nav></details>
-<details><summary>Review status, 2026-09-02 points (2026-09-04)</summary>
-<nav aria-label="Review status, 2026-09-02 points (2026-09-04)">
-<a class="open" href="review-status.html">Open Review status, 2026-09-02 points (2026-09-04) &rarr;</a>
-<a href="review-status.html#olga">Olga's six points</a>
-<a href="review-status.html#ruizhe">Ruizhe's five points</a>
-<a href="review-status.html#exp9">Where the Exp9 results are</a>
-<a href="review-status.html#notyet">Not in the report yet</a>
 </nav></details>
 <p class="foot">Descriptive, not causal. Wallets by roster rank only. Generated by <code>make_public_site.py</code>.</p></aside>
 
@@ -3670,23 +3754,6 @@ studies are covered in total. Quote distance in these panels is maker-fill execu
 
 <script>
   (function () {
-    var n = document.getElementById('navtoggle');
-    function paint(off) {
-      if (off) { document.documentElement.setAttribute('data-nav', 'off'); }
-      else { document.documentElement.removeAttribute('data-nav'); }
-      n.setAttribute('aria-expanded', off ? 'false' : 'true');
-      n.innerHTML = off ? '\u2630 Menu' : '\u2715 Menu';
-    }
-    var savedNav = null;
-    try { savedNav = localStorage.getItem('mm-site-nav'); } catch (e) {}
-    paint(savedNav === 'off');
-    n.addEventListener('click', function () {
-      var off = document.documentElement.getAttribute('data-nav') !== 'off';
-      paint(off);
-      try { localStorage.setItem('mm-site-nav', off ? 'off' : 'on'); } catch (e) {}
-    });
-  })();
-  (function () {
     var b = document.getElementById('theme');
     var saved = null;
     try { saved = localStorage.getItem('exp8-theme'); } catch (e) {}
@@ -3698,6 +3765,15 @@ studies are covered in total. Quote distance in these panels is maker-fill execu
       var next = dark ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       try { localStorage.setItem('exp8-theme', next); } catch (e) {}
+    });
+  })();
+</script>
+<script>
+  (function () {
+    var c = document.getElementById('navoff'); if (!c) return;
+    try { c.checked = localStorage.getItem('mm-site-nav') === 'off'; } catch (e) {}
+    c.addEventListener('change', function () {
+      try { localStorage.setItem('mm-site-nav', c.checked ? 'off' : 'on'); } catch (e) {}
     });
   })();
 </script>
