@@ -425,11 +425,14 @@
 <div class="navgrp"><a class="navsec" href="storyline.html#story-map">Read against the draft's Figure 1</a><div class="navsubs"><div>
 </div></div></div>
 </div></div></div></div>
-<div class="navpage is-current is-open"><div class="navrow"><a class="navlink" href="#"><span class="t">Review status</span><span class="d">updated 2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="true" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage is-current is-open"><div class="navrow"><a class="navlink" href="#"><span class="t">Review status</span><span class="d">updated 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="true" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp"><a class="navsec" href="#r0916">The 2026-09-11 and 2026-09-15 reviews</a><div class="navsubs"><div>
+<div class="navgrp"><a class="navsec" href="#r0917">What changed on 2026-09-17</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="#r0916">The 2026-09-11, 2026-09-15 and 2026-09-17 reviews</a><div class="navsubs"><div>
 <a class="navsub" href="#r0916-exp8">Exp8 page points</a>
 <a class="navsub" href="#r0916-exp10">Exp10 page points</a>
+<a class="navsub" href="#r0917-site">Site points</a>
 <a class="navsub" href="#r0916-asks">Analysis requests</a>
 <a class="navsub" href="#r0916-plans">Plans: executed and open</a>
 <a class="navsub" href="#r0916-decisions">Decisions waiting for Xinmeng</a>
@@ -528,10 +531,19 @@
 </div></div></div></div>
 </div><p class="navfoot">Descriptive, not causal. MMs appear by volume rank only.</p></aside>
 <main class="status" id="top">
+  <style>
+    main.status table.plans td:nth-child(1) { white-space:normal; min-width:24ch; }
+    main.status table.plans td:nth-child(2) { min-width:0; white-space:nowrap; }
+    main.status table.plans td:nth-child(3) { white-space:normal; min-width:14ch; }
+    main.status table.plans td:nth-child(4) { min-width:36ch; }
+    main.status table.decisions td:nth-child(2) { min-width:30ch; }
+    main.status table.decisions td:nth-child(3) { white-space:normal; min-width:26ch; }
+    main.status table.decisions td:nth-child(4) { white-space:nowrap; }
+  </style>
   <h1>Review status</h1>
-  <p class="lede">Where each point of the 2026-09-11 and 2026-09-15 reviews of the two report pages stands, where
-  on the page it is answered, which of the analysis requests and plans of those days have run, and what waits
-  for a decision. Updated 2026-09-16. Pages: <a href="exp8-inventory-shock-09-08.html">Exp8 inventory shocks</a> &middot;
+  <p class="lede">Where each point of the 2026-09-11, 2026-09-15 and 2026-09-17 reviews of the report pages stands, where
+  on the page it is answered, which analysis requests and plans have run, and what waits for a decision. Updated
+  2026-09-17. Pages: <a href="exp8-inventory-shock-09-08.html">Exp8 inventory shocks</a> &middot;
   <a href="exp10-tick-level-09-10.html">Exp10 at tick level</a> &middot; <a href="storyline.html">the storyline</a>
   &middot; <a href="overview.html">all reports</a>. The 2026-09-02 review, written against the 2026-09-04 report,
   is at the bottom.</p>
@@ -541,7 +553,17 @@
   <span class="st partial">PARTIAL</span> part of it is there; the gap is named.
   <span class="st todo">NOT DONE</span> nothing on a page yet; where it will go is named.</div>
 
-  <h2 id="r0916">The 2026-09-11 and 2026-09-15 reviews</h2>
+  <h2 id="r0917">What changed on 2026-09-17</h2>
+  <ul class="tight">
+    <li><strong>&sect;12.5 rewritten.</strong> Fast against slow unwinders on the 35,612 MMs that accumulated inventory (own-sigma rule or the event's upper-quartile rule), with the 6,236 shocked rows reported separately and every short window timed from the MM's own inventory peak. The 2026-09-16 version is folded underneath it as superseded. <a href="exp8-inventory-shock-09-08.html#x9-unwind-absorbers">&sect;12.5</a></li>
+    <li><strong>The 2026-09-16 tilt headline is corrected.</strong> "Fast MMs do not tilt at all" holds only for the two-hour average. While fast MMs still hold the position they lean the most: +4.41 bps toward the exit against +0.56 for slow MMs. The lean lasts a median 4 minutes. <a href="exp8-inventory-shock-09-08.html#tab-x9-fs-skew">Table 52</a></li>
+    <li><strong>Speed is throughput.</strong> In the two hours after the peak a fast MM fills 8.0 times its accumulation on the exit side and 6.6 times on the absorption side; a slow MM fills about 0.5 times on each. Nobody crosses the spread to get out. <a href="exp8-inventory-shock-09-08.html#tab-x9-fs-thru">Table 56</a></li>
+    <li><strong>&sect;4.4 reads on its own.</strong> A symbols list opens the section, Table 10's rules are written as inequalities in A, L and sig24, and the captions of Tables 10 to 12 spell out every acronym. No number changed. <a href="exp8-inventory-shock-09-08.html#pop-unwind">&sect;4.4</a></li>
+    <li><strong>Site menu and hub redesigned.</strong> Page titles open their page, chevrons open the section lists, the section in view is highlighted while scrolling, and the panel slides away or becomes a drawer on a phone.</li>
+    <li><strong>No 5-minute held rule.</strong> Speed classes and the tilt tables use the single-minute inventory peak; MMs back within one minute stay in the fast class.</li>
+  </ul>
+
+<h2 id="r0916">The 2026-09-11, 2026-09-15 and 2026-09-17 reviews</h2>
 
   <h3 id="r0916-exp8">Exp8 page points</h3>
   <div class="table-wrap"><table>
@@ -585,7 +607,7 @@
         <td>The lede names the rule (net taker flow in the top 5% of |z<sub>NET</sub>|, 915 events, 914 measured, 909 pooled). 87.1% of shocked MMs ended positioned against the flow, the absorbing direction: 6,186 of 7,105. By event, 444 all absorbing, 365 mixed, 37 all with the flow; control windows split 47.8%.</td></tr>
       <tr><td>10</td><td>Five quantiles on five lines; separate absorption-side from opposite-side orders in every table (Tables 6, 7, 8 of the 09-11 page); any cell with three to five values gets one value per line.</td>
         <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#tab-pop-state">Table 8</a> &middot; <a href="exp8-inventory-shock-09-08.html#pop-aggr">&sect;4.6</a></td>
+        <td><a href="exp8-inventory-shock-09-08.html#tab-pop-state">Table 8</a> &middot; <a href="exp8-inventory-shock-09-08.html#pop-peers">&sect;4.6</a></td>
         <td>Every &sect;4 cell with five quantiles puts one per line with the median in bold, and every order, fill, distance, message-rate and volume row is split into absorption side and opposite side, before and after. On 2026-09-16 the same rule was applied to every table on the page: 108 cells elsewhere that held three or more values on one line now carry one value per line.</td></tr>
       <tr><td>11</td><td>Were the same shocked-against-unshocked statistics computed for the one-sided flow events, and what are those definitions?</td>
         <td><span class="st partial">PARTIAL</span></td>
@@ -594,7 +616,7 @@
       <tr><td>12</td><td>Early against late unwinders: both must be absorbers that accumulated inventory; early means already half unwound when price peaked. How many under the old definition?</td>
         <td><span class="st done">DONE</span></td>
         <td><a href="exp8-inventory-shock-09-08.html#pop-unwind">&sect;4.4</a></td>
-        <td>Old definition on all 914 events: 2,948 early only, 2,606 late only, 1,694 both, 244 neither of 7,492 shocked rows; its "flow still running" clause fired on 62% of rows. New definition on the 25,705 accumulated absorbers: 5,340 early (20.8%), 16,510 late holding more than half (64.2%), 3,855 late with the peak after the price extreme (15.0%). Early MMs are half back 3 minutes after their own peak against 96 for late; the separator is book shape, not aggression. The price-extreme window is decision D5.</td></tr>
+        <td>Old definition on all 914 events: 2,948 early only, 2,606 late only, 1,694 both, 244 neither of 7,492 shocked rows; its "flow still running" clause fired on 62% of rows. New definition on the 25,705 accumulated absorbers: 5,340 early (20.8%), 16,510 late holding more than half (64.2%), 3,855 late with the peak after the price extreme (15.0%). Early MMs are half back 3 minutes after their own peak against 96 for late; the separator is book shape, not aggression. The price-extreme window is decision D5. On 2026-09-17 a review found that "early" is mostly the fast class measured against the price clock (T60 median 4 minutes, peak a median 27 minutes before the price extreme); whether to replace it with two axes is decision D12.</td></tr>
       <tr><td>13</td><td>The menu button does not show or hide the menu.</td>
         <td><span class="st done">DONE</span></td>
         <td>every page</td>
@@ -618,7 +640,27 @@
       <tr><td>18</td><td>Order-book rows of &sect;4 (resting size, distance, message rates).</td>
         <td><span class="st partial">PARTIAL</span></td>
         <td><a href="exp8-inventory-shock-09-08.html#pop-def">&sect;4.1</a></td>
-        <td>Those rows are measured on the 74% of rows whose date is covered by the raw order store; fills, positions and markouts cover every row, and the page says so. The population builder read only three placement days per build date, so the missing rows are the long windows. The rerun that reads every day (job 17453566) failed on one date after 5 h 39 m with no reduce; a second rerun is in progress and will replace those rows in a later build.</td></tr>
+        <td>The live page still measures those rows on the 74% of rows whose date the raw order store covers, and says so. The rerun that reads every placement day is <strong>validated</strong>: order-state coverage rises to 100.0% of shocked, 99.9% of unshocked and 99.9% of control rows, all 915 events carry rows, and the &sect;4 finding holds (absorption-side resting size 1.14 times the opposite side in the two hours before, 1.20 in the 30 minutes before). It sits in the source parts and in an unpublished build, <code>report_inventory_shock_09-17b.html</code>, which lacks the 2026-09-17 &sect;4.4 wording. <strong>Missing:</strong> the fixed &sect;4 on top of the live 09-17c page, then a publish.</td></tr>
+          <tr><td>19</td><td>&sect;4.4 Table 10: define A and L before using them; write the rules as "A &ge; sig24", not "change" or "level"; say how sig24 differs for A and L; spell out ACC and other acronyms in each caption. Every section and table must read on its own.</td>
+        <td><span class="st partial">PARTIAL</span></td>
+        <td><a href="exp8-inventory-shock-09-08.html#pop-unwind">&sect;4.4</a> &middot; <a href="exp8-inventory-shock-09-08.html#tab-pop-absacc-variants">Table 10</a></td>
+        <td><strong>Done in &sect;4.4:</strong> a "Symbols used in this section" list; rule rows as inequalities (<code>A &ge; sig24 and L &ge; sig24</code> in bold); one sig24 per MM per event, used for both A and L, which differ only in the reference position (window start against the six-hour median), with a worked example in HYPE; "given back" defined as a continuous share; acronyms spelled out in the captions of Tables 10 to 12. <strong>Missing:</strong> the same pass on every other section and table of the page, which the rule requires.</td></tr>
+      <tr><td>20</td><td>&sect;4.4: what is "the window" in "the price extreme over the event window plus 30 minutes"? Make it clear.</td>
+        <td><span class="st todo">NOT DONE</span></td>
+        <td>will go in <a href="exp8-inventory-shock-09-08.html#pop-unwind">&sect;4.4</a></td>
+        <td>Answered in chat, not on the page. The window is the event's own box [t<sub>0</sub>, t<sub>1</sub>). The accumulation A and the inventory peak are searched only inside it; the price extreme is searched over [t<sub>0</sub>, t<sub>1</sub> + 30 min) and can land up to 30 minutes after the box ends, in which case "given back" is read at that later minute. A replacement paragraph that gives both sets of counts (5,340 / 16,510 / 3,855 with the extension, 3,877 / 14,683 / 7,145 without) is drafted.</td></tr>
+      <tr><td>21</td><td>&sect;4.4 Table 12: how are ACC and UNW defined, why do only late accumulators mark out positive during ACC, what about UNW markouts, what does "censored at 360 min" mean?</td>
+        <td><span class="st partial">PARTIAL</span></td>
+        <td><a href="exp8-inventory-shock-09-08.html#pop-unwind">&sect;4.4</a></td>
+        <td>Answered in chat with numeric checks; the captions are not yet fixed. ACC runs from the window start to the MM's own peak and UNW is a fixed two hours from the peak. The positive ACC markout is timing: fills made within 5 minutes before the price extreme mark out +10.6 bps at 30 minutes, fills 15 or more minutes before it about &minus;38 bps, in every class. The UNW markout pools both sides: absorption-side fills after the peak gain (+9.8 to +23.7 bps) while the exit-side fills that shrink the position lose (&minus;0.7 to &minus;5.8 bps), so the sentence "late unwinders mark out better on the fills that reduce the position" is wrong as written. Censored means still above half six hours after the peak; those rows mostly peak on the window's last minute. <strong>Missing:</strong> six caption and prose fixes, to be applied on the build that carries the &sect;4 order-day fix.</td></tr>
+      <tr><td>22</td><td>Do not enforce the 5-minute held rule.</td>
+        <td><span class="st partial">PARTIAL</span></td>
+        <td><a href="exp8-inventory-shock-09-08.html#x9-unwind-absorbers">&sect;12.5</a> &middot; <a href="exp8-inventory-shock-09-08.html#pop-unwind">&sect;4.4</a></td>
+        <td>No table or class filters on it: the speed classes, the tilt and throughput tables and the early/late labels all use the single-minute peak. <strong>Missing:</strong> &sect;4.4 still quotes the count it would give (early falls from 20.8% to 11.2%) and the folded 2026-09-16 &sect;12.5 repeats it; both read as a candidate rule and should go.</td></tr>
+      <tr><td>23</td><td>Where does "over the first 5 minutes, faster unwinds lean more, &minus;0.53 across MMs, &minus;0.04 inside an MM" live in the report?</td>
+        <td><span class="st partial">PARTIAL</span></td>
+        <td><a href="exp8-inventory-shock-09-08.html#tab-x9-fs-order">Table 55</a> &middot; <a href="exp8-inventory-shock-09-08.html#tab-x9-unwind-tests">Table 50</a></td>
+        <td>Table 55 of &sect;12.5, row "all 35,612 accumulators, first 5 min" (pooled &minus;0.29; across 353 MMs &minus;0.53; inside an MM &minus;0.04; an MM's fast unwinds lean more than its slow ones in 68% of 115 MMs). <strong>Missing:</strong> Table 50 of &sect;12.4, just above, makes the same claim on the older population and the two-hour window (&minus;0.46 across, &minus;0.09 inside, ranked on minutes to half). It should be labelled as the older test or folded.</td></tr>
     </tbody>
   </table></div>
 
@@ -657,6 +699,25 @@
     </tbody>
   </table></div>
 
+    <h3 id="r0917-site">Site points</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Ask</th><th>State</th><th>Where</th><th>What was done, and what is missing</th></tr></thead>
+    <tbody>
+      <tr><td>S1</td><td>Improve the homepage layout and the side menu the way ChatGPT's sidebar works: clicking a title opens the page, smoother toggles, the section in view highlighted while scrolling; remove the "Open &hellip; &rarr;" rows.</td>
+        <td><span class="st done">DONE</span></td>
+        <td><a href="overview.html">hub</a> and every page</td>
+        <td>Page titles open their page and chevrons open the section lists; the section on screen is highlighted and its subsections open; a link into a closed fold opens the fold; the panel slides away and re-centres the page, and becomes a drawer on a phone; one light/dark toggle. The hub has a "Start here" box for Exp8 with its contents folded, two boxes per row for the other pages, and event-set tags.</td></tr>
+      <tr><td>S2</td><td>The spot-quote page carries the same menu.</td>
+        <td><span class="st todo">NOT DONE</span></td>
+        <td><a href="exp8-spot-quote-12-17.html">spot-quote page</a></td>
+        <td>It keeps its own older menu because it is built from a different page template.</td></tr>
+      <tr><td>S3</td><td>Hub wording matches the pages.</td>
+        <td><span class="st partial">PARTIAL</span></td>
+        <td><a href="overview.html">hub</a></td>
+        <td>The Exp8 box says "around all 914 events"; with the order-day fix every one of the 915 events carries rows. To change when that fix is published.</td></tr>
+    </tbody>
+  </table></div>
+
   <h3 id="r0916-asks">Analysis requests of 2026-09-15</h3>
   <div class="table-wrap"><table>
     <thead><tr><th>#</th><th>Ask</th><th>State</th><th>Where</th><th>What it found</th></tr></thead>
@@ -676,7 +737,7 @@
       <tr><td>A4</td><td>For each class (early/late, fast/slow, and their cross): order skew and distance to the touch by side, resting size by side, unwind-side taker share, the change from the two hours before, all five quantiles; markouts at 5, 10, 30, 60, 120 minutes by side, in dollars and volume-weighted bps.</td>
         <td><span class="st done">DONE</span></td>
         <td><a href="exp8-inventory-shock-09-08.html#x9-unwind-absorbers">&sect;12.5</a></td>
-        <td>Fast and early MMs do not tilt at all while unwinding; slow and late MMs tilt about one basis point, by moving the absorption side away. Nobody crosses: exit-side taker share is zero at the median in every class. Inside an MM, more tilt goes with a slower unwind. Exit-side fills in the unwind window lose 11 to 14 bps at 30 minutes for every class but the slowest, while absorption-side fills made after the peak gain; the accumulation fills themselves lose 37 to 71 bps at 30 minutes. The timing &times; speed cross cells are in the source tables; their counts are on the page.</td></tr>
+        <td>First delivered 2026-09-16 on the 25,705 own-rule rows over the two hours after the peak, now folded as superseded. Two of its readings are out of date: "fast MMs do not tilt at all" and "inside an MM, more tilt goes with a slower unwind" both came from averaging over two hours (see A10). Still valid: exit-side taker share is zero at the median in every class, and exit-side fills after the peak lose money for fast and middle unwinders (&minus;9.5 and &minus;13.5 bps at 30 minutes) and make money for slow ones (+7.2).</td></tr>
       <tr><td>A5</td><td>Check whether the stored markout columns can be used.</td>
         <td><span class="st done">DONE</span></td>
         <td>Exp8 record &sect;45</td>
@@ -692,12 +753,24 @@
       <tr><td>A8</td><td>The Vercel site was not updated with the review edits and the new results.</td>
         <td><span class="st done">DONE</span></td>
         <td><a href="overview.html">hub</a></td>
-        <td>Deployed 2026-09-16 with the rebuilt Exp8 and Exp10 pages, the spot-quote page, the storyline and this page; the hub is regrouped into reports, where the work stands, and earlier work.</td></tr>
+        <td>Deployed 2026-09-16 with the rebuilt Exp8 and Exp10 pages, the spot-quote page, the storyline and this page. Updated again on 2026-09-17 with the rewritten &sect;12.5, the &sect;4.4 wording and the menu redesign.</td></tr>
+          <tr><td>A9</td><td>Run the tilt test only on MMs that accumulated inventory, flagged by an OR rule (own sigma, or the event's upper quartile), with the shocked subset on its own; if the early and fast MMs did not tilt, how do they unwind? Read episodes order by order.</td>
+        <td><span class="st done">DONE</span></td>
+        <td><a href="exp8-inventory-shock-09-08.html#tab-x9-fs-pop">Table 51</a> &middot; Exp8 record &sect;47, &sect;48</td>
+        <td>OR rule: 35,612 rows (own rule 25,081, population rule 28,530), 6,236 shocked. Fast MMs unwind by volume, not by crossing: exit-side fills 8.0 times A and absorption-side refills 6.6 times A in two hours, against about 0.5 for slow MMs; T60 against gross exit flow has Spearman &minus;0.83. Fast MMs submit and cancel about 40 orders per minute per side, slow ones about 6. Ten episodes read order by order: all fill both sides and cancel 83 to 99.8% of orders; the exit lean (4 to 53 bps) lives in the first 1 to 8 minutes after the peak; cancels take the farther orders on both sides alike.</td></tr>
+      <tr><td>A10</td><td>Was the 2026-09-16 tilt result wrong or obsolete? Are the minutes counted from each MM's own peak or from a point of the event? Put a clearly defined fast/slow comparison on the site, with the population and the number of events.</td>
+        <td><span class="st done">DONE</span></td>
+        <td><a href="exp8-inventory-shock-09-08.html#x9-unwind-absorbers">&sect;12.5</a> &middot; <a href="exp8-inventory-shock-09-08.html#tab-x9-fs-skew">Table 52</a> &middot; Exp8 record &sect;49</td>
+        <td>The numbers were right and two readings were out of date (A4). Every short window starts at the MM's own inventory peak, the first minute inside the event box at which the inventory built since the box opened is largest, so two MMs in one event run on different clocks. "First 5 minutes, +3.0 fast against &minus;0.8 slow" is the skew over the 5 minutes after each MM's own peak minus its skew in the two hours before the event. The section gives rows, events and MMs for every population and class: fast 9,340 rows on 907 events, slow 17,594 rows on 912 events.</td></tr>
+      <tr><td>A11</td><td>Which order measures exist on the population: new orders and cancels per side, where cancelled orders sit, taker volume and count per side and their growth against the two hours before, markouts in the short windows?</td>
+        <td><span class="st partial">PARTIAL</span></td>
+        <td><a href="exp8-inventory-shock-09-08.html#tab-x9-fs-msg">Table 57</a> &middot; <a href="exp8-inventory-shock-09-08.html#tab-x9-fs-mk">Table 58</a></td>
+        <td>On the page: best and size-weighted distance to the touch and resting size per side in every window; new orders and cancels per minute per side; markouts of the MM's own maker fills after the peak. <strong>Missing:</strong> where cancelled orders sit on the population (only the ten episodes have it; needs a build that reads cancels); taker order counts per side and their growth against the two hours before; markouts tabulated over the short windows (stored per row, not tabulated).</td></tr>
     </tbody>
   </table></div>
 
   <h3 id="r0916-plans">Plans: executed and open</h3>
-  <div class="table-wrap"><table>
+  <div class="table-wrap"><table class="plans">
     <thead><tr><th>Plan</th><th>State</th><th>Where</th><th>Executed, and what is left</th></tr></thead>
     <tbody>
       <tr><td>2026-09-10, taker-surge event families (7 steps)</td>
@@ -715,11 +788,15 @@
       <tr><td>2026-09-15, quote skew, unwind-side taker share and markouts by unwind class</td>
         <td><span class="st done">DONE</span></td>
         <td><a href="exp8-inventory-shock-09-08.html#x9-unwind-absorbers">&sect;12.5</a></td>
-        <td>Build ran 2026-09-15 (344 dates, 25,705 rows); the reduce ran 2026-09-16 with the T60 classes and the timing &times; speed cells; 18 of 18 checks pass. Recorded as Exp8 &sect;46.</td></tr>
+        <td>Build ran 2026-09-15 (344 dates, 25,705 rows); the reduce ran 2026-09-16 with the T60 classes and the timing &times; speed cells; 18 of 18 checks pass. Recorded as Exp8 &sect;46; superseded on the page by the 2026-09-16 plan below.</td></tr>
       <tr><td>2026-09-15, section 4 on all 914 events with an activity-based active rule; early/late redefinition; F1 population pass</td>
         <td><span class="st done">DONE</span></td>
         <td><a href="exp8-inventory-shock-09-08.html#pop-h">&sect;4</a> &middot; <a href="exp8-inventory-shock-09-08.html#families-f1-pop">&sect;9.7</a></td>
-        <td>All three ran and are on the page; recorded as Exp8 &sect;42 to &sect;44. The order-day rebuild that would lift the order-row coverage from 74% to about 100% is still running (Exp8 point 18).</td></tr>
+        <td>All three ran and are on the page; recorded as Exp8 &sect;42 to &sect;44. The order-day rebuild that lifts order-row coverage from 74% to 100% is validated but not yet on the live page (Exp8 point 18).</td></tr>
+      <tr><td>2026-09-16, the OR-rule accumulation flag, first-minutes windows, and ten unwind episodes</td>
+        <td><span class="st done">DONE</span></td>
+        <td><a href="exp8-inventory-shock-09-08.html#x9-unwind-absorbers">&sect;12.5</a></td>
+        <td>Flag counts, the position paths for every OR-rule row, a second pass measuring quotes over the held window and the first 5 and 15 minutes after the peak for all 35,612 rows, and the ten episodes. Recorded as Exp8 &sect;47 and &sect;48; the report rewrite and the status of the &sect;46 headline as &sect;49; on the page as the rewritten &sect;12.5 since 2026-09-17.</td></tr>
       <tr><td>Exp9 &sect;12.9, six decisions</td>
         <td><span class="st todo">OPEN</span></td>
         <td><a href="exp10-tick-level-09-10.html#s-8-decisions-for-xinmeng">Exp10 &sect;8</a></td>
@@ -732,27 +809,27 @@
   </table></div>
 
   <h3 id="r0916-decisions">Decisions waiting for Xinmeng</h3>
-  <p class="small">Nothing below blocks a result on the pages. Each item changes what the next build computes or how a result is labelled.</p>
-  <div class="table-wrap"><table>
+  <p class="small">Nothing below blocks a result on the pages. Each item changes what the next build computes or how a result is labelled. Updated 2026-09-17: the 5-minute held rule is settled (not enforced) and D12 to D16 are new.</p>
+  <div class="table-wrap"><table class="decisions">
     <thead><tr><th>#</th><th>Decision</th><th>What it changes</th><th>Where</th></tr></thead>
     <tbody>
       <tr><td>D1</td><td>Carry the start-level <strong>peak rule</strong> beside the end rule as a second shock flag, or keep the end rule alone.</td>
         <td>The peak rule flags 43.6% of top-5 absorbers against 23.6% and makes the shocked population 65% larger; &sect;4 and everything downstream of the flag would be rerun.</td>
         <td><a href="exp8-inventory-shock-09-08.html#absorbers-rule">&sect;8.5</a></td></tr>
-      <tr><td>D2</td><td>Adopt <strong>T60 fast &le; 10 / slow &gt; 60 minutes</strong> (5 / 120 as sensitivity) as the speed classes of record, and align the Exp10 (10 / 30) and Exp9 (30 / 120) cuts on it, or keep three pairs.</td>
-        <td>Which rows the class tables of &sect;12.5, Exp10 &sect;3 and &sect;11 compare.</td>
-        <td><a href="exp8-inventory-shock-09-08.html#x9-unwind-absorbers">&sect;12.5</a></td></tr>
+      <tr><td>D2</td><td>Confirm <strong>T60 fast &le; 10 / slow &gt; 60 minutes</strong> (5 / 120 as sensitivity) as the speed classes of record, and align the Exp10 (10 / 30) and Exp9 (30 / 120) cuts on it, or keep three pairs.</td>
+        <td>In use in &sect;12.5 since 2026-09-16. Which rows Exp10 &sect;3 and &sect;11 compare.</td>
+        <td><a href="exp8-inventory-shock-09-08.html#tab-x9-fs-pop">Table 51</a></td></tr>
       <tr><td>D3</td><td>Confirm the <strong>two-sided family's 1-minute extent</strong> on excess total taker USD (the construction used) rather than raw total taker USD.</td>
         <td>Must be settled before the F2 population pass runs.</td>
         <td><a href="exp8-inventory-shock-09-08.html#families-status">&sect;9.5</a></td></tr>
       <tr><td>D4</td><td>Authorise the rest of <strong>Step 6</strong>: the F2 pass (about 4 hours at 256 GB), matched controls per family, and the &sect;8 absorber pass on the families; say whether controls exclude only the family's events or the 915 as well.</td>
         <td>Whether the &sect;4 and &sect;8 results are shown to survive the change of event selection.</td>
         <td><a href="exp8-inventory-shock-09-08.html#families-f1-pop">&sect;9.7</a></td></tr>
-      <tr><td>D5</td><td>The <strong>price-extreme window</strong> for early and late: event window plus 30 minutes (used; 91.1% of rows keep their label under the window alone), and whether an accumulation must be held for five minutes to count (early falls from 20.8% to 11.2%).</td>
-        <td>The early / late counts of &sect;4.4 and &sect;12.5.</td>
+      <tr><td>D5</td><td>The <strong>price-extreme window</strong> for early and late: event window plus 30 minutes (used; 91.1% of rows keep their label under the window alone).</td>
+        <td>The early / late counts of &sect;4.4. Moot if D12 drops the label.</td>
         <td><a href="exp8-inventory-shock-09-08.html#pop-unwind">&sect;4.4</a></td></tr>
       <tr><td>D6</td><td>Confirm the <strong>active-MM rule</strong> of record: the fill-based gate plus at least one post-only fill in the two hours before, with the maker-fill fallback on the 2026-04-16 to 04-22 dates where the fill table has no order type.</td>
-        <td>5.3% of rows and 0.37% of absorbed USD; the alternative order-count floors are rejected on the page.</td>
+        <td>5.3% of rows and 0.37% of absorbed USD; the alternative order-count floors are rejected on the page. In use in &sect;4 and &sect;12.5.</td>
         <td><a href="exp8-inventory-shock-09-08.html#tab-pop-rules">Table 6</a></td></tr>
       <tr><td>D7</td><td>Which <strong>F1 window is the one of record</strong> for the outcome pass: the catalogue's 1-minute run (median 14 minutes) or the 30-minute box that selected it.</td>
         <td>Both are built; the page shows both.</td>
@@ -763,9 +840,27 @@
       <tr><td>D9</td><td>Run the two <strong>unrun tests of the 2026-09-04 briefing</strong>: H2 (equity shock as the mark-to-market of the shock inventory) and H6 (what the market pays afterwards: spread, depth, taker cost for two hours).</td>
         <td>Neither needs new data infrastructure; H6 is the one result a market-design reader will ask for.</td>
         <td><a href="briefing.html#hypotheses">the six tests</a></td></tr>
-      <tr><td>D10</td><td>Release the seven-day interactive Slurm allocation (job 17342541 on soal-5) once its sessions are done; cancelling it ends every session inside it.</td>
+      <tr><td>D10</td><td>Release the interactive Slurm allocation on soal-5 (running more than seven days) once its sessions are done; cancelling it ends every session inside it.</td>
         <td>Cluster resources.</td>
         <td>&ndash;</td></tr>
+      <tr><td>D11</td><td>Adopt the <strong>tilt measure of record</strong>: the skew change over the held window (from the peak until 60% is given back) or over the first 5 minutes after the peak, in place of the two-hour average.</td>
+        <td>How &sect;12.5, &sect;12.3 and &sect;12.4 state the lean; the two-hour average hides a lean that lasts a median 4 minutes.</td>
+        <td><a href="exp8-inventory-shock-09-08.html#tab-x9-fs-skew">Table 52</a></td></tr>
+      <tr><td>D12</td><td>Replace the <strong>early / late label</strong> with two axes, T60 speed and the peak's position on the event clock in minutes, keeping "given back half by the price extreme" as a cost measure ("out before the turn"); and whether to drop the early/late columns from &sect;4.4 as well.</td>
+        <td>Early rows have a median T60 of 4 minutes and peak a median 27 minutes before the price extreme, so "early" duplicates the fast class; 16% of late-held rows are fast MMs whose peak fell near the turn. Already dropped from &sect;12.5.</td>
+        <td><a href="exp8-inventory-shock-09-08.html#pop-unwind">&sect;4.4</a></td></tr>
+      <tr><td>D13</td><td>The <strong>population of record for &sect;12.5</strong>: the OR-rule accumulators (35,612, shown first), the own-sigma rule (25,081) or the shocked accumulators (6,236).</td>
+        <td>Which column leads Tables 52 to 58.</td>
+        <td><a href="exp8-inventory-shock-09-08.html#tab-x9-fs-pop">Table 51</a></td></tr>
+      <tr><td>D14</td><td>Rename the <strong>published page files</strong>, which still carry old dates (<code>exp8-inventory-shock-09-08.html</code> and <code>exp10-tick-level-09-10.html</code> serve the 2026-09-17 and 2026-09-16 pages), or keep the names so shared links stay live.</td>
+        <td>Readers of the URL misdate the work; renaming breaks links already sent.</td>
+        <td><a href="overview.html">hub</a></td></tr>
+      <tr><td>D15</td><td>What to do with <strong>&sect;12.4</strong> (Table 50, the older two-hour test with &minus;0.46 across and &minus;0.09 inside an MM) now that &sect;12.5 Table 55 gives &minus;0.53 and &minus;0.04 on the first 5 minutes: label it as the older test, or fold it.</td>
+        <td>Two sets of correlations for the same claim sit one section apart.</td>
+        <td><a href="exp8-inventory-shock-09-08.html#tab-x9-unwind-tests">Table 50</a></td></tr>
+      <tr><td>D16</td><td>Order of the next Exp8 build: the &sect;4 order-day fix, the Table 12 caption fixes (Exp8 point 21), the price-extreme paragraph (point 20), removal of the 5-minute held count (point 22), and the standalone-section pass over every other section (point 19). Say whether they ship together or the order-day fix goes first.</td>
+        <td>When the 100% order coverage reaches the live page.</td>
+        <td><a href="exp8-inventory-shock-09-08.html#pop-def">&sect;4.1</a></td></tr>
     </tbody>
   </table></div>
 
@@ -799,7 +894,7 @@
       <tr><td>6</td><td>After a shock, measure quoting, not fills: net posted and net withdrawn liquidity at and away from the touch, 5-minute steps for 2 hours, against four predicted signs.</td>
         <td><span class="st done">DONE</span> on all 181 shocks (published 2026-09-04)</td>
         <td><a href="exp8-report.html#quoting">&sect;G Book response</a> &middot; <a href="exp8-report.html#table-34">Table 34</a> (before / during / after) &middot; <a href="exp8-report.html#table-35">Table 35</a> (the four predicted signs) &middot; Figures 14&ndash;17</td>
-        <td>The shocked MM moves <em>where</em> it quotes, not <em>how much</em>: the accumulating-side best quote backs off by 1.36 bps in 81% of shocks, depth stays balanced. Sign 1 (post more at the unwind touch) confirms, 70% of 180. Sign 2 (withdraw more from the accumulating touch) comes out opposite because these desks re-quote every ~1.3 s, so cancels travel with posts. Sign 3 (post less away) fails at 25, 50 and 100 bps. Sign 4 (withdrawal away &ge; 0) confirms. Grain is 1 minute, not 5, because the median formation is 20 minutes. Two design choices remain open: the touch band and where &ldquo;away&rdquo; starts.</td></tr>
+        <td>The shocked MM moves <em>where</em> it quotes, not <em>how much</em>: the accumulating-side best quote backs off by 1.36 bps in 81% of shocks, depth stays balanced. Sign 1 (post more at the unwind touch) confirms, 70% of 180. Sign 2 (withdraw more from the accumulating touch) comes out opposite because these MMs re-quote every ~1.3 s, so cancels travel with posts. Sign 3 (post less away) fails at 25, 50 and 100 bps. Sign 4 (withdrawal away &ge; 0) confirms. Grain is 1 minute, not 5, because the median formation is 20 minutes. Two design choices remain open: the touch band and where &ldquo;away&rdquo; starts.</td></tr>
     </tbody>
   </table></div>
 

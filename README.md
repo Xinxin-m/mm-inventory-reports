@@ -13,7 +13,7 @@ Reports
 
 Where the work stands
 - **[The taker-surge storyline](storyline.html)** (2026-09-15) - the flow chart, with the evidence behind each node.
-- **[Review status](review-status.html)** (updated 2026-09-16) - the 2026-09-11 and 2026-09-15 review points, the analysis requests, the plans, and the 2026-09-02 review.
+- **[Review status](review-status.html)** (updated 2026-09-17) - the 2026-09-11, 2026-09-15 and 2026-09-17 review points, the analysis requests, the plans, the decisions waiting, and the 2026-09-02 review.
 
 Earlier work
 - **[Exp8 - Sudden MM inventory shocks, full report](exp8-report.html)** (2026-09-04) - the original wallet-inventory study; section D4 is published in full as [its own file](exp8-unwind-activity.html).
