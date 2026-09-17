@@ -7,7 +7,7 @@ Start at the hub, which lists every page:
 <https://hype-mm-inventory.vercel.app/> (also served at <https://xinxin-m.github.io/mm-inventory-reports/>)
 
 Reports
-- **[Exp8 - Inventory shocks, redefinition](exp8-inventory-shock-09-08.html)** (2026-09-08, revised 2026-09-16, newest) - market taker-flow trigger, 915 events, every actively market-making MM around all 914 events under a post-only-fill active rule, the 25,705 absorbers that accumulated inventory and their early or late unwind, the 148-MM profile, two tick replays, absorbers against flagged MMs, the one-sided taker-surge family with its own population statistics, the Exp9 and Exp10 results, and quotes and markouts by unwind class. The file keeps its `09-08` name so the shared link stays live.
+- **[Exp8 - Inventory shocks, redefinition](exp8-inventory-shock-09-08.html)** (2026-09-08, revised 2026-09-17, newest) - market taker-flow trigger, 915 events, every actively market-making MM around all 914 events under a post-only-fill active rule, the 25,705 absorbers that accumulated inventory and their early or late unwind, the 148-MM profile, two tick replays, absorbers against flagged MMs, the one-sided taker-surge family with its own population statistics, the Exp9 and Exp10 results, and fast against slow unwinders among the MMs that accumulated inventory (section 12.5, revised 2026-09-17). The file keeps its `09-08` name so the shared link stays live.
 - **[Exp10 - Absorbers at tick level](exp10-tick-level-09-10.html)** (2026-09-10, revised 2026-09-16) - episodes 39 and 47 order by order.
 - **[Exp8 - Spot quotes and price discovery, 2025-12-17](exp8-spot-quote-12-17.html)** (2026-09-10) - sections 36 and 37 of the Exp8 record.
 
