@@ -55,7 +55,7 @@
          border:1px solid var(--line); color:var(--muted); }
   .st { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px;
         font-weight:700; letter-spacing:.02em; color:#fff; }
-  .st.done { background:#2e7d4f; } .st.partial { background:#b26a00; } .st.todo { background:#b3261e; }
+  .st.done { background:#2e7d4f; } .st.partial { background:#9a5b00; } .st.todo { background:#b3261e; }
   main.status td:nth-child(1) { white-space:nowrap; color:var(--muted); }
   main.status td:nth-child(2) { min-width:18ch; }
   main.status td:nth-child(3) { white-space:nowrap; }
@@ -112,9 +112,10 @@
           line-height:1.55; columns:2; column-gap:34px; }
   .hub .card details li { margin:0 0 6px; break-inside:avoid; }
   .hub .keysec { margin-top:40px; }
-  .hub .keys { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .hub .keys { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; align-items:start; }
   .hub .key { margin:0; padding:0; background:var(--surface); border:1px solid var(--line); border-radius:12px;
-          border-left:3px solid var(--accent); }
+          box-shadow:inset 3px 0 0 var(--accent); max-width:none; }
+  .hub .key > div { max-width:none; }
   .hub .key > summary { display:block; position:relative; padding:13px 38px 13px 16px; list-style:none; cursor:pointer;
           font-size:15px; font-weight:600; line-height:1.4; letter-spacing:-.005em; color:var(--text); }
   .hub .key > summary::-webkit-details-marker { display:none; }
@@ -156,6 +157,19 @@
   /* a jump lands at once: a smooth scroll across a 20 MB page drags every section past the reader */
   html { scroll-behavior:auto !important; }
   main [id] { scroll-margin-top:18px; }
+  #navoff:checked ~ main [id] { scroll-margin-top:66px; }
+  /* one typeface for page and menu (the report pages name system-ui only) */
+  body { font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main h1 { line-height:1.12; }
+  .metadata { grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+  main code { overflow-wrap:anywhere; }                       /* long file paths must not widen a phone page */
+  main :is(p, li, dd):not(.tabcap) { max-width:84ch; }        /* prose line length; tables and figures keep the column */
+  main .new { display:none; }                                 /* the 2026-09-04 pages' own red NEW pills: the change log marks what is new */
+  .table-wrap { background:var(--surface); border:1px solid var(--line); border-radius:11px; }
+  .table-wrap table tr:last-child td { border-bottom:0; }
+  ul:has(> li.tg) > li:not(.tg) { list-style:none; position:relative; }   /* a plain bullet among folded ones lines up */
+  ul:has(> li.tg) > li:not(.tg)::before { content:""; position:absolute; left:-14px; top:.72em; width:4px; height:4px;
+          border-radius:50%; background:var(--muted); }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) { --bg:#101619; --surface:#182126; --text:#eef5f6;
           --muted:#a9b8be; --line:#34444c; --accent:#70c7df; --warn:#efbd66; --good:#6bcf9f; }
@@ -188,9 +202,10 @@
           background:color-mix(in srgb, var(--surface) 86%, transparent);
           -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
           box-shadow:0 2px 10px rgba(0,0,0,.08);
-          opacity:0; transform:translateX(-6px); pointer-events:none;
+          opacity:0; transform:translateX(-6px); pointer-events:none; visibility:hidden;
           transition:opacity .2s ease, transform .3s var(--navease); }
-  #navoff:checked ~ .navrail { opacity:1; transform:none; pointer-events:auto; transition-delay:.12s; }
+  #navoff:checked ~ .navrail { opacity:1; transform:none; pointer-events:auto; visibility:visible; transition-delay:.12s; }
+  #navoff:focus-visible ~ aside.sitenav .navhead label.navbtn { outline:2px solid var(--accent); outline-offset:1px; }
   #navoff:checked ~ main { padding-top:62px; }
   .navscrim { display:none; }
 
@@ -225,7 +240,10 @@
   .sitenav .navsecs, .sitenav .navsubs { display:grid; grid-template-rows:0fr;
           transition:grid-template-rows .3s var(--navease); }
   .sitenav .navpage.is-open > .navsecs, .sitenav .navgrp.is-open > .navsubs { grid-template-rows:1fr; }
-  .sitenav .navsecs > div, .sitenav .navsubs > div { overflow:hidden; min-height:0; }
+  .sitenav .navsecs > div, .sitenav .navsubs > div { overflow:hidden; min-height:0; visibility:hidden;
+          transition:visibility 0s linear .3s; }
+  .sitenav .navpage.is-open > .navsecs > div { visibility:visible; transition-delay:0s; }
+  .sitenav .navpage.is-open .navgrp.is-open > .navsubs > div { visibility:visible; transition-delay:0s; }
   .sitenav .navlist { margin-left:17px; padding:3px 0 6px 8px; border-left:1px solid var(--line); }
   .sitenav .navsrow { display:flex; align-items:stretch; border-radius:7px; }
   .sitenav .navsrow > a.navsec { flex:1; min-width:0; }
@@ -236,25 +254,27 @@
           color:var(--muted); font-size:13px; line-height:1.38; text-decoration:none;
           transition:color .15s, background .15s; }
   .sitenav a.navsec { display:flex; gap:0; }
-  .sitenav a.navsec .n { flex:0 0 2.1em; color:color-mix(in srgb, var(--muted) 78%, transparent);
-          font-variant-numeric:tabular-nums; }
-  .sitenav a.navsec .n:empty { flex-basis:0; }
+  .sitenav a.navsec .n { flex:0 0 2.1em; color:var(--muted); font-variant-numeric:tabular-nums; }
   .sitenav a.navsec .x { flex:1; min-width:0; }
   .sitenav a.navsub { padding-left:20px; font-size:12.5px; }
   /* new since the last few logged days (site_changelog.json): brighter blue and a NEW tag */
-  .sitenav .is-new, .sitenav .is-new .t, .sitenav a.is-new .n { color:var(--new); }
+  .sitenav a.navlink.is-new .t, .sitenav a.navsec.is-new, .sitenav a.navsub.is-new,
+  .sitenav a.navsec.is-new .n { color:var(--new); }
   .sitenav a.navsec.is-new, .sitenav a.navsub.is-new { font-weight:550; }
   .navnew { display:inline-block; margin-left:6px; padding:0 5px; border-radius:4px; font-size:9.5px; font-weight:700;
           letter-spacing:.05em; line-height:15px; vertical-align:1px; color:#fff; background:var(--new); }
   html[data-theme="dark"] .navnew { color:#06121f; }
   @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .navnew { color:#06121f; } }
-  .sitenav .navdot { display:inline-block; width:6px; height:6px; margin-left:7px; border-radius:50%;
-          vertical-align:2px; background:var(--new); }
   .sitenav a.navsec:hover, .sitenav a.navsub:hover { color:var(--text);
           background:color-mix(in srgb, var(--text) 6%, transparent); }
-  .sitenav .navgrp.is-active > a.navsec { color:var(--text); font-weight:550; }
-  .sitenav a.navsec.is-active, .sitenav a.navsub.is-active { color:var(--accent); font-weight:600;
-          background:color-mix(in srgb, var(--accent) 12%, transparent); }
+  .sitenav .navgrp.is-active > a.navsec:not(.is-active),
+  .sitenav .navgrp.is-active > .navsrow > a.navsec:not(.is-active) { color:var(--text); font-weight:550; }
+  .sitenav .navgrp.is-active > .navsrow > a.navsec:not(.is-active) .n { color:var(--text); }
+  .sitenav a.navsec.is-active, .sitenav a.navsub.is-active, .sitenav a.navsec.is-active .n,
+  .sitenav a.is-new.is-active, .sitenav a.is-new.is-active .n { color:var(--accent); font-weight:600; }
+  .sitenav a.navsec.is-active, .sitenav a.navsub.is-active { background:color-mix(in srgb, var(--accent) 12%, transparent); }
+  .sitenav .navsrow:has(> a.is-active) { background:color-mix(in srgb, var(--accent) 12%, transparent); }
+  .sitenav .navsrow > a.navsec.is-active { background:none; }
   .sitenav a.navsec.is-active::before, .sitenav a.navsub.is-active::before { content:""; position:absolute;
           left:-9px; top:6px; bottom:6px; width:2px; border-radius:2px; background:var(--accent); }
   .sitenav .navfoot { flex:0 0 auto; margin:0; padding:10px 18px 14px; border-top:1px solid var(--line);
@@ -269,13 +289,20 @@
     #navoff:checked ~ aside.sitenav { transform:translateX(0); visibility:visible;
             transition:transform .3s var(--navease), visibility 0s linear 0s; }
     main, #navoff:checked ~ main { margin-left:0; padding-top:62px; }
-    .navrail, #navoff:checked ~ .navrail { opacity:1; transform:none; pointer-events:auto; }
+    .navrail, #navoff:checked ~ .navrail { opacity:1; transform:none; pointer-events:auto; visibility:visible;
+            left:0; right:0; top:0; gap:4px; padding:6px 10px; border-radius:0; border-width:0 0 1px; }
+    main [id], #navoff:checked ~ main [id] { scroll-margin-top:66px; }
+    .navbtn { width:40px; height:40px; flex-basis:40px; }
+    .sitenav a.navsec, .sitenav a.navsub { padding-top:9px; padding-bottom:9px; }
+    .sitenav button.navcaret.sm { width:40px; flex-basis:40px; }
     .navscrim { display:block; position:fixed; inset:0; z-index:48; background:rgba(8,11,16,.45);
             opacity:0; pointer-events:none; transition:opacity .25s ease; cursor:pointer; }
     #navoff:checked ~ .navscrim { opacity:1; pointer-events:auto; }
   }
   @media (prefers-reduced-motion: reduce) {
-    aside.sitenav, main, .navrail, .sitenav .navsecs, .sitenav .navsubs, .navscrim { transition:none !important; }
+    aside.sitenav, main, .navrail, .sitenav .navsecs, .sitenav .navsubs, .navscrim,
+    .sitenav .navsecs > div, .sitenav .navsubs > div, .sitenav button.navcaret svg, .sitenav a, .navbtn,
+    li.tg > details > summary::before, .hub .card, .hub .card h3 .arrow, .hub .key > summary::after { transition:none !important; }
   }
   .sitenav.no-anim .navsecs, .sitenav.no-anim .navsubs, .sitenav.no-anim svg { transition:none !important; }
 
@@ -477,6 +504,8 @@
     .story summary { flex-wrap: wrap; }
     .story .body { padding-left: 16px; }
   }
+  .story { background:transparent; }
+  .story svg text { font-family:Inter,"Helvetica Neue",Arial,"Liberation Sans",sans-serif; }
 </style>
 </head>
 <body>
@@ -488,7 +517,7 @@
 <div class="navscroll">
 <a class="navitem" href="overview.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4.5 20 11"/><path d="M6.5 9.5V19.5h11V9.5"/></svg>All reports</a>
 <p class="navgroup">Reports</p>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-inventory-shock-09-08.html"><span class="t">Exp8 &mdash; Inventory shocks<span class="navdot" title="Has new sections"></span></span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-inventory-shock-09-08.html"><span class="t">Exp8 &mdash; Inventory shocks</span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <a class="navsec" href="exp8-inventory-shock-09-08.html#summary-h"><span class="n"></span><span class="x">Summary</span></a>
@@ -499,7 +528,7 @@
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="exp8-inventory-shock-09-08.html#events-h"><span class="n"></span><span class="x">Event sets<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="exp8-inventory-shock-09-08.html#events-h"><span class="n"></span><span class="x">Event sets</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
@@ -519,12 +548,12 @@
 <a class="navsub" href="exp8-inventory-shock-09-08.html#imb-alt">Price-first and flow-first</a>
 </div></div></div>
 <div class="navgrp">
-<div class="navsrow"><a class="navsec is-new" href="exp8-inventory-shock-09-08.html#pop-h"><span class="n">4</span><span class="x">MM population at events<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" href="exp8-inventory-shock-09-08.html#pop-h"><span class="n">4</span><span class="x">MM population at events</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-def">Definitions</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-summary">Broad absorption, few carriers</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-state">State before the event</a>
-<a class="navsub" href="exp8-unwinders.html#pop-unwind">Early and late unwinders</a>
+<a class="navsub is-new" href="exp8-unwinders.html#pop-unwind">Early and late unwinders<span class="navnew">NEW</span></a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-aggr">Unwind aggressiveness</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-peers">Shocked against unshocked</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-equity">Equity and closed PnL</a>
@@ -539,7 +568,7 @@
 <a class="navsub" href="exp8-inventory-shock-09-08.html#prof-frequency">Shock frequency, unwind speed</a>
 </div></div></div>
 <div class="navgrp">
-<div class="navsrow"><a class="navsec is-new" href="exp8-inventory-shock-09-08.html#absorbers-h"><span class="n">8</span><span class="x">Absorbers and flagged MMs<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" href="exp8-inventory-shock-09-08.html#absorbers-h"><span class="n">8</span><span class="x">Absorbers and flagged MMs</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-def">Definitions</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-escape">Top absorbers, unflagged</a>
@@ -548,7 +577,7 @@
 <a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-rule">Peak rule, end rule</a>
 </div></div></div>
 <div class="navgrp">
-<div class="navsrow"><a class="navsec is-new" href="exp8-inventory-shock-09-08.html#families-h"><span class="n">9</span><span class="x">Taker-surge families<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" href="exp8-inventory-shock-09-08.html#families-h"><span class="n">9</span><span class="x">Taker-surge families</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#families-def">Definitions</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#families-sets">Two rules, different half hours</a>
@@ -568,7 +597,7 @@
 <a class="navsub" href="exp8-inventory-shock-09-08.html#syn-mech">Quoting broad, carrying narrow</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#syn-controls">What controls remove</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#syn-ticks">Two-stage microstructure</a>
-<a class="navsub is-new" href="exp8-inventory-shock-09-08.html#syn-flag">Absorbing and being flagged<span class="navnew">NEW</span></a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-flag">Absorbing and being flagged</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#syn-trigger">Stable trigger, chosen label</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#syn-boundary">What stays descriptive</a>
 </div></div></div>
@@ -632,8 +661,9 @@
 <div class="navpage"><div class="navrow"><a class="navlink is-new" href="exp8-unwinders.html"><span class="t">Exp8 &mdash; Unwinders<span class="navnew">NEW</span></span><span class="d">split out 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
-<a class="navsec" href="exp8-unwinders.html#pop-unwind"><span class="n">4.4</span><span class="x">Early and late unwinders</span></a>
+<div class="navsrow"><a class="navsec" href="exp8-unwinders.html#pop-unwind"><span class="n">4.4</span><span class="x">Early and late unwinders</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
+<a class="navsub" href="exp8-unwinders.html#pop-unwind-skew">Order skew by timing class</a>
 </div></div></div>
 <div class="navgrp">
 <div class="navsrow"><a class="navsec" href="exp8-unwinders.html#x9-book-h"><span class="n">10</span><span class="x">A shocked MM's resting orders</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
@@ -663,7 +693,7 @@
 <a class="navsub" href="exp8-unwinders.html#x9-unwind-absorbers">Fast and slow accumulators</a>
 </div></div></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp10-tick-level-09-10.html"><span class="t">Exp10 &mdash; Tick level<span class="navdot" title="Has new sections"></span></span><span class="d">rev. 2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp10-tick-level-09-10.html"><span class="t">Exp10 &mdash; Tick level</span><span class="d">rev. 2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <a class="navsec" href="exp10-tick-level-09-10.html#s-summary"><span class="n"></span><span class="x">Summary</span></a>
@@ -674,15 +704,15 @@
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="exp10-tick-level-09-10.html#s-2-the-surge-is-a-few-very-large-taker-orders"><span class="n">2</span><span class="x">A few very large taker orders<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="exp10-tick-level-09-10.html#s-2-the-surge-is-a-few-very-large-taker-orders"><span class="n">2</span><span class="x">A few very large taker orders</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="exp10-tick-level-09-10.html#s-3-same-taker-orders-two-outcomes"><span class="n">3</span><span class="x">Same orders, two outcomes<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="exp10-tick-level-09-10.html#s-3-same-taker-orders-two-outcomes"><span class="n">3</span><span class="x">Same orders, two outcomes</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="exp10-tick-level-09-10.html#s-4-second-by-second-order-by-order"><span class="n">4</span><span class="x">Second by second<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="exp10-tick-level-09-10.html#s-4-second-by-second-order-by-order"><span class="n">4</span><span class="x">Second by second</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
@@ -702,11 +732,11 @@
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="exp10-tick-level-09-10.html#s-appendix-data-sources"><span class="n"></span><span class="x">Appendix: data sources<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="exp10-tick-level-09-10.html#s-appendix-data-sources"><span class="n"></span><span class="x">Appendix: data sources</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink is-new" href="exp8-spot-quote-12-17.html"><span class="t">Exp8 &mdash; Spot quotes<span class="navnew">NEW</span></span><span class="d">2026-09-10</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-spot-quote-12-17.html"><span class="t">Exp8 &mdash; Spot quotes</span><span class="d">2026-09-10</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <div class="navsrow"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-spot-quotes-and-perp-price-discovery-in-the-december-17-replay"><span class="n"></span><span class="x">Spot quotes and perp price discovery in the December 17 replay</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
@@ -734,7 +764,7 @@
 </div></div></div>
 </div></div></div></div>
 <p class="navgroup">Where the work stands</p>
-<div class="navpage"><div class="navrow"><a class="navlink is-new" href="changelog.html"><span class="t">Change log<span class="navnew">NEW</span></span><span class="d">every build</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="changelog.html"><span class="t">Change log</span><span class="d">every build</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <a class="navsec" href="changelog.html#d-2026-09-17"><span class="n"></span><span class="x">2026-09-17</span></a>
@@ -769,7 +799,7 @@
 <div class="navsubs"><div>
 </div></div></div>
 </div></div></div></div>
-<div class="navpage is-current is-open"><div class="navrow"><a class="navlink is-new" href="#"><span class="t">Storyline<span class="navnew">NEW</span></span><span class="d">2026-09-15</span></a><button class="navbtn navcaret" type="button" aria-expanded="true" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage is-current is-open"><div class="navrow"><a class="navlink" href="#"><span class="t">Storyline</span><span class="d">2026-09-15</span></a><button class="navbtn navcaret" type="button" aria-expanded="true" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <a class="navsec" href="#story-figure"><span class="n"></span><span class="x">The flow chart</span></a>
@@ -784,24 +814,24 @@
 <div class="navsubs"><div>
 </div></div></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" href="review-status.html"><span class="t">Review status<span class="navdot" title="Has new sections"></span></span><span class="d">updated 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="review-status.html"><span class="t">Review status</span><span class="d">updated 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <a class="navsec is-new" href="review-status.html#r0917"><span class="n"></span><span class="x">Changed on 2026-09-17<span class="navnew">NEW</span></span></a>
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<div class="navsrow"><a class="navsec is-new" href="review-status.html#r0916"><span class="n"></span><span class="x">Reviews of 09-11, 09-15, 09-17<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" href="review-status.html#r0916"><span class="n"></span><span class="x">Reviews of 09-11, 09-15, 09-17</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
 <a class="navsub" href="review-status.html#r0916-exp8">Exp8 page points</a>
 <a class="navsub" href="review-status.html#r0916-exp10">Exp10 page points</a>
-<a class="navsub" href="review-status.html#r0917-site">Site points</a>
+<a class="navsub is-new" href="review-status.html#r0917-site">Site points<span class="navnew">NEW</span></a>
 <a class="navsub" href="review-status.html#r0916-asks">Analysis requests</a>
 <a class="navsub" href="review-status.html#r0916-plans">Plans: executed and open</a>
 <a class="navsub" href="review-status.html#r0916-decisions">Decisions waiting</a>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="review-status.html#r0902"><span class="n"></span><span class="x">The 2026-09-02 review<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="review-status.html#r0902"><span class="n"></span><span class="x">The 2026-09-02 review</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 </div></div></div></div>
@@ -1244,7 +1274,7 @@
       if (!t) return false;
       for (var d = t.parentElement; d; d = d.parentElement) { if (d.tagName === 'DETAILS') d.open = true; }
       lockUntil = Date.now() + 250;
-      var y = t.getBoundingClientRect().top + window.scrollY - 14;
+      var y = t.getBoundingClientRect().top + window.scrollY - ((narrow.matches || c.checked) ? 66 : 14);
       try { window.scrollTo({ top: y, behavior: 'instant' }); } catch (e) { window.scrollTo(0, y); }
       try { history.pushState(null, '', '#' + id); } catch (e) {}
       return true;
@@ -1252,9 +1282,9 @@
     side.addEventListener('click', function (ev) {
       var b = ev.target.closest('button.navcaret');
       if (b) {
-        var box = b.closest('.navgrp, .navpage'), open = !box.classList.contains('is-open');
-        setOpen(box, open);
-        if (box.classList.contains('navgrp')) box._user = open ? 'open' : 'closed';
+        var box = b.closest('.navgrp, .navpage');
+        setOpen(box, !box.classList.contains('is-open'));
+        paint();
         return;
       }
       var a = ev.target.closest('a');
@@ -1268,15 +1298,13 @@
       if (href.charAt(0) !== '#' || href.length < 2) return;          /* another page: an ordinary link */
       ev.preventDefault();
       var g = a.closest('.navgrp'), hasSubs = g && g.querySelector('.navsub');
-      if (a.classList.contains('navsec') && hasSubs) {
-        if (a.classList.contains('is-active') && g.classList.contains('is-open')) {
-          setOpen(g, false); g._user = 'closed'; return;
-        }
-        setOpen(g, true); g._user = 'open';
-      }
       var k = links.indexOf(a);
-      if (jump(decodeURIComponent(href.slice(1))) && k >= 0) mark(k, true);
-      if (narrow.matches) c.checked = false;
+      if (a.classList.contains('navsec') && hasSubs) {
+        if (g.classList.contains('is-open') && k >= 0 && k === current) { setOpen(g, false); paint(); return; }
+        setOpen(g, true);
+      }
+      if (narrow.matches) c.checked = false;                 /* close the drawer first: the jump offset depends on it */
+      if (jump(decodeURIComponent(href.slice(1))) && k >= 0) { pinned = k; pinnedY = window.scrollY; mark(k, true); }
     });
 
     /* highlight the section in view. Only the group being read is opened on scroll, without
@@ -1297,22 +1325,25 @@
       if (ar.top < sr.top + 8) scroller.scrollTop += ar.top - sr.top - 48;
       else if (ar.bottom > sr.bottom - 8) scroller.scrollTop += ar.bottom - sr.bottom + 48;
     }
+    var pinned = -1, pinnedY = 0, lit = null;
+    function paint() {                                     /* light the row being read, or its section when its list is closed */
+      var a = current >= 0 ? links[current] : null, g = a ? a.closest('.navgrp') : null;
+      var row = (a && a.classList.contains('navsub') && g && !g.classList.contains('is-open')) ? g.querySelector('a.navsec') || a : a;
+      if (lit && lit !== row) lit.classList.remove('is-active');
+      side.querySelectorAll('.navgrp.is-active').forEach(function (x) { if (x !== g) x.classList.remove('is-active'); });
+      if (row) row.classList.add('is-active');
+      if (g) g.classList.add('is-active');
+      lit = row;
+      return row;
+    }
     function mark(best, clicked) {
       if (best === current) return;
-      var was = current >= 0 ? links[current].closest('.navgrp') : null;
-      if (current >= 0) links[current].classList.remove('is-active');
+      var first = current === -1 && !clicked;
       current = best;
       var a = best >= 0 ? links[best] : null, g = a ? a.closest('.navgrp') : null;
-      quiet(function () {
-        if (was && was !== g) {
-          was.classList.remove('is-active');
-          if (was._user !== 'open') setOpen(was, false);
-          if (was._user === 'closed') was._user = null;
-        }
-        if (a) a.classList.add('is-active');
-        if (g) { g.classList.add('is-active'); if (g._user !== 'closed' && g.querySelector('.navsub')) setOpen(g, true); }
-      });
-      if (a && !clicked) keepVisible(a);
+      if (first && g && g.querySelector('.navsub')) quiet(function () { setOpen(g, true); });   /* on arrival only */
+      var row = paint();
+      if (row && !clicked) keepVisible(row);
     }
     function spy() {
       ticking = false;
@@ -1327,6 +1358,7 @@
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
         for (var k = targets.length - 1; k >= 0; k--) { if (targets[k]) { best = Math.max(best, k); break; } }
       }
+      if (pinned >= 0) { if (Math.abs(window.scrollY - pinnedY) < 2) best = pinned; else pinned = -1; }
       mark(best, false);
     }
     if (targets.length) {
@@ -1335,6 +1367,10 @@
       document.addEventListener('toggle', spy, true);
       spy();
     }
+
+    document.addEventListener('keydown', function (e) {    /* Escape closes the phone drawer */
+      if (e.key === 'Escape' && narrow.matches && c.checked) c.checked = false;
+    });
 
     /* links inside the text: open the folds a target sits in, then land on it */
     document.addEventListener('click', function (ev) {

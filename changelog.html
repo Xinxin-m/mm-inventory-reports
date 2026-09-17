@@ -55,7 +55,7 @@
          border:1px solid var(--line); color:var(--muted); }
   .st { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px;
         font-weight:700; letter-spacing:.02em; color:#fff; }
-  .st.done { background:#2e7d4f; } .st.partial { background:#b26a00; } .st.todo { background:#b3261e; }
+  .st.done { background:#2e7d4f; } .st.partial { background:#9a5b00; } .st.todo { background:#b3261e; }
   main.status td:nth-child(1) { white-space:nowrap; color:var(--muted); }
   main.status td:nth-child(2) { min-width:18ch; }
   main.status td:nth-child(3) { white-space:nowrap; }
@@ -112,9 +112,10 @@
           line-height:1.55; columns:2; column-gap:34px; }
   .hub .card details li { margin:0 0 6px; break-inside:avoid; }
   .hub .keysec { margin-top:40px; }
-  .hub .keys { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .hub .keys { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; align-items:start; }
   .hub .key { margin:0; padding:0; background:var(--surface); border:1px solid var(--line); border-radius:12px;
-          border-left:3px solid var(--accent); }
+          box-shadow:inset 3px 0 0 var(--accent); max-width:none; }
+  .hub .key > div { max-width:none; }
   .hub .key > summary { display:block; position:relative; padding:13px 38px 13px 16px; list-style:none; cursor:pointer;
           font-size:15px; font-weight:600; line-height:1.4; letter-spacing:-.005em; color:var(--text); }
   .hub .key > summary::-webkit-details-marker { display:none; }
@@ -156,6 +157,19 @@
   /* a jump lands at once: a smooth scroll across a 20 MB page drags every section past the reader */
   html { scroll-behavior:auto !important; }
   main [id] { scroll-margin-top:18px; }
+  #navoff:checked ~ main [id] { scroll-margin-top:66px; }
+  /* one typeface for page and menu (the report pages name system-ui only) */
+  body { font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main h1 { line-height:1.12; }
+  .metadata { grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+  main code { overflow-wrap:anywhere; }                       /* long file paths must not widen a phone page */
+  main :is(p, li, dd):not(.tabcap) { max-width:84ch; }        /* prose line length; tables and figures keep the column */
+  main .new { display:none; }                                 /* the 2026-09-04 pages' own red NEW pills: the change log marks what is new */
+  .table-wrap { background:var(--surface); border:1px solid var(--line); border-radius:11px; }
+  .table-wrap table tr:last-child td { border-bottom:0; }
+  ul:has(> li.tg) > li:not(.tg) { list-style:none; position:relative; }   /* a plain bullet among folded ones lines up */
+  ul:has(> li.tg) > li:not(.tg)::before { content:""; position:absolute; left:-14px; top:.72em; width:4px; height:4px;
+          border-radius:50%; background:var(--muted); }
   @media (prefers-color-scheme: dark) {
     html:not([data-theme="light"]) { --bg:#101619; --surface:#182126; --text:#eef5f6;
           --muted:#a9b8be; --line:#34444c; --accent:#70c7df; --warn:#efbd66; --good:#6bcf9f; }
@@ -188,9 +202,10 @@
           background:color-mix(in srgb, var(--surface) 86%, transparent);
           -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
           box-shadow:0 2px 10px rgba(0,0,0,.08);
-          opacity:0; transform:translateX(-6px); pointer-events:none;
+          opacity:0; transform:translateX(-6px); pointer-events:none; visibility:hidden;
           transition:opacity .2s ease, transform .3s var(--navease); }
-  #navoff:checked ~ .navrail { opacity:1; transform:none; pointer-events:auto; transition-delay:.12s; }
+  #navoff:checked ~ .navrail { opacity:1; transform:none; pointer-events:auto; visibility:visible; transition-delay:.12s; }
+  #navoff:focus-visible ~ aside.sitenav .navhead label.navbtn { outline:2px solid var(--accent); outline-offset:1px; }
   #navoff:checked ~ main { padding-top:62px; }
   .navscrim { display:none; }
 
@@ -225,7 +240,10 @@
   .sitenav .navsecs, .sitenav .navsubs { display:grid; grid-template-rows:0fr;
           transition:grid-template-rows .3s var(--navease); }
   .sitenav .navpage.is-open > .navsecs, .sitenav .navgrp.is-open > .navsubs { grid-template-rows:1fr; }
-  .sitenav .navsecs > div, .sitenav .navsubs > div { overflow:hidden; min-height:0; }
+  .sitenav .navsecs > div, .sitenav .navsubs > div { overflow:hidden; min-height:0; visibility:hidden;
+          transition:visibility 0s linear .3s; }
+  .sitenav .navpage.is-open > .navsecs > div { visibility:visible; transition-delay:0s; }
+  .sitenav .navpage.is-open .navgrp.is-open > .navsubs > div { visibility:visible; transition-delay:0s; }
   .sitenav .navlist { margin-left:17px; padding:3px 0 6px 8px; border-left:1px solid var(--line); }
   .sitenav .navsrow { display:flex; align-items:stretch; border-radius:7px; }
   .sitenav .navsrow > a.navsec { flex:1; min-width:0; }
@@ -236,25 +254,27 @@
           color:var(--muted); font-size:13px; line-height:1.38; text-decoration:none;
           transition:color .15s, background .15s; }
   .sitenav a.navsec { display:flex; gap:0; }
-  .sitenav a.navsec .n { flex:0 0 2.1em; color:color-mix(in srgb, var(--muted) 78%, transparent);
-          font-variant-numeric:tabular-nums; }
-  .sitenav a.navsec .n:empty { flex-basis:0; }
+  .sitenav a.navsec .n { flex:0 0 2.1em; color:var(--muted); font-variant-numeric:tabular-nums; }
   .sitenav a.navsec .x { flex:1; min-width:0; }
   .sitenav a.navsub { padding-left:20px; font-size:12.5px; }
   /* new since the last few logged days (site_changelog.json): brighter blue and a NEW tag */
-  .sitenav .is-new, .sitenav .is-new .t, .sitenav a.is-new .n { color:var(--new); }
+  .sitenav a.navlink.is-new .t, .sitenav a.navsec.is-new, .sitenav a.navsub.is-new,
+  .sitenav a.navsec.is-new .n { color:var(--new); }
   .sitenav a.navsec.is-new, .sitenav a.navsub.is-new { font-weight:550; }
   .navnew { display:inline-block; margin-left:6px; padding:0 5px; border-radius:4px; font-size:9.5px; font-weight:700;
           letter-spacing:.05em; line-height:15px; vertical-align:1px; color:#fff; background:var(--new); }
   html[data-theme="dark"] .navnew { color:#06121f; }
   @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .navnew { color:#06121f; } }
-  .sitenav .navdot { display:inline-block; width:6px; height:6px; margin-left:7px; border-radius:50%;
-          vertical-align:2px; background:var(--new); }
   .sitenav a.navsec:hover, .sitenav a.navsub:hover { color:var(--text);
           background:color-mix(in srgb, var(--text) 6%, transparent); }
-  .sitenav .navgrp.is-active > a.navsec { color:var(--text); font-weight:550; }
-  .sitenav a.navsec.is-active, .sitenav a.navsub.is-active { color:var(--accent); font-weight:600;
-          background:color-mix(in srgb, var(--accent) 12%, transparent); }
+  .sitenav .navgrp.is-active > a.navsec:not(.is-active),
+  .sitenav .navgrp.is-active > .navsrow > a.navsec:not(.is-active) { color:var(--text); font-weight:550; }
+  .sitenav .navgrp.is-active > .navsrow > a.navsec:not(.is-active) .n { color:var(--text); }
+  .sitenav a.navsec.is-active, .sitenav a.navsub.is-active, .sitenav a.navsec.is-active .n,
+  .sitenav a.is-new.is-active, .sitenav a.is-new.is-active .n { color:var(--accent); font-weight:600; }
+  .sitenav a.navsec.is-active, .sitenav a.navsub.is-active { background:color-mix(in srgb, var(--accent) 12%, transparent); }
+  .sitenav .navsrow:has(> a.is-active) { background:color-mix(in srgb, var(--accent) 12%, transparent); }
+  .sitenav .navsrow > a.navsec.is-active { background:none; }
   .sitenav a.navsec.is-active::before, .sitenav a.navsub.is-active::before { content:""; position:absolute;
           left:-9px; top:6px; bottom:6px; width:2px; border-radius:2px; background:var(--accent); }
   .sitenav .navfoot { flex:0 0 auto; margin:0; padding:10px 18px 14px; border-top:1px solid var(--line);
@@ -269,13 +289,20 @@
     #navoff:checked ~ aside.sitenav { transform:translateX(0); visibility:visible;
             transition:transform .3s var(--navease), visibility 0s linear 0s; }
     main, #navoff:checked ~ main { margin-left:0; padding-top:62px; }
-    .navrail, #navoff:checked ~ .navrail { opacity:1; transform:none; pointer-events:auto; }
+    .navrail, #navoff:checked ~ .navrail { opacity:1; transform:none; pointer-events:auto; visibility:visible;
+            left:0; right:0; top:0; gap:4px; padding:6px 10px; border-radius:0; border-width:0 0 1px; }
+    main [id], #navoff:checked ~ main [id] { scroll-margin-top:66px; }
+    .navbtn { width:40px; height:40px; flex-basis:40px; }
+    .sitenav a.navsec, .sitenav a.navsub { padding-top:9px; padding-bottom:9px; }
+    .sitenav button.navcaret.sm { width:40px; flex-basis:40px; }
     .navscrim { display:block; position:fixed; inset:0; z-index:48; background:rgba(8,11,16,.45);
             opacity:0; pointer-events:none; transition:opacity .25s ease; cursor:pointer; }
     #navoff:checked ~ .navscrim { opacity:1; pointer-events:auto; }
   }
   @media (prefers-reduced-motion: reduce) {
-    aside.sitenav, main, .navrail, .sitenav .navsecs, .sitenav .navsubs, .navscrim { transition:none !important; }
+    aside.sitenav, main, .navrail, .sitenav .navsecs, .sitenav .navsubs, .navscrim,
+    .sitenav .navsecs > div, .sitenav .navsubs > div, .sitenav button.navcaret svg, .sitenav a, .navbtn,
+    li.tg > details > summary::before, .hub .card, .hub .card h3 .arrow, .hub .key > summary::after { transition:none !important; }
   }
   .sitenav.no-anim .navsecs, .sitenav.no-anim .navsubs, .sitenav.no-anim svg { transition:none !important; }
 
@@ -304,14 +331,20 @@
   a.finding.keyres small { margin-top:2px; color:var(--accent); }
 
   main.log .eyebrow { margin:0 0 10px; font-size:12.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); }
-  main.log { max-width:940px; }
+  main.log > * { max-width:860px; margin-left:auto; margin-right:auto; }
+  main.log > p { max-width:860px; }
+  main.log ul.logl > li, main.log details.fold li { max-width:none; }
+  main.log .lede .navnew { margin:0 4px; }
+  main.log .logl li:has(> .k-new) > a { font-weight:450; font-size:14.5px; }
+  main.log details.more-secs { margin:0 auto; padding:0; border:0; background:none; }
+  main.log details.more-secs > summary { padding:9px 0; font-size:13.5px; font-weight:500; color:var(--muted); cursor:pointer; }
   main.log h2 { display:flex; align-items:center; gap:4px; font-size:21px; font-variant-numeric:tabular-nums; }
   main.log h3 { margin:20px 0 6px; font-size:14px; font-weight:600; color:var(--muted); }
   main.log ul.logl { list-style:none; margin:10px 0; padding:0; }
-  main.log ul.logl > li { position:relative; margin:0; padding:9px 0 9px 104px; border-bottom:1px solid var(--line); line-height:1.5; }
+  main.log ul.logl > li { position:relative; margin:0; padding:9px 0 9px 116px; border-bottom:1px solid var(--line); line-height:1.5; }
   main.log ul.logl > li > a { font-weight:550; text-decoration:none; }
   main.log ul.logl > li > a:hover { text-decoration:underline; }
-  main.log .kind { position:absolute; left:0; top:11px; width:92px; font-size:11px; font-weight:650; letter-spacing:.04em;
+  main.log .kind { position:absolute; left:0; top:11px; width:104px; font-size:11px; font-weight:650; letter-spacing:.04em;
           text-transform:uppercase; color:var(--muted); }
   main.log .logday.is-new .kind.k-new, main.log .logday.is-new .kind.k-page { color:var(--new); }
   main.log .kind.k-revised { color:var(--warn); }
@@ -332,7 +365,7 @@
 <div class="navscroll">
 <a class="navitem" href="overview.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4.5 20 11"/><path d="M6.5 9.5V19.5h11V9.5"/></svg>All reports</a>
 <p class="navgroup">Reports</p>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-inventory-shock-09-08.html"><span class="t">Exp8 &mdash; Inventory shocks<span class="navdot" title="Has new sections"></span></span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-inventory-shock-09-08.html"><span class="t">Exp8 &mdash; Inventory shocks</span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <a class="navsec" href="exp8-inventory-shock-09-08.html#summary-h"><span class="n"></span><span class="x">Summary</span></a>
@@ -343,7 +376,7 @@
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="exp8-inventory-shock-09-08.html#events-h"><span class="n"></span><span class="x">Event sets<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="exp8-inventory-shock-09-08.html#events-h"><span class="n"></span><span class="x">Event sets</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
@@ -363,12 +396,12 @@
 <a class="navsub" href="exp8-inventory-shock-09-08.html#imb-alt">Price-first and flow-first</a>
 </div></div></div>
 <div class="navgrp">
-<div class="navsrow"><a class="navsec is-new" href="exp8-inventory-shock-09-08.html#pop-h"><span class="n">4</span><span class="x">MM population at events<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" href="exp8-inventory-shock-09-08.html#pop-h"><span class="n">4</span><span class="x">MM population at events</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-def">Definitions</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-summary">Broad absorption, few carriers</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-state">State before the event</a>
-<a class="navsub" href="exp8-unwinders.html#pop-unwind">Early and late unwinders</a>
+<a class="navsub is-new" href="exp8-unwinders.html#pop-unwind">Early and late unwinders<span class="navnew">NEW</span></a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-aggr">Unwind aggressiveness</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-peers">Shocked against unshocked</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-equity">Equity and closed PnL</a>
@@ -383,7 +416,7 @@
 <a class="navsub" href="exp8-inventory-shock-09-08.html#prof-frequency">Shock frequency, unwind speed</a>
 </div></div></div>
 <div class="navgrp">
-<div class="navsrow"><a class="navsec is-new" href="exp8-inventory-shock-09-08.html#absorbers-h"><span class="n">8</span><span class="x">Absorbers and flagged MMs<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" href="exp8-inventory-shock-09-08.html#absorbers-h"><span class="n">8</span><span class="x">Absorbers and flagged MMs</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-def">Definitions</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-escape">Top absorbers, unflagged</a>
@@ -392,7 +425,7 @@
 <a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-rule">Peak rule, end rule</a>
 </div></div></div>
 <div class="navgrp">
-<div class="navsrow"><a class="navsec is-new" href="exp8-inventory-shock-09-08.html#families-h"><span class="n">9</span><span class="x">Taker-surge families<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" href="exp8-inventory-shock-09-08.html#families-h"><span class="n">9</span><span class="x">Taker-surge families</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#families-def">Definitions</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#families-sets">Two rules, different half hours</a>
@@ -412,7 +445,7 @@
 <a class="navsub" href="exp8-inventory-shock-09-08.html#syn-mech">Quoting broad, carrying narrow</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#syn-controls">What controls remove</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#syn-ticks">Two-stage microstructure</a>
-<a class="navsub is-new" href="exp8-inventory-shock-09-08.html#syn-flag">Absorbing and being flagged<span class="navnew">NEW</span></a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-flag">Absorbing and being flagged</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#syn-trigger">Stable trigger, chosen label</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#syn-boundary">What stays descriptive</a>
 </div></div></div>
@@ -476,8 +509,9 @@
 <div class="navpage"><div class="navrow"><a class="navlink is-new" href="exp8-unwinders.html"><span class="t">Exp8 &mdash; Unwinders<span class="navnew">NEW</span></span><span class="d">split out 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
-<a class="navsec" href="exp8-unwinders.html#pop-unwind"><span class="n">4.4</span><span class="x">Early and late unwinders</span></a>
+<div class="navsrow"><a class="navsec" href="exp8-unwinders.html#pop-unwind"><span class="n">4.4</span><span class="x">Early and late unwinders</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
+<a class="navsub" href="exp8-unwinders.html#pop-unwind-skew">Order skew by timing class</a>
 </div></div></div>
 <div class="navgrp">
 <div class="navsrow"><a class="navsec" href="exp8-unwinders.html#x9-book-h"><span class="n">10</span><span class="x">A shocked MM's resting orders</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
@@ -507,7 +541,7 @@
 <a class="navsub" href="exp8-unwinders.html#x9-unwind-absorbers">Fast and slow accumulators</a>
 </div></div></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp10-tick-level-09-10.html"><span class="t">Exp10 &mdash; Tick level<span class="navdot" title="Has new sections"></span></span><span class="d">rev. 2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp10-tick-level-09-10.html"><span class="t">Exp10 &mdash; Tick level</span><span class="d">rev. 2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <a class="navsec" href="exp10-tick-level-09-10.html#s-summary"><span class="n"></span><span class="x">Summary</span></a>
@@ -518,15 +552,15 @@
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="exp10-tick-level-09-10.html#s-2-the-surge-is-a-few-very-large-taker-orders"><span class="n">2</span><span class="x">A few very large taker orders<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="exp10-tick-level-09-10.html#s-2-the-surge-is-a-few-very-large-taker-orders"><span class="n">2</span><span class="x">A few very large taker orders</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="exp10-tick-level-09-10.html#s-3-same-taker-orders-two-outcomes"><span class="n">3</span><span class="x">Same orders, two outcomes<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="exp10-tick-level-09-10.html#s-3-same-taker-orders-two-outcomes"><span class="n">3</span><span class="x">Same orders, two outcomes</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="exp10-tick-level-09-10.html#s-4-second-by-second-order-by-order"><span class="n">4</span><span class="x">Second by second<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="exp10-tick-level-09-10.html#s-4-second-by-second-order-by-order"><span class="n">4</span><span class="x">Second by second</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
@@ -546,11 +580,11 @@
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="exp10-tick-level-09-10.html#s-appendix-data-sources"><span class="n"></span><span class="x">Appendix: data sources<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="exp10-tick-level-09-10.html#s-appendix-data-sources"><span class="n"></span><span class="x">Appendix: data sources</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink is-new" href="exp8-spot-quote-12-17.html"><span class="t">Exp8 &mdash; Spot quotes<span class="navnew">NEW</span></span><span class="d">2026-09-10</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-spot-quote-12-17.html"><span class="t">Exp8 &mdash; Spot quotes</span><span class="d">2026-09-10</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <div class="navsrow"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-spot-quotes-and-perp-price-discovery-in-the-december-17-replay"><span class="n"></span><span class="x">Spot quotes and perp price discovery in the December 17 replay</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
@@ -578,7 +612,7 @@
 </div></div></div>
 </div></div></div></div>
 <p class="navgroup">Where the work stands</p>
-<div class="navpage is-current is-open"><div class="navrow"><a class="navlink is-new" href="#"><span class="t">Change log<span class="navnew">NEW</span></span><span class="d">every build</span></a><button class="navbtn navcaret" type="button" aria-expanded="true" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage is-current is-open"><div class="navrow"><a class="navlink" href="#"><span class="t">Change log</span><span class="d">every build</span></a><button class="navbtn navcaret" type="button" aria-expanded="true" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <a class="navsec" href="#d-2026-09-17"><span class="n"></span><span class="x">2026-09-17</span></a>
@@ -613,7 +647,7 @@
 <div class="navsubs"><div>
 </div></div></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink is-new" href="storyline.html"><span class="t">Storyline<span class="navnew">NEW</span></span><span class="d">2026-09-15</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="storyline.html"><span class="t">Storyline</span><span class="d">2026-09-15</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <a class="navsec" href="storyline.html#story-figure"><span class="n"></span><span class="x">The flow chart</span></a>
@@ -628,24 +662,24 @@
 <div class="navsubs"><div>
 </div></div></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" href="review-status.html"><span class="t">Review status<span class="navdot" title="Has new sections"></span></span><span class="d">updated 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="review-status.html"><span class="t">Review status</span><span class="d">updated 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
 <div class="navgrp">
 <a class="navsec is-new" href="review-status.html#r0917"><span class="n"></span><span class="x">Changed on 2026-09-17<span class="navnew">NEW</span></span></a>
 <div class="navsubs"><div>
 </div></div></div>
 <div class="navgrp">
-<div class="navsrow"><a class="navsec is-new" href="review-status.html#r0916"><span class="n"></span><span class="x">Reviews of 09-11, 09-15, 09-17<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsrow"><a class="navsec" href="review-status.html#r0916"><span class="n"></span><span class="x">Reviews of 09-11, 09-15, 09-17</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
 <a class="navsub" href="review-status.html#r0916-exp8">Exp8 page points</a>
 <a class="navsub" href="review-status.html#r0916-exp10">Exp10 page points</a>
-<a class="navsub" href="review-status.html#r0917-site">Site points</a>
+<a class="navsub is-new" href="review-status.html#r0917-site">Site points<span class="navnew">NEW</span></a>
 <a class="navsub" href="review-status.html#r0916-asks">Analysis requests</a>
 <a class="navsub" href="review-status.html#r0916-plans">Plans: executed and open</a>
 <a class="navsub" href="review-status.html#r0916-decisions">Decisions waiting</a>
 </div></div></div>
 <div class="navgrp">
-<a class="navsec is-new" href="review-status.html#r0902"><span class="n"></span><span class="x">The 2026-09-02 review<span class="navnew">NEW</span></span></a>
+<a class="navsec" href="review-status.html#r0902"><span class="n"></span><span class="x">The 2026-09-02 review</span></a>
 <div class="navsubs"><div>
 </div></div></div>
 </div></div></div></div>
@@ -788,7 +822,7 @@
 <main id="main" class="log">
 <p class="eyebrow">Where the work stands</p>
 <h1>Change log</h1>
-<p class="lede">What each day added to the site: new pages, new sections, and revisions to sections that already existed. Every line links to the place it describes. Entries from the last 2 logged days carry a <span class="navnew">NEW</span> tag, here and in the side menu, where they are also set in a brighter blue.</p>
+<p class="lede">What each day added to the site: new pages, new sections, and revisions to sections that already existed. Every line links to the place it describes. Entries from the latest logged day carry a <span class="navnew">NEW</span> tag, here and in the side menu, where they are also set in a brighter blue.</p>
 <details class="fold"><summary>How the log is kept</summary><div><p>The site builder compares the section list of every page against what it has already recorded, and writes any new page or section under the build date. A revision to an existing section leaves the section list unchanged, so those lines are written by hand into <code>code/site_changelog.json</code>. Days before 2026-09-17 were rebuilt from the git history of the published site, one snapshot per day. A section that moves to another page keeps its entry, and the link follows it.</p></div></details>
 <section id="d-2026-09-17" class="logday is-new"><h2>2026-09-17 <span class="navnew">NEW</span></h2>
 <ul class="logl">
@@ -796,15 +830,19 @@
 <li><span class="kind k-page">New page</span><a href="exp8-unwinders.html">Exp8 &mdash; Unwinders</a> <span class="logtext">Sections 4.4 and 10 to 12 moved out of the Exp8 page. The text is unchanged.</span></li>
 <li><span class="kind k-page">New page</span><a href="changelog.html">Change log</a> <span class="logtext">This page.</span></li>
 <li><span class="kind k-revised">Revised</span><a href="exp8-unwinders.html#x9-unwind-absorbers">12.5 Fast and slow unwinders among the MMs that accumulated inventory</a> <span class="logtext">Rewritten on the OR-flagged accumulators: 35,612 rows, 6,236 of them shocked, windows measured from each MM's own peak. The 2026-09-16 version is folded underneath.</span></li>
-<li><span class="kind k-revised">Revised</span><a href="exp8-unwinders.html#pop-unwind">4.4 Early and late unwinders among absorbers that accumulated inventory</a> <span class="logtext">Made to read on its own: symbols defined in the section, the Table 10 rules written as inequalities in A and L, acronyms defined in the captions of Tables 10 to 12.</span></li>
+<li><span class="kind k-revised">Revised</span><a href="exp8-unwinders.html#pop-unwind">4.4 Early and late unwinders among absorbers that accumulated inventory</a> <span class="logtext">Made to read on its own: symbols defined in the section, the Table 10 rules written as inequalities in A and L. Table 12 now has a bulleted column key and splits markouts by absorption side and exit side at 30 and 60 minutes. The bullet on fills that reduce the position is corrected: exit-side fills lose in every class. A new fold holds Tables 13 to 16: accumulation markout by peak against the price extreme, censored rows after the window, and the peak searched up to 120 minutes after the window.</span></li>
+<li><span class="kind k-revised">Revised</span><a href="exp8-unwinders.html#x9-unwind-tests">12.4 Faster unwinders lean more, between MMs and hardly within one</a> <span class="logtext">Marked as the older test, with a pointer to the current test in section 12.5.</span></li>
 <li><span class="kind k-site">Site</span><a href="overview.html">Homepage and side menu</a> <span class="logtext">Key results open the homepage. The menu has short numbered titles, a jump lands at once, a second click closes a list, and analysis bullets fold to their headline.</span></li>
 </ul>
 <h3>Review status: new sections</h3><ul class="logl">
 <li><span class="kind k-new">New section</span><a href="review-status.html#r0917">What changed on 2026-09-17</a></li>
 <li><span class="kind k-new">New section</span><a href="review-status.html#r0917-site">Site points</a></li>
 </ul>
+<h3>Exp8 &mdash; Inventory shocks, event studies and unwinders: new sections</h3><ul class="logl">
+<li><span class="kind k-new">New section</span><a href="exp8-unwinders.html#pop-unwind-skew">Order skew by timing class</a></li>
+</ul>
 </section>
-<section id="d-2026-09-16" class="logday is-new"><h2>2026-09-16 <span class="navnew">NEW</span></h2>
+<section id="d-2026-09-16" class="logday"><h2>2026-09-16</h2>
 <ul class="logl">
 <li><span class="kind k-revised">Revised</span><a href="exp8-inventory-shock-09-08.html#pop-h">4. The HYPE MM population around events and matched controls</a> <span class="logtext">Rebuilt on all 914 events under a post-only-fill active rule. Section 4.4 is redefined on the 25,705 absorbers that accumulated inventory.</span></li>
 <li><span class="kind k-revised">Revised</span><a href="exp10-tick-level-09-10.html">Exp10 &mdash; Tick level</a> <span class="logtext">Folded layout: the background of each section sits in toggles, and the replays are GIFs.</span></li>
@@ -824,10 +862,11 @@
 <li><span class="kind k-new">New section</span><a href="exp8-unwinders.html#x9-book-h">10. What a shocked roster MM does to its own resting orders</a><details class="fold"><summary>5 sub-sections</summary><div><ul><li><a href="exp8-unwinders.html#x9-book-headline">10.2 After the peak the accumulating-side quote moves away and the unwind-side quote barely moves</a></li><li><a href="exp8-unwinders.html#x9-book-cells">10.3 Olga's four predicted signs: touch posts confirm, touch cancels come out with the opposite sign</a></li><li><a href="exp8-unwinders.html#x9-book-latency">10.4 The book reacts within 9 minutes at the median and is refilled within 30 minutes in 87% of shocks</a></li><li><a href="exp8-unwinders.html#x9-book-grid">10.5 On a 5-minute grid the SAME quote is furthest out 5 minutes after the peak and back within an hour</a></li><li><a href="exp8-unwinders.html#x9-book-valid">10.6 Limits</a></li></ul></div></details></li>
 <li><span class="kind k-new">New section</span><a href="exp8-unwinders.html#x9-pop-h">11. Population shocks: how fast MMs recover, and what quote skew says about it</a><details class="fold"><summary>3 sub-sections</summary><div><ul><li><a href="exp8-unwinders.html#x9-pop-funnel">11.2 812 shocks on 88 of 148 MMs, 5.2 per wallet per 100 active days</a></li><li><a href="exp8-unwinders.html#x9-pop-recovery">11.3 Half of the shocks have 60% of the excursion back within 30 minutes; 11.9% never do within six hours</a></li><li><a href="exp8-unwinders.html#x9-pop-skew">11.4 Exit-side quoting orders recovery speed across MMs, not shock by shock</a></li></ul></div></details></li>
 <li><span class="kind k-new">New section</span><a href="exp8-unwinders.html#x9-unwind-h">12. How MMs quote while they unwind, by recovery speed</a><details class="fold"><summary>4 sub-sections</summary><div><ul><li><a href="exp8-unwinders.html#x9-unwind-window">12.2 Over the whole unwind window the median wallet-event shows no tilt</a></li><li><a href="exp8-unwinders.html#x9-unwind-state">12.3 While at least 75% of the position is still on, fast unwinders lean toward the exit</a></li><li><a href="exp8-unwinders.html#x9-unwind-tests">12.4 Faster unwinders lean more, between MMs and hardly within one</a></li><li><a href="exp8-unwinders.html#x9-unwind-absorbers">12.5 The same question on the absorbers that accumulated inventory: timing and speed classes</a></li></ul></div></details></li>
+</ul><details class="more-secs"><summary>3 more new sections</summary><ul class="logl">
 <li><span class="kind k-new">New section</span><a href="exp8-event-studies.html#x10-min-h">13. Why a few MMs absorb most of a shock: two episodes at one minute</a><details class="fold"><summary>3 sub-sections</summary><div><ul><li><a href="exp8-event-studies.html#x10-min-who">13.2 The largest absorbers quoted closer than their peers or rested far more size</a></li><li><a href="exp8-event-studies.html#x10-min-stories">13.3 MM01 did not pull, the far resting orders were run through, and small MMs were refilled</a></li><li><a href="exp8-event-studies.html#x10-min-build">13.4 Nearly every observed MM builds in each burst, and half are reducing ten minutes later</a></li></ul></div></details></li>
 <li><span class="kind k-new">New section</span><a href="exp8-event-studies.html#x10-tick-h">14. The same two episodes at tick level: a few large taker orders, two outcomes</a><details class="fold"><summary>3 sub-sections</summary><div><ul><li><a href="exp8-event-studies.html#x10-tick-orders">14.2 The surge is a few single taker orders, each crossing 80 to 370 price levels in one millisecond</a></li><li><a href="exp8-event-studies.html#x10-tick-outcomes">14.3 The same orders fill both groups; what the MM does next separates them</a></li><li><a href="exp8-event-studies.html#x10-tick-seconds">14.4 Second by second around the $9.29m sell</a></li></ul></div></details></li>
 <li><span class="kind k-new">New section</span><a href="exp8-inventory-shock-09-08.html#syn-flag">Absorbing the flow and being flagged for it are different measurements</a></li>
-</ul>
+</ul></details>
 <h3>Review status: new sections</h3><ul class="logl">
 <li><span class="kind k-new">New section</span><a href="review-status.html#r0916">The 2026-09-11 and 2026-09-15 reviews</a><details class="fold"><summary>5 sub-sections</summary><div><ul><li><a href="review-status.html#r0916-exp8">Exp8 page points</a></li><li><a href="review-status.html#r0916-exp10">Exp10 page points</a></li><li><a href="review-status.html#r0916-asks">Analysis requests of 2026-09-15</a></li><li><a href="review-status.html#r0916-plans">Plans: executed and open</a></li><li><a href="review-status.html#r0916-decisions">Decisions waiting for Xinmeng</a></li></ul></div></details></li>
 <li><span class="kind k-new">New section</span><a href="review-status.html#r0902">The 2026-09-02 review</a></li>
@@ -918,7 +957,7 @@
       if (!t) return false;
       for (var d = t.parentElement; d; d = d.parentElement) { if (d.tagName === 'DETAILS') d.open = true; }
       lockUntil = Date.now() + 250;
-      var y = t.getBoundingClientRect().top + window.scrollY - 14;
+      var y = t.getBoundingClientRect().top + window.scrollY - ((narrow.matches || c.checked) ? 66 : 14);
       try { window.scrollTo({ top: y, behavior: 'instant' }); } catch (e) { window.scrollTo(0, y); }
       try { history.pushState(null, '', '#' + id); } catch (e) {}
       return true;
@@ -926,9 +965,9 @@
     side.addEventListener('click', function (ev) {
       var b = ev.target.closest('button.navcaret');
       if (b) {
-        var box = b.closest('.navgrp, .navpage'), open = !box.classList.contains('is-open');
-        setOpen(box, open);
-        if (box.classList.contains('navgrp')) box._user = open ? 'open' : 'closed';
+        var box = b.closest('.navgrp, .navpage');
+        setOpen(box, !box.classList.contains('is-open'));
+        paint();
         return;
       }
       var a = ev.target.closest('a');
@@ -942,15 +981,13 @@
       if (href.charAt(0) !== '#' || href.length < 2) return;          /* another page: an ordinary link */
       ev.preventDefault();
       var g = a.closest('.navgrp'), hasSubs = g && g.querySelector('.navsub');
-      if (a.classList.contains('navsec') && hasSubs) {
-        if (a.classList.contains('is-active') && g.classList.contains('is-open')) {
-          setOpen(g, false); g._user = 'closed'; return;
-        }
-        setOpen(g, true); g._user = 'open';
-      }
       var k = links.indexOf(a);
-      if (jump(decodeURIComponent(href.slice(1))) && k >= 0) mark(k, true);
-      if (narrow.matches) c.checked = false;
+      if (a.classList.contains('navsec') && hasSubs) {
+        if (g.classList.contains('is-open') && k >= 0 && k === current) { setOpen(g, false); paint(); return; }
+        setOpen(g, true);
+      }
+      if (narrow.matches) c.checked = false;                 /* close the drawer first: the jump offset depends on it */
+      if (jump(decodeURIComponent(href.slice(1))) && k >= 0) { pinned = k; pinnedY = window.scrollY; mark(k, true); }
     });
 
     /* highlight the section in view. Only the group being read is opened on scroll, without
@@ -971,22 +1008,25 @@
       if (ar.top < sr.top + 8) scroller.scrollTop += ar.top - sr.top - 48;
       else if (ar.bottom > sr.bottom - 8) scroller.scrollTop += ar.bottom - sr.bottom + 48;
     }
+    var pinned = -1, pinnedY = 0, lit = null;
+    function paint() {                                     /* light the row being read, or its section when its list is closed */
+      var a = current >= 0 ? links[current] : null, g = a ? a.closest('.navgrp') : null;
+      var row = (a && a.classList.contains('navsub') && g && !g.classList.contains('is-open')) ? g.querySelector('a.navsec') || a : a;
+      if (lit && lit !== row) lit.classList.remove('is-active');
+      side.querySelectorAll('.navgrp.is-active').forEach(function (x) { if (x !== g) x.classList.remove('is-active'); });
+      if (row) row.classList.add('is-active');
+      if (g) g.classList.add('is-active');
+      lit = row;
+      return row;
+    }
     function mark(best, clicked) {
       if (best === current) return;
-      var was = current >= 0 ? links[current].closest('.navgrp') : null;
-      if (current >= 0) links[current].classList.remove('is-active');
+      var first = current === -1 && !clicked;
       current = best;
       var a = best >= 0 ? links[best] : null, g = a ? a.closest('.navgrp') : null;
-      quiet(function () {
-        if (was && was !== g) {
-          was.classList.remove('is-active');
-          if (was._user !== 'open') setOpen(was, false);
-          if (was._user === 'closed') was._user = null;
-        }
-        if (a) a.classList.add('is-active');
-        if (g) { g.classList.add('is-active'); if (g._user !== 'closed' && g.querySelector('.navsub')) setOpen(g, true); }
-      });
-      if (a && !clicked) keepVisible(a);
+      if (first && g && g.querySelector('.navsub')) quiet(function () { setOpen(g, true); });   /* on arrival only */
+      var row = paint();
+      if (row && !clicked) keepVisible(row);
     }
     function spy() {
       ticking = false;
@@ -1001,6 +1041,7 @@
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
         for (var k = targets.length - 1; k >= 0; k--) { if (targets[k]) { best = Math.max(best, k); break; } }
       }
+      if (pinned >= 0) { if (Math.abs(window.scrollY - pinnedY) < 2) best = pinned; else pinned = -1; }
       mark(best, false);
     }
     if (targets.length) {
@@ -1009,6 +1050,10 @@
       document.addEventListener('toggle', spy, true);
       spy();
     }
+
+    document.addEventListener('keydown', function (e) {    /* Escape closes the phone drawer */
+      if (e.key === 'Escape' && narrow.matches && c.checked) c.checked = false;
+    });
 
     /* links inside the text: open the folds a target sits in, then land on it */
     document.addEventListener('click', function (ev) {
