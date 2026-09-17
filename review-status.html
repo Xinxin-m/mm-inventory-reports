@@ -848,16 +848,84 @@
   <span class="st todo">NOT DONE</span> nothing on a page yet; where it will go is named.</div>
 
   <h2 id="r0917">What changed on 2026-09-17</h2>
+  <p class="small">Fourteen builds of the Exp8 report went live today, letters i to x, each one a patch on the letter
+  before it. New sections first, then what moved inside sections that were already there, then the two data defects
+  found on the way. Every exhibit below is on all 915 events and 915 controls and includes 2025-10-10.</p>
+
+  <h3 id="r0917-new">Sections that are new today</h3>
   <ul class="tight">
-    <li><strong>&sect;12.5 rewritten.</strong> Fast against slow unwinders on the 35,612 MMs that accumulated inventory (own-sigma rule or the event's upper-quartile rule), with the 6,236 shocked rows reported separately and every short window timed from the MM's own inventory peak. The 2026-09-16 version is folded underneath it as superseded. <a href="exp8-unwinders.html#x9-unwind-absorbers">&sect;12.5</a></li>
-    <li><strong>The 2026-09-16 tilt headline is corrected.</strong> "Fast MMs do not tilt at all" holds only for the two-hour average. While fast MMs still hold the position they lean the most: +4.41 bps toward the exit against +0.56 for slow MMs. The lean lasts a median 4 minutes. <a href="exp8-unwinders.html#tab-x9-fs-skew">Table 52</a></li>
-    <li><strong>Speed is throughput.</strong> In the two hours after the peak a fast MM fills 8.0 times its accumulation on the exit side and 6.6 times on the absorption side; a slow MM fills about 0.5 times on each. Nobody crosses the spread to get out. <a href="exp8-unwinders.html#tab-x9-fs-thru">Table 56</a></li>
-    <li><strong>&sect;4.4 reads on its own.</strong> A symbols list opens the section, Table 10's rules are written as inequalities in A, L and sig24, and the captions of Tables 10 to 12 spell out every acronym. No number changed. <a href="exp8-unwinders.html#pop-unwind">&sect;4.4</a></li>
-    <li><strong>Site menu and hub redesigned.</strong> Page titles open their page, chevrons open the section lists, the section in view is highlighted while scrolling, and the panel slides away or becomes a drawer on a phone.</li>
-    <li><strong>No 5-minute held rule.</strong> Speed classes and the tilt tables use the single-minute inventory peak; MMs back within one minute stay in the fast class.</li>
+    <li><strong>&sect;4.9, the peak rule as a second shock flag.</strong> Reading the peak of an MM&rsquo;s position
+    against its level at the start of the window, instead of its level at the end, gives 10 shocked MMs per event
+    instead of 5, and events with no shocked MM fall from 63 to 20. Both flags are now reported side by side; the end
+    rule stays the rule of record. <a href="exp8-inventory-shock-09-08.html#pop-peakrule">&sect;4.9</a></li>
+    <li><strong>&sect;4.10, what the market pays after the event (test H6).</strong> Spread is 1.38 times the matched
+    control during the event and still 1.35 times in the first 10 minutes after it, 1.22 times at 30 to 40 minutes and
+    1.14 times at 110 to 120. Liquidation cascades are the slow case: 2.05 times in the first 10 minutes and still
+    1.26 times after two hours. Surge-side takers pay 0.61 bps more in the first 10 minutes.
+    <a href="exp8-inventory-shock-09-08.html#pop-quality">&sect;4.10</a></li>
+    <li><strong>&sect;4.7b, the equity shock (test H2).</strong> The mark-to-market of the shock inventory, on the
+    ten-coin book with funding. <a href="exp8-inventory-shock-09-08.html#pop-equity">&sect;4.7b</a></li>
+    <li><strong>&sect;9.8, the one-sided surge families against the net-flow events.</strong> The shocked share of rows
+    is 5.30% in the one-sided family against 0.87% in its controls, 6.1 times; two-sided 6.21% against 1.31%, 4.7
+    times; net-flow 5.98% against 1.38%, 4.3 times. The absorbing direction holds in 90.2% of one-sided rows against
+    about 47% in controls, and the top five absorbers take a median 30% of the surging side&rsquo;s taker dollars in
+    every family. The &sect;8 mechanism survives the change of event selection.
+    <a href="exp8-inventory-shock-09-08.html#families-cross">&sect;9.8</a></li>
+    <li><strong>&sect;11.5, the tilt test on all 812 population shocks.</strong> Across MMs the lean orders speed;
+    inside one MM it does not: &minus;0.03 with p = 0.52, a per-MM median of &minus;0.08, and only 31% of MMs with the
+    sign the across-MM story predicts. <a href="exp8-inventory-shock-09-08.html#x8-all812">&sect;11.5</a></li>
+    <li><strong>&sect;12.6, the orders behind the unwind.</strong> Cancels run 0.93 to 0.98 per new order, which is
+    record-keeping: the venue writes a modify as a cancel plus a new order.
+    <a href="exp8-unwinders.html#x9-unwind-orders">&sect;12.6</a></li>
   </ul>
 
-<h2 id="r0916">The 2026-09-11, 2026-09-15 and 2026-09-17 reviews</h2>
+  <h3 id="r0917-moved">Numbers and wording that moved</h3>
+  <ul class="tight">
+    <li><strong>&sect;4 now reads every placement day and every date.</strong> Order-state coverage rises to 100.0% of
+    shocked rows, the event count goes 910 to 915 and shocked rows 7,109 to 7,193. The &sect;4 finding holds:
+    absorption-side resting size is 1.14 times the opposite side in the two hours before the event.
+    <a href="exp8-inventory-shock-09-08.html#pop-def">&sect;4.1</a></li>
+    <li><strong>&sect;12.5 rewritten on the 35,612 accumulating MMs</strong>, with the 6,236 shocked rows reported
+    separately and every short window timed from the MM&rsquo;s own inventory peak. The 2026-09-16 version is folded
+    underneath as superseded. <a href="exp8-unwinders.html#x9-unwind-absorbers">&sect;12.5</a></li>
+    <li><strong>The tilt headline is corrected.</strong> &ldquo;Fast MMs do not tilt at all&rdquo; holds only for the
+    two-hour average. While they still hold the position they lean the most: +4.41 bps toward the exit against +0.56
+    for slow MMs, for a median of 4 minutes. <a href="exp8-unwinders.html#tab-x9-fs-skew">Table 52</a></li>
+    <li><strong>Speed is throughput.</strong> In the two hours after its peak a fast MM fills 8.0 times its
+    accumulation on the exit side and 6.6 times on the absorption side; a slow MM fills about 0.5 times on each.
+    Nobody crosses the spread to get out. <a href="exp8-unwinders.html#tab-x9-fs-thru">Table 56</a></li>
+    <li><strong>Two number audits, 128 items checked, 41 cells corrected.</strong> The largest: the &sect;4.1 control
+    breakdown moves to the 915-event sample (527 / 218 / 92 / 50 / 28), the &sect;3.3 gate share is 17.8% not 15.5%,
+    the &sect;6.3 hit side is $33.4m not $40.4m, and a &sect;4.3 bullet that compared group medians was false as
+    written (the within-wallet median ratio is 1.01, not 1.14).</li>
+    <li><strong>Sections read on their own.</strong> Ninety-five closed &ldquo;Terms used here&rdquo; boxes define
+    every symbol where it is used, 218 titles were shortened, 321 sentences that only repeated a table cell were cut,
+    and quantile cells print one value per line. The open text of the page grew 0.2%.</li>
+    <li><strong>&sect;12.1 to &sect;12.4 are labelled as the older tests</strong>, so their 30 and 120-minute classes
+    are not read as the current ones. <a href="exp8-unwinders.html#x9-unwind-tests">&sect;12.4</a></li>
+    <li><strong>No 5-minute held rule.</strong> Speed classes and the tilt tables use the single-minute inventory
+    peak; MMs back within one minute stay in the fast class.</li>
+    <li><strong>Site menu and hub redesigned.</strong> Page titles open their page, chevrons open the section lists,
+    the section in view is highlighted while scrolling, and the panel slides away or becomes a drawer on a phone.</li>
+  </ul>
+
+  <h3 id="r0917-defects">Two defects found in the source data</h3>
+  <ul class="tight">
+    <li><strong>The fill table is incomplete from 2025-03-24 to 2025-05-25.</strong> Maker HYPE over taker HYPE runs
+    0.247 to 1.146 on those 63 dates against 0.5% balance on every later date. It was found by a population check that
+    fails only there: the per-MM absorption shares of 7 windows sum above 1, worst 2.25. Each exhibit is now
+    classified. Safe by their own dates: &sect;4.7, &sect;4.7b, &sect;4.8, &sect;6, &sect;7, &sect;13, &sect;14.
+    Affected but small: &sect;4.2, &sect;4.3, &sect;8, &sect;5, &sect;12, &sect;3 (110 of 915 events), &sect;9 (113 of
+    922), Exp9 (33 of 812). Unchecked: &sect;3.4, the &sect;4.3 order-placement detail, &sect;4.10.
+    <a href="exp8-inventory-shock-09-08.html#caveats">&sect;15</a></li>
+    <li><strong>The post-only flag is blank from 2026-04-16 to 2026-04-23.</strong> On those eight dates the fill table
+    records only two order-type values, so no fill can be marked post-only. The active-MM rule already handles it: it
+    reads each date&rsquo;s own fills and falls back to one maker fill when the whole population shows no post-only
+    fill, which keeps 16 events, 14 controls and 3,324 event &times; MM rows that would otherwise have no active MM at
+    all. No number moves. <a href="exp8-inventory-shock-09-08.html#tab-pop-rules">Table 6</a></li>
+  </ul>
+
+  <h2 id="r0916">The 2026-09-11, 2026-09-15 and 2026-09-17 reviews</h2>
 
   <h3 id="r0916-exp8">Exp8 page points</h3>
   <div class="table-wrap"><table>
