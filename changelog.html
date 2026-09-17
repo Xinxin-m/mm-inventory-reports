@@ -432,7 +432,9 @@
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-aggr">Unwind aggressiveness</a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-peers">Shocked against unshocked</a>
 <a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-equity">Equity and closed PnL<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-equity-attrib">Equity change: the ten-coin book<span class="navnew">NEW</span></a>
 <a class="navsub" href="exp8-inventory-shock-09-08.html#pop-counterparty">Counterparties of the unwind</a>
+<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-peakrule">Shocked under the peak rule<span class="navnew">NEW</span></a>
 </div></div></div>
 <div class="navgrp">
 <div class="navsrow"><a class="navsec" href="exp8-inventory-shock-09-08.html#prof-h"><span class="n">5</span><span class="x">Profile of all active HYPE MMs</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
@@ -560,15 +562,17 @@
 <a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-pop-funnel">Shock counts and frequency<span class="navnew">NEW</span></a>
 <a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-pop-recovery">Recovery times<span class="navnew">NEW</span></a>
 <a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-pop-skew">Quote skew and recovery speed<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-pop-within">Exit lean inside one MM<span class="navnew">NEW</span></a>
 </div></div></div>
 <div class="navgrp">
 <div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-h"><span class="n">12</span><span class="x">Quoting during the unwind<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsubs"><div>
 <a class="navsub" href="exp8-unwinders.html#x9-unwind-def">Definitions</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-window">The two-hour unwind window<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-state">By share of position still held<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-tests">Between MMs or within an MM<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-absorbers">Fast and slow unwinders<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-window">Older test: two-hour window<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-state">Older test: share still held<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-tests">Older test: between or within MMs<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-absorbers">Fast unwinders lean toward the exit in the first 5 minutes; slow ones do not<span class="navnew">NEW</span></a>
+<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-orders">Taker orders, cancels, markouts<span class="navnew">NEW</span></a>
 </div></div></div>
 </div></div></div></div>
 <div class="navpage"><div class="navrow"><a class="navlink" data-new="2026-09-10" href="exp10-tick-level-09-10.html"><span class="t">Exp10 &mdash; Tick level<span class="navnew">NEW</span></span><span class="d">rev. 2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
@@ -897,6 +901,11 @@
 <li data-new="2026-09-17"><span class="kind k-revised">Revised</span><a href="exp8-unwinders.html#pop-unwind">4.4 Early and late unwinders: phases follow each MM</a> <span class="logtext">ACC runs from the window start to that MM's own inventory peak, which may fall up to 60 minutes after the window while its inventory keeps making new highs. UNW runs from the peak until the MM has given back 60% of it, capped at 6 hours. Table 12, Figure 7 and the checks fold are rebuilt on those windows, with markouts split by absorption and exit side, and a remarks box for the readings the classes do not yet explain.</span></li>
 <li data-new="2026-09-17"><span class="kind k-revised">Revised</span><a href="exp8-unwinders.html#pop-unwind-skew">4.4 Order skew by timing class: recomputed on the new windows</a> <span class="logtext">Over its own unwind the early class holds its exit quote 5.44 bps nearer the touch than its absorption quote, against its pre-event value; on the old two-hour window the figure was 0.00 bps.</span></li>
 <li data-new="2026-09-17"><span class="kind k-revised">Revised</span><a href="exp8-inventory-shock-09-08.html#pop-def">4.1 Definitions: unwind length T60 replaces minutes to half</a> <span class="logtext">The shared definitions of the 4.4 phases follow the rebuild: ACC and UNW are stated on the MM's own peak, and T60 is the minutes until 60% of the peak inventory is given back.</span></li>
+<li data-new="2026-09-17"><span class="kind k-new">New section</span><a href="exp8-inventory-shock-09-08.html#pop-equity-attrib">4.7b Is the equity change the shock inventory marked to market? No: it is the whole ten-coin book</a> <span class="logtext">Marking the shock inventory to market does not explain MMs' equity changes (slope 0.48 for shocked MMs); the whole ten-coin book does (slope 0.91, rank correlation 0.71). The shock inventory is one of several similar-sized parts.</span></li>
+<li data-new="2026-09-17"><span class="kind k-new">New section</span><a href="exp8-inventory-shock-09-08.html#pop-peakrule">4.9 The shocked population under the peak rule</a> <span class="logtext">Flagging a shock at the peak move instead of the window end raises shocked rows from 7,189 to 11,945 and flags 43.6% of the top-5 absorbers instead of 23.7%; the added MMs are the busiest before the event.</span></li>
+<li data-new="2026-09-17"><span class="kind k-new">New section</span><a href="exp8-unwinders.html#x9-pop-within">11.5 All 812 shocks: inside one MM, more exit lean does not bring a faster recovery</a> <span class="logtext">On all 812 population shocks with quotes. Within an MM more exit-side lean does not go with faster recovery (rank correlation &minus;0.03); across MMs the exit share of resting size does order speed (&minus;0.50).</span></li>
+<li data-new="2026-09-17"><span class="kind k-revised">Revised</span><a href="exp8-unwinders.html#x9-unwind-h">12. Quoting during the unwind</a> <span class="logtext">Claims restated on the record measure, the first 5 minutes after each MM's own peak: fast unwinders lean 2.99 bps toward the exit, slow ones 0.79 away, and the lean follows the side the MM's own fills are on. Sections 12.2 to 12.4 are labelled as the older test.</span></li>
+<li data-new="2026-09-17"><span class="kind k-new">New section</span><a href="exp8-unwinders.html#x9-unwind-orders">12.6 Taker orders, cancels and markouts after the peak</a> <span class="logtext">Fast MMs' exit-side taker dollars per minute rise to 6.8 times their pre-event rate in the first 5 minutes; cancels stay near one per new order and move toward the touch on the exit side.</span></li>
 </ul>
 <h3>Review status: new sections</h3><ul class="logl">
 <li data-new="2026-09-17"><span class="kind k-new">New section</span><a href="review-status.html#r0917">What changed on 2026-09-17</a></li>
