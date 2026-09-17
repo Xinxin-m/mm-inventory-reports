@@ -862,7 +862,7 @@
     control during the event and still 1.35 times in the first 10 minutes after it, 1.22 times at 30 to 40 minutes and
     1.14 times at 110 to 120. Liquidation cascades are the slow case: 2.05 times in the first 10 minutes and still
     1.26 times after two hours. Surge-side takers pay 0.61 bps more in the first 10 minutes.
-    <a href="exp8-inventory-shock-09-08.html#pop-quality">&sect;4.10</a></li>
+    <a href="exp8-inventory-shock-09-08.html#pop-mktquality">&sect;4.10</a></li>
     <li><strong>&sect;4.7b, the equity shock (test H2).</strong> The mark-to-market of the shock inventory, on the
     ten-coin book with funding. <a href="exp8-inventory-shock-09-08.html#pop-equity">&sect;4.7b</a></li>
     <li><strong>&sect;9.8, the one-sided surge families against the net-flow events.</strong> The shocked share of rows
@@ -870,10 +870,10 @@
     times; net-flow 5.98% against 1.38%, 4.3 times. The absorbing direction holds in 90.2% of one-sided rows against
     about 47% in controls, and the top five absorbers take a median 30% of the surging side&rsquo;s taker dollars in
     every family. The &sect;8 mechanism survives the change of event selection.
-    <a href="exp8-inventory-shock-09-08.html#families-cross">&sect;9.8</a></li>
+    <a href="exp8-one-sided-surges.html#families-step6">&sect;9.8</a></li>
     <li><strong>&sect;11.5, the tilt test on all 812 population shocks.</strong> Across MMs the lean orders speed;
     inside one MM it does not: &minus;0.03 with p = 0.52, a per-MM median of &minus;0.08, and only 31% of MMs with the
-    sign the across-MM story predicts. <a href="exp8-inventory-shock-09-08.html#x8-all812">&sect;11.5</a></li>
+    sign the across-MM story predicts. <a href="exp8-unwinders.html#x9-pop-within">&sect;11.5</a></li>
     <li><strong>&sect;12.6, the orders behind the unwind.</strong> Cancels run 0.93 to 0.98 per new order, which is
     record-keeping: the venue writes a modify as a cancel plus a new order.
     <a href="exp8-unwinders.html#x9-unwind-orders">&sect;12.6</a></li>
@@ -917,7 +917,7 @@
     classified. Safe by their own dates: &sect;4.7, &sect;4.7b, &sect;4.8, &sect;6, &sect;7, &sect;13, &sect;14.
     Affected but small: &sect;4.2, &sect;4.3, &sect;8, &sect;5, &sect;12, &sect;3 (110 of 915 events), &sect;9 (113 of
     922), Exp9 (33 of 812). Unchecked: &sect;3.4, the &sect;4.3 order-placement detail, &sect;4.10.
-    <a href="exp8-inventory-shock-09-08.html#caveats">&sect;15</a></li>
+    <a href="exp8-inventory-shock-09-08.html#data-h">&sect;15</a></li>
     <li><strong>The post-only flag is blank from 2026-04-16 to 2026-04-23.</strong> On those eight dates the fill table
     records only two order-type values, so no fill can be marked post-only. The active-MM rule already handles it: it
     reads each date&rsquo;s own fills and falls back to one maker fill when the whole population shows no post-only
