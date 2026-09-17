@@ -21,7 +21,7 @@
          font:15px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
   a { color:var(--accent); text-underline-offset:3px; }
   a:focus-visible, button:focus-visible, summary:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
-  main { max-width:1140px; margin-left:262px; padding:38px clamp(20px,4vw,60px) 80px; }
+  main { max-width:1140px; padding:38px clamp(20px,4vw,60px) 80px; }   /* margin-left: NAV_CSS */
   /* content classes (same as the report) */
   h1 { margin:0; font-size:clamp(27px,4vw,40px); letter-spacing:-.03em; }
   h2 { margin-top:54px; padding-bottom:6px; border-bottom:1px solid var(--line); }
@@ -60,321 +60,473 @@
   main.status td:nth-child(2) { min-width:18ch; }
   main.status td:nth-child(3) { white-space:nowrap; }
   main.status td:nth-child(4) { min-width:22ch; }
-  .card { display:block; padding:18px 20px; margin:16px 0; background:var(--surface);
-          border:1px solid var(--line); border-radius:12px; text-decoration:none; color:inherit; }
-  .card:hover { border-color:var(--accent); }
-  .card strong { display:block; font-size:17px; margin-bottom:4px; color:var(--accent); }
-  .card span { color:var(--muted); font-size:14.5px; }
-  /* hub: one box per page, two across on a wide screen */
-  .cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:22px 0 6px; }
-  .cards .card { margin:0; display:flex; flex-direction:column; }
-  .cards .card span { flex:1; }
-  .card .when { display:inline-block; margin-bottom:7px; padding:1px 9px; border-radius:999px;
-          font-size:11.5px; font-weight:600; letter-spacing:.02em;
-          color:var(--muted); border:1px solid var(--line);
-          background:color-mix(in srgb, var(--text) 4%, transparent); }
-  .card .when.now { color:#fff; background:var(--good); border-color:transparent; }
-  /* a card that carries its own sub-link: the box is a <div> (anchors cannot nest),
-     with a block link filling it and the sub-link below the rule */
-  div.card { display:flex; flex-direction:column; }
-  div.card > .cardmain { text-decoration:none; color:inherit; display:block; flex:1; }
-  div.card:hover { border-color:var(--accent); }
-  .card .also { display:block; margin-top:11px; padding-top:9px; border-top:1px solid var(--line);
-          color:var(--muted); font-size:13px; }
-  .card .also a { color:var(--accent); }
-  h2.hubgroup { margin-top:44px; font-size:15px; letter-spacing:.06em; text-transform:uppercase;
-          color:var(--muted); border-bottom:1px solid var(--line); }
-  @media (max-width:820px) { .cards { grid-template-columns:1fr; } }
+  /* hub (2026-09-17 redesign): a hero, a featured "start here" card, then one grid per group */
+  main.hub { max-width:1140px; padding-top:56px; }
+  #navoff:checked ~ main.hub { padding-top:72px; }
+  .hub .hubinner { max-width:1000px; margin:0 auto; }
+  .hub .eyebrow { margin:0 0 12px; font-size:12.5px; font-weight:600; letter-spacing:.06em;
+          text-transform:uppercase; color:var(--accent); }
+  .hub h1 { font-size:clamp(30px,4.4vw,46px); line-height:1.08; letter-spacing:-.035em; max-width:22ch; }
+  .hub .lede { margin:16px 0 0; font-size:17px; line-height:1.6; max-width:64ch; }
+  .hub .hubsec { margin:52px 0 0; }
+  .hub h2.hubgroup { display:flex; align-items:baseline; gap:12px; margin:0 0 14px; padding:0; border:0;
+          font-size:13px; font-weight:650; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); }
+  .hub h2.hubgroup::after { content:""; flex:1; height:1px; background:var(--line); transform:translateY(-4px); }
+  .hub .cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin:0; }
+  .hub .card { position:relative; display:flex; flex-direction:column; gap:8px; margin:0; padding:20px 22px 18px;
+          background:var(--surface); border:1px solid var(--line); border-radius:14px; color:inherit;
+          transition:border-color .18s, box-shadow .18s, transform .18s; }
+  .hub .card:hover { border-color:color-mix(in srgb, var(--accent) 55%, var(--line));
+          box-shadow:0 8px 28px rgba(0,0,0,.08); transform:translateY(-1px); }
+  .hub .card .when { align-self:flex-start; font-size:12px; font-weight:500; color:var(--muted);
+          letter-spacing:.01em; }
+  .hub .card .when b { display:inline-block; margin-right:7px; padding:1px 8px; border-radius:999px;
+          font-size:11px; font-weight:650; letter-spacing:.03em; text-transform:uppercase;
+          color:var(--good); background:color-mix(in srgb, var(--good) 14%, transparent); }
+  .hub .card h3 { margin:0; font-size:18.5px; line-height:1.3; letter-spacing:-.015em; }
+  .hub .card h3 a { color:var(--text); text-decoration:none; }
+  .hub .card h3 a::after { content:""; position:absolute; inset:0; border-radius:14px; }   /* the whole card is the link */
+  .hub .card h3 .arrow { display:inline-block; color:var(--accent); transition:transform .18s; }
+  .hub .card:hover h3 .arrow { transform:translateX(3px); }
+  .hub .card p { margin:0; color:var(--muted); font-size:14.5px; line-height:1.58; }
+  .hub .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:6px; }
+  .hub .chips span { padding:2px 9px; border-radius:999px; font-size:12px; color:var(--muted);
+          background:color-mix(in srgb, var(--text) 6%, transparent); }
+  .hub .card .also { position:relative; z-index:1; margin-top:4px; padding-top:10px;
+          border-top:1px solid var(--line); font-size:13.5px; color:var(--muted); }
+  .hub .card.featured { padding:28px 30px 24px; gap:10px;
+          background:linear-gradient(160deg, color-mix(in srgb, var(--accent) 9%, var(--surface)) 0%, var(--surface) 55%);
+          border-color:color-mix(in srgb, var(--accent) 35%, var(--line)); }
+  .hub .card.featured h3 { font-size:clamp(22px,2.6vw,28px); letter-spacing:-.025em; }
+  .hub .card.featured p { font-size:15.5px; max-width:70ch; }
+  .hub .card details { position:relative; z-index:1; margin:6px 0 0; padding:0; background:none; border:0; }
+  .hub .card details summary { display:inline-flex; align-items:center; gap:6px; padding:5px 11px 5px 9px;
+          border-radius:999px; list-style:none; cursor:pointer; font-size:13px; font-weight:550; color:var(--accent);
+          background:color-mix(in srgb, var(--accent) 10%, transparent); }
+  .hub .card details summary::-webkit-details-marker { display:none; }
+  .hub .card details summary::before { content:""; width:7px; height:7px; margin-top:-2px;
+          border-right:2px solid currentColor; border-bottom:2px solid currentColor;
+          transform:rotate(-45deg); transition:transform .2s; }
+  .hub .card details[open] summary::before { transform:rotate(45deg); margin-top:-5px; }
+  .hub .card details ul { margin:12px 0 2px; padding-left:20px; color:var(--muted); font-size:14px;
+          line-height:1.55; columns:2; column-gap:34px; }
+  .hub .card details li { margin:0 0 6px; break-inside:avoid; }
+  .hub .readnote { margin:52px 0 0; padding:18px 22px; border-radius:14px; font-size:14.5px; line-height:1.6;
+          background:color-mix(in srgb, var(--text) 4%, transparent); border:1px solid var(--line); }
+  .hub .readnote strong { color:var(--text); }
+  .hub footer { margin-top:28px; border-top:0; padding-top:0; font-size:13px; }
+  @media (max-width:900px) { main.hub, #navoff:checked ~ main.hub { padding-top:72px; } }
+  @media (max-width:820px) {
+    .hub .cards { grid-template-columns:1fr; }
+    .hub .card details ul { columns:1; }
+    .hub .card.featured { padding:22px 20px 20px; }
+  }
   footer { margin-top:40px; padding-top:16px; border-top:1px solid var(--line);
            color:var(--muted); font-size:14px; }
   @media (max-width:900px) { .metadata, .findings { grid-template-columns:repeat(2,minmax(0,1fr)); } }
   @media (max-width:480px) { .metadata, .findings { grid-template-columns:1fr; } }
 
-  /* left menu (make_public_site.py; identical on every page) */
-  aside.sitenav { position:fixed; inset:0 auto 0 0; width:262px; padding:56px 16px 24px;
-          background:var(--surface); border-right:1px solid var(--line); overflow-y:auto; }
-  #navtoggle { position:fixed; top:11px; left:11px; z-index:40; font-size:13px; padding:7px 10px;
-               color:var(--text); background:var(--surface); border:1px solid var(--line);
-               border-radius:8px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.12);
-               user-select:none; line-height:1.3; }
-  /* the menu is a CSS checkbox: it hides and shows without scripts (2026-09-16) */
+  /* left menu (make_public_site.py; identical on every page). Redesigned 2026-09-17:
+     a sidebar in the ChatGPT pattern. Page rows link straight to the page, a chevron
+     opens the page's sections, the section in view is highlighted as the reader
+     scrolls, and the panel slides in and out. Every rule is scoped under .sitenav /
+     .navrail because the report pages style bare aside, nav, button and summary. */
+  /* the report pages' stylesheets end in "<!-- p0904b:...:end -->" markers; CSS reads the
+     marker name as part of the next selector, so this throwaway rule absorbs it */
+  .navcss-guard {}
+  :root { --navw:276px; --navease:cubic-bezier(.32,.72,0,1); }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) { --bg:#101619; --surface:#182126; --text:#eef5f6;
+          --muted:#a9b8be; --line:#34444c; --accent:#70c7df; --warn:#efbd66; --good:#6bcf9f; }
+  }
+  #theme { display:none !important; }          /* the report pages' own theme button: the menu carries one */
   #navoff { position:fixed; top:0; left:0; width:1px; height:1px; opacity:0; pointer-events:none; }
-  #navoff:focus-visible + #navtoggle { outline:3px solid var(--accent); outline-offset:3px; }
-  #navoff:checked ~ aside.sitenav { display:none; }
-  #navoff:checked ~ main { margin-left:0; padding-top:62px; }
-  main { margin-left:262px; }   /* the report pages' own rule is 246px; the menu is wider */
-  #navhome { position:fixed; top:11px; left:96px; z-index:40; font-size:17px; line-height:1;
-             padding:5px 11px 7px; text-decoration:none;
-             color:var(--accent); background:var(--surface); border:1px solid var(--line);
-             border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,.12); }
-  #navhome:hover { border-color:var(--accent); }
-  html[data-nav="off"] aside.sitenav { display:none; }
-  html[data-nav="off"] main { margin-left:0; padding-top:62px; }
-  aside.sitenav > .homelink { display:block; font-size:15px; line-height:1.35; margin-bottom:4px;
-          font-weight:700; color:var(--text); text-decoration:none; }
-  aside.sitenav > .homelink:hover { color:var(--accent); }
-  aside.sitenav > .homelink span { color:var(--accent); margin-right:5px; }
-  aside.sitenav > .sub { color:var(--muted); font-size:12.5px; margin:0 0 14px; }
-  aside.sitenav details { margin:2px 0; padding:0; background:none; border:0; border-radius:0; }
-  aside.sitenav summary { list-style:none; cursor:pointer; padding:8px 9px; border-radius:7px;
-          font-weight:600; font-size:14px; line-height:1.35; color:var(--text);
-          display:flex; align-items:baseline; gap:9px; -webkit-tap-highlight-color:transparent; }
-  aside.sitenav summary::-webkit-details-marker { display:none; }
-  aside.sitenav summary::marker { content:""; }
-  aside.sitenav summary:hover { background:color-mix(in srgb, var(--text) 6%, transparent); }
-  aside.sitenav summary::before { content:"\25B8"; color:var(--accent); font-size:15px;
-          line-height:1; width:15px; flex:0 0 15px; text-align:center; }
-  aside.sitenav details[open] > summary::before { content:"\25BE"; }
-  aside.sitenav details.current > summary { background:color-mix(in srgb, var(--accent) 13%, transparent); }
-  aside.sitenav nav { display:block; margin:0 0 6px 24px; padding-left:9px;
-          border-left:1px solid var(--line); }
-  aside.sitenav nav a { display:block; padding:4px 6px; color:var(--muted); text-decoration:none;
-          font-size:13px; font-weight:400; }
-  aside.sitenav nav a.sub { padding-left:18px; font-size:12.5px; }
-  aside.sitenav nav a.open { color:var(--accent); font-weight:600; }
-  aside.sitenav nav a:hover { color:var(--accent); }
-  aside.sitenav .foot { margin-top:18px; padding-top:12px; border-top:1px solid var(--line);
-          color:var(--muted); font-size:12px; }
+  aside.sitenav, .navrail { font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; }
+  aside.sitenav { position:fixed; inset:0 auto 0 0; z-index:50; width:var(--navw); padding:0;
+          display:flex; flex-direction:column; overflow:hidden;
+          background:color-mix(in srgb, var(--surface) 55%, var(--bg));
+          border-right:1px solid var(--line); transform:translateX(0);
+          transition:transform .3s var(--navease), visibility 0s linear 0s; }
+  main { margin-left:max(var(--navw), calc((100vw + var(--navw) - 1140px) / 2));
+         transition:margin-left .3s var(--navease); }
+  #navoff:checked ~ aside.sitenav { transform:translateX(-100%); visibility:hidden;
+          transition:transform .3s var(--navease), visibility 0s linear .3s; }
+  #navoff:checked ~ main { margin-left:max(0px, calc((100vw - 1140px) / 2)); }
+
+  /* buttons, shared by the panel header and the floating rail */
+  .navbtn { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px;
+          flex:0 0 34px; padding:0; margin:0; border:0; border-radius:9px; background:none;
+          color:var(--muted); cursor:pointer; text-decoration:none; box-shadow:none;
+          transition:background .15s, color .15s; }
+  .navbtn:hover { background:color-mix(in srgb, var(--text) 8%, transparent); color:var(--text); }
+  .navbtn svg { width:20px; height:20px; display:block; }
+
+  /* the floating rail: shown while the panel is hidden (and always on a phone) */
+  .navrail { position:fixed; top:10px; left:10px; z-index:45; display:flex; gap:2px; padding:3px;
+          border:1px solid var(--line); border-radius:12px;
+          background:color-mix(in srgb, var(--surface) 86%, transparent);
+          -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+          box-shadow:0 2px 10px rgba(0,0,0,.08);
+          opacity:0; transform:translateX(-6px); pointer-events:none;
+          transition:opacity .2s ease, transform .3s var(--navease); }
+  #navoff:checked ~ .navrail { opacity:1; transform:none; pointer-events:auto; transition-delay:.12s; }
+  #navoff:checked ~ main { padding-top:62px; }
+  .navscrim { display:none; }
+
+  .sitenav .navhead { display:flex; align-items:center; gap:2px; padding:10px 8px 6px 10px; flex:0 0 auto; }
+  .sitenav .navbrand { flex:1; min-width:0; padding:6px 8px; border-radius:9px; color:var(--text);
+          font-size:14.5px; font-weight:650; letter-spacing:-.01em; text-decoration:none;
+          white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sitenav .navbrand:hover { background:color-mix(in srgb, var(--text) 7%, transparent); }
+  .sitenav .navscroll { flex:1; overflow-y:auto; overscroll-behavior:contain; padding:2px 8px 18px;
+          scrollbar-width:thin; scrollbar-color:color-mix(in srgb, var(--text) 18%, transparent) transparent; }
+  .sitenav .navgroup { margin:18px 10px 5px; font-size:11.5px; font-weight:600; letter-spacing:.02em;
+          color:var(--muted); }
+  .sitenav a.navitem { display:flex; align-items:center; gap:9px; padding:8px 10px; border-radius:9px;
+          color:var(--text); font-size:14px; font-weight:500; text-decoration:none; }
+  .sitenav a.navitem svg { width:18px; height:18px; flex:0 0 18px; color:var(--muted); }
+  .sitenav a.navitem:hover { background:color-mix(in srgb, var(--text) 7%, transparent); }
+  .sitenav a.navitem.is-current { background:color-mix(in srgb, var(--text) 9%, transparent); }
+
+  /* one page: title row + chevron, then the animated section list */
+  .sitenav .navpage { margin:1px 0; }
+  .sitenav .navrow { display:flex; align-items:stretch; border-radius:9px; }
+  .sitenav .navrow:hover { background:color-mix(in srgb, var(--text) 7%, transparent); }
+  .sitenav .navpage.is-current > .navrow { background:color-mix(in srgb, var(--text) 9%, transparent); }
+  .sitenav a.navlink { flex:1; min-width:0; display:block; padding:7px 4px 7px 10px; color:var(--text);
+          text-decoration:none; line-height:1.3; }
+  .sitenav a.navlink .t { display:block; font-size:14px; font-weight:500; text-wrap:pretty; }
+  .sitenav a.navlink .d { display:block; font-size:11.5px; color:var(--muted); margin-top:1px; }
+  .sitenav .navpage.is-current a.navlink .t { font-weight:600; }
+  .sitenav button.navcaret { width:30px; height:auto; flex:0 0 30px; align-self:stretch; border-radius:0 9px 9px 0; }
+  .sitenav button.navcaret svg { width:16px; height:16px; transition:transform .25s var(--navease); }
+  .sitenav .navpage.is-open > .navrow button.navcaret svg { transform:rotate(90deg); }
+  .sitenav .navsecs, .sitenav .navsubs { display:grid; grid-template-rows:0fr;
+          transition:grid-template-rows .3s var(--navease); }
+  .sitenav .navpage.is-open > .navsecs, .sitenav .navgrp.is-open > .navsubs { grid-template-rows:1fr; }
+  .sitenav .navsecs > div, .sitenav .navsubs > div { overflow:hidden; min-height:0; }
+  .sitenav .navlist { margin-left:17px; padding:3px 0 6px 8px; border-left:1px solid var(--line); }
+  .sitenav a.navsec, .sitenav a.navsub { position:relative; display:block; padding:5px 8px; border-radius:7px;
+          color:var(--muted); font-size:13px; line-height:1.38; text-decoration:none;
+          transition:color .15s, background .15s; }
+  .sitenav a.navsub { padding-left:20px; font-size:12.5px; }
+  .sitenav a.navsec:hover, .sitenav a.navsub:hover { color:var(--text);
+          background:color-mix(in srgb, var(--text) 6%, transparent); }
+  .sitenav .navgrp.is-active > a.navsec { color:var(--text); font-weight:550; }
+  .sitenav a.navsec.is-active, .sitenav a.navsub.is-active { color:var(--accent); font-weight:600;
+          background:color-mix(in srgb, var(--accent) 12%, transparent); }
+  .sitenav a.navsec.is-active::before, .sitenav a.navsub.is-active::before { content:""; position:absolute;
+          left:-9px; top:6px; bottom:6px; width:2px; border-radius:2px; background:var(--accent); }
+  .sitenav .navfoot { flex:0 0 auto; margin:0; padding:10px 18px 14px; border-top:1px solid var(--line);
+          color:var(--muted); font-size:11.5px; line-height:1.45; }
+  .sitenav a:focus-visible, .navbtn:focus-visible, #navoff:focus-visible ~ .navrail label { outline:2px solid var(--accent); outline-offset:1px; }
+
+  /* phone and narrow window: the panel is a drawer over a dimmed page, closed by default */
   @media (max-width:900px) {
-    aside.sitenav { position:static; width:auto; padding-top:56px; border-right:0;
-            border-bottom:1px solid var(--line); }
-    aside.sitenav nav { display:block; }
-    main { margin-left:0; }
+    aside.sitenav { width:min(86vw, 320px); transform:translateX(-100%); visibility:hidden;
+            box-shadow:0 0 40px rgba(0,0,0,.25);
+            transition:transform .3s var(--navease), visibility 0s linear .3s; }
+    #navoff:checked ~ aside.sitenav { transform:translateX(0); visibility:visible;
+            transition:transform .3s var(--navease), visibility 0s linear 0s; }
+    main, #navoff:checked ~ main { margin-left:0; padding-top:62px; }
+    .navrail, #navoff:checked ~ .navrail { opacity:1; transform:none; pointer-events:auto; }
+    .navscrim { display:block; position:fixed; inset:0; z-index:48; background:rgba(8,11,16,.45);
+            opacity:0; pointer-events:none; transition:opacity .25s ease; cursor:pointer; }
+    #navoff:checked ~ .navscrim { opacity:1; pointer-events:auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    aside.sitenav, main, .navrail, .sitenav .navsecs, .sitenav .navsubs, .navscrim { transition:none !important; }
   }
 </style>
 </head>
 <body>
 <input type="checkbox" id="navoff" aria-label="Hide the menu">
-<label id="navtoggle" for="navoff" title="Show or hide the menu">&#9776; Menu</label>
-<a id="navhome" href="overview.html" title="All reports (home)" aria-label="All reports (home)">&#8962;</a>
-<aside class="sitenav" id="sitenav"><a class="homelink" href="overview.html"><span aria-hidden="true">&#8962;</span> MM inventory shocks on HYPE</a>
-<p class="sub">Exp8, Exp9 and Exp10, 2025-03-27 &rarr; 2026-06-30. Ten roster MMs against all labelled MMs.</p>
-<details><summary>Home &mdash; all reports</summary>
-<nav aria-label="Home &mdash; all reports">
-<a class="open" href="overview.html">Open Home &mdash; all reports &rarr;</a>
-</nav></details>
-<details><summary>Exp8 &mdash; Inventory shocks, redefinition (rev. 2026-09-17)</summary>
-<nav aria-label="Exp8 &mdash; Inventory shocks, redefinition (rev. 2026-09-17)">
-<a class="open" href="exp8-inventory-shock-09-08.html">Open Exp8 &mdash; Inventory shocks, redefinition (rev. 2026-09-17) &rarr;</a>
-<a href="exp8-inventory-shock-09-08.html#summary-h">Summary</a>
-<a href="exp8-inventory-shock-09-08.html#notation-h">Notation and shared definitions</a>
-<a href="exp8-inventory-shock-09-08.html#events-h">Event definitions: five event sets</a>
-<a href="exp8-inventory-shock-09-08.html#axes-h">1. The three axes of the shock definition</a>
-<a href="exp8-inventory-shock-09-08.html#lit-h">2. What the literature does with order imbalance</a>
-<a href="exp8-inventory-shock-09-08.html#imb-h">3. Market taker-imbalance shocks: which measure, which cutoff, which bin</a>
-<a href="exp8-inventory-shock-09-08.html#imb-def" class="sub">3.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#imb-cutoffs" class="sub">3.2 Which rule</a>
-<a href="exp8-inventory-shock-09-08.html#imb-3way" class="sub">3.3 The three-way split on the recommended rule</a>
-<a href="exp8-inventory-shock-09-08.html#imb-alt" class="sub">3.4 Two shock definitions: price-first and flow-first</a>
-<a href="exp8-inventory-shock-09-08.html#pop-h">4. The HYPE MM population around events and matched controls</a>
-<a href="exp8-inventory-shock-09-08.html#pop-def" class="sub">4.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#pop-summary" class="sub">4.2 Broad absorption, concentrated inventory displacement</a>
-<a href="exp8-inventory-shock-09-08.html#pop-state" class="sub">4.3 State before the event at two horizons</a>
-<a href="exp8-inventory-shock-09-08.html#pop-unwind" class="sub">4.4 Early and late unwinders among absorbers that accumulated inventory</a>
-<a href="exp8-inventory-shock-09-08.html#pop-aggr" class="sub">4.5 Aggressiveness of the unwind</a>
-<a href="exp8-inventory-shock-09-08.html#pop-peers" class="sub">4.6 Shocked against unshocked MMs, before and after</a>
-<a href="exp8-inventory-shock-09-08.html#pop-equity" class="sub">4.7 Equity, closed PnL and cross-coin context</a>
-<a href="exp8-inventory-shock-09-08.html#pop-counterparty" class="sub">4.8 Who is on the other side of the unwind? Not the other MMs.</a>
-<a href="exp8-inventory-shock-09-08.html#prof-h">5. The MM profile: state variables across all active HYPE market makers</a>
-<a href="exp8-inventory-shock-09-08.html#prof-def" class="sub">5.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#prof-table" class="sub">5.2 Population distribution</a>
-<a href="exp8-inventory-shock-09-08.html#prof-scale" class="sub">5.3 Inventory scale and outcomes</a>
-<a href="exp8-inventory-shock-09-08.html#prof-frequency" class="sub">5.4 Population-wide shock frequency and unwind speed</a>
-<a href="exp8-inventory-shock-09-08.html#ticka-h">6. Tick replay A: a +7.6% move with no liquidations</a>
-<a href="exp8-inventory-shock-09-08.html#ticka-anatomy" class="sub">6.1 Did takers consume the book, or did makers cancel and re-quote away?</a>
-<a href="exp8-inventory-shock-09-08.html#ticka-order" class="sub">6.2 Did the taker surge lead the price, or follow it?</a>
-<a href="exp8-inventory-shock-09-08.html#ticka-age" class="sub">6.3 The book that absorbed the move was seconds old</a>
-<a href="exp8-inventory-shock-09-08.html#ticka-partb" class="sub">6.4 Part B: the two shocked MMs, end to end</a>
-<a href="exp8-inventory-shock-09-08.html#ticka-replay-h" class="sub">6.5 The move every 10 seconds</a>
-<a href="exp8-inventory-shock-09-08.html#ticka-replay-1s" class="sub">6.6 The five biggest 10-second slices, second by second</a>
-<a href="exp8-inventory-shock-09-08.html#ticka-replay-ticks" class="sub">6.7 The five biggest single ticks: what was filled, cancelled and posted in one millisecond</a>
-<a href="exp8-inventory-shock-09-08.html#ticka-replay-anim" class="sub">6.8 Animation: price, top of book and depth</a>
-<a href="exp8-inventory-shock-09-08.html#liq-h">7. Tick replay B: a −3.6% move with liquidations</a>
-<a href="exp8-inventory-shock-09-08.html#liq-pick" class="sub">7.1 Why this event</a>
-<a href="exp8-inventory-shock-09-08.html#liq-seq" class="sub">7.2 What came first</a>
-<a href="exp8-inventory-shock-09-08.html#liq-cross" class="sub">7.3 HYPE-driven, not cross-margin</a>
-<a href="exp8-inventory-shock-09-08.html#liq-absorb" class="sub">7.4 Who absorbed the forced flow, and what the roster shocks were made of</a>
-<a href="exp8-inventory-shock-09-08.html#tickb-h" class="sub">7.5 Replay B on the order stream: the same engine, a slower move, a third of it vacated by cancels</a>
-<a href="exp8-inventory-shock-09-08.html#absorbers-h">8. Who absorbs the flow, and who the shock rule flags</a>
-<a href="exp8-inventory-shock-09-08.html#absorbers-def" class="sub">8.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#absorbers-escape" class="sub">8.2 In 38.6% of events the rule flags none of the five biggest absorbers</a>
-<a href="exp8-inventory-shock-09-08.html#absorbers-scale" class="sub">8.3 The absorbers move the most inventory and carry the largest own scale</a>
-<a href="exp8-inventory-shock-09-08.html#absorbers-roundtrip" class="sub">8.4 Three quarters never reach the threshold; the rest reach it and give it back</a>
-<a href="exp8-inventory-shock-09-08.html#absorbers-rule" class="sub">8.5 What the peak rule would flag that the end rule does not</a>
-<a href="exp8-inventory-shock-09-08.html#families-h">9. Taker-surge event families: what a one-sided rule sees that the net rule does not</a>
-<a href="exp8-inventory-shock-09-08.html#families-def" class="sub">9.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#families-sets" class="sub">9.2 The two rules disagree about which half hours matter</a>
-<a href="exp8-inventory-shock-09-08.html#families-timing" class="sub">9.3 The 30-minute bin label is not the event</a>
-<a href="exp8-inventory-shock-09-08.html#families-price" class="sub">9.4 Price: the surge almost never runs against the move, and a third of big moves come back</a>
-<a href="exp8-inventory-shock-09-08.html#families-status" class="sub">9.5 What exists and what is still open</a>
-<a href="exp8-inventory-shock-09-08.html#families-f1-def" class="sub">9.6 The one-sided family F1, as implemented</a>
-<a href="exp8-inventory-shock-09-08.html#families-f1-pop" class="sub">9.7 The section 4 statistics on F1, shocked against unshocked</a>
-<a href="exp8-inventory-shock-09-08.html#x9-book-h">10. What a shocked roster MM does to its own resting orders</a>
-<a href="exp8-inventory-shock-09-08.html#x9-book-def" class="sub">10.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#x9-book-headline" class="sub">10.2 After the peak the accumulating-side quote moves away and the unwind-side quote barely moves</a>
-<a href="exp8-inventory-shock-09-08.html#x9-book-cells" class="sub">10.3 Olga's four predicted signs: touch posts confirm, touch cancels come out with the opposite sign</a>
-<a href="exp8-inventory-shock-09-08.html#x9-book-latency" class="sub">10.4 The book reacts within 9 minutes at the median and is refilled within 30 minutes in 87% of shocks</a>
-<a href="exp8-inventory-shock-09-08.html#x9-book-grid" class="sub">10.5 On a 5-minute grid the SAME quote is furthest out 5 minutes after the peak and back within an hour</a>
-<a href="exp8-inventory-shock-09-08.html#x9-book-valid" class="sub">10.6 Limits</a>
-<a href="exp8-inventory-shock-09-08.html#x9-pop-h">11. Population shocks: how fast MMs recover, and what quote skew says about it</a>
-<a href="exp8-inventory-shock-09-08.html#x9-pop-def" class="sub">11.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#x9-pop-funnel" class="sub">11.2 812 shocks on 88 of 148 MMs, 5.2 per wallet per 100 active days</a>
-<a href="exp8-inventory-shock-09-08.html#x9-pop-recovery" class="sub">11.3 Half of the shocks have 60% of the excursion back within 30 minutes; 11.9% never do within six hours</a>
-<a href="exp8-inventory-shock-09-08.html#x9-pop-skew" class="sub">11.4 Exit-side quoting orders recovery speed across MMs, not shock by shock</a>
-<a href="exp8-inventory-shock-09-08.html#x9-unwind-h">12. How MMs quote while they unwind, by recovery speed</a>
-<a href="exp8-inventory-shock-09-08.html#x9-unwind-def" class="sub">12.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#x9-unwind-window" class="sub">12.2 Over the whole unwind window the median wallet-event shows no tilt</a>
-<a href="exp8-inventory-shock-09-08.html#x9-unwind-state" class="sub">12.3 While at least 75% of the position is still on, fast unwinders lean toward the exit</a>
-<a href="exp8-inventory-shock-09-08.html#x9-unwind-tests" class="sub">12.4 Faster unwinders lean more, between MMs and hardly within one</a>
-<a href="exp8-inventory-shock-09-08.html#x9-unwind-absorbers" class="sub">12.5 Fast and slow unwinders among the MMs that accumulated inventory</a>
-<a href="exp8-inventory-shock-09-08.html#x10-min-h">13. Why a few MMs absorb most of a shock: two episodes at one minute</a>
-<a href="exp8-inventory-shock-09-08.html#x10-min-def" class="sub">13.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#x10-min-who" class="sub">13.2 The largest absorbers quoted closer than their peers or rested far more size</a>
-<a href="exp8-inventory-shock-09-08.html#x10-min-stories" class="sub">13.3 MM01 did not pull, the far resting orders were run through, and small MMs were refilled</a>
-<a href="exp8-inventory-shock-09-08.html#x10-min-build" class="sub">13.4 Nearly every observed MM builds in each burst, and half are reducing ten minutes later</a>
-<a href="exp8-inventory-shock-09-08.html#x10-min-valid" class="sub">13.5 Limits</a>
-<a href="exp8-inventory-shock-09-08.html#x10-tick-h">14. The same two episodes at tick level: a few large taker orders, two outcomes</a>
-<a href="exp8-inventory-shock-09-08.html#x10-tick-def" class="sub">14.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#x10-tick-orders" class="sub">14.2 The surge is a few single taker orders, each crossing 80 to 370 price levels in one millisecond</a>
-<a href="exp8-inventory-shock-09-08.html#x10-tick-outcomes" class="sub">14.3 The same orders fill both groups; what the MM does next separates them</a>
-<a href="exp8-inventory-shock-09-08.html#x10-tick-seconds" class="sub">14.4 Second by second around the $9.29m sell</a>
-<a href="exp8-inventory-shock-09-08.html#data-h">15. Four things about the data that change how earlier results must be read</a>
-<a href="exp8-inventory-shock-09-08.html#synthesis-h">Synthesis: what the study establishes</a>
-<a href="exp8-inventory-shock-09-08.html#syn-mech" class="sub">Quoting is broad, carrying is not</a>
-<a href="exp8-inventory-shock-09-08.html#syn-controls" class="sub">Controls turn several apparent responses into ordinary market making</a>
-<a href="exp8-inventory-shock-09-08.html#syn-ticks" class="sub">The event clock hides a two-stage microstructure</a>
-<a href="exp8-inventory-shock-09-08.html#syn-flag" class="sub">Absorbing the flow and being flagged for it are different measurements</a>
-<a href="exp8-inventory-shock-09-08.html#syn-trigger" class="sub">The trigger is stable; the price label is a choice</a>
-<a href="exp8-inventory-shock-09-08.html#syn-boundary" class="sub">What remains descriptive</a>
-<a href="exp8-inventory-shock-09-08.html#limits-h">16. What this does not establish</a>
-<a href="exp8-inventory-shock-09-08.html#decisions-h">17. Decisions for Xinmeng, and open questions</a>
-<a href="exp8-inventory-shock-09-08.html#dec-rules" class="sub">17.1 Definitions</a>
-<a href="exp8-inventory-shock-09-08.html#dec-labels" class="sub">17.2 Labels and framing</a>
-<a href="exp8-inventory-shock-09-08.html#dec-followups" class="sub">17.3 Follow-ups the results point to</a>
-<a href="exp8-inventory-shock-09-08.html#appendix-h">Appendix: data sources</a>
-</nav></details>
-<details><summary>Exp10 &mdash; Absorbers at tick level (rev. 2026-09-16)</summary>
-<nav aria-label="Exp10 &mdash; Absorbers at tick level (rev. 2026-09-16)">
-<a class="open" href="exp10-tick-level-09-10.html">Open Exp10 &mdash; Absorbers at tick level (rev. 2026-09-16) &rarr;</a>
-<a href="exp10-tick-level-09-10.html#s-summary">Summary</a>
-<a href="exp10-tick-level-09-10.html#s-1-what-was-measured">1. What was measured</a>
-<a href="exp10-tick-level-09-10.html#s-2-the-surge-is-a-few-very-large-taker-orders">2. The surge is a few very large taker orders</a>
-<a href="exp10-tick-level-09-10.html#s-3-same-taker-orders-two-outcomes">3. Same taker orders, two outcomes</a>
-<a href="exp10-tick-level-09-10.html#s-4-second-by-second-order-by-order">4. Second by second, order by order</a>
-<a href="exp10-tick-level-09-10.html#s-5-animation">5. Animation</a>
-<a href="exp10-tick-level-09-10.html#s-6-the-whole-mm-population-recovery-speed-and-quote-skew">6. The whole MM population: recovery speed and quote skew</a>
-<a href="exp10-tick-level-09-10.html#s-7-what-this-does-not-establish">7. What this does not establish</a>
-<a href="exp10-tick-level-09-10.html#s-8-decisions-for-xinmeng">8. Decisions for Xinmeng</a>
-<a href="exp10-tick-level-09-10.html#s-appendix-data-sources">Appendix: data sources</a>
-</nav></details>
-<details><summary>Exp8 &mdash; Spot quotes and price discovery, 2025-12-17 (2026-09-10)</summary>
-<nav aria-label="Exp8 &mdash; Spot quotes and price discovery, 2025-12-17 (2026-09-10)">
-<a class="open" href="exp8-spot-quote-12-17.html">Open Exp8 &mdash; Spot quotes and price discovery, 2025-12-17 (2026-09-10) &rarr;</a>
-<a href="exp8-spot-quote-12-17.html#s-36-spot-quotes-and-perp-price-discovery-in-the-december-17-replay">Spot quotes and perp price discovery in the December 17 replay</a>
-<a href="exp8-spot-quote-12-17.html#s-36-1-what-is-measured" class="sub">What is measured</a>
-<a href="exp8-spot-quote-12-17.html#s-36-2-spot-and-perp-rise-together-with-much-greater-perp-buying" class="sub">Spot and perp rise together, with much greater perp buying</a>
-<a href="exp8-spot-quote-12-17.html#s-36-3-the-largest-perp-jumps-are-one-wallet-s-one-million-dollar-market-buys" class="sub">The largest perp jumps are one wallet's one-million-dollar market buys</a>
-<a href="exp8-spot-quote-12-17.html#s-36-4-what-one-clip-does-to-the-two-books" class="sub">What one clip does to the two books</a>
-<a href="exp8-spot-quote-12-17.html#s-36-5-are-cancellations-catching-up-to-a-higher-spot-price" class="sub">Are cancellations catching up to a higher spot price?</a>
-<a href="exp8-spot-quote-12-17.html#s-36-6-does-spot-help-forecast-the-perp-beyond-its-own-taker-flow" class="sub">Does spot help forecast the perp beyond its own taker flow?</a>
-<a href="exp8-spot-quote-12-17.html#s-36-7-what-can-be-said-about-individual-market-makers" class="sub">What can be said about individual market makers?</a>
-<a href="exp8-spot-quote-12-17.html#s-36-8-the-spot-reconstruction-is-stable-and-endpoint-semantics-change-the-fastest-window-figure" class="sub">The spot reconstruction is stable, and endpoint semantics change the fastest-window figure</a>
-<a href="exp8-spot-quote-12-17.html#s-36-9-the-next-discriminating-test" class="sub">The next discriminating test</a>
-<a href="exp8-spot-quote-12-17.html#s-37-why-some-hype-perp-jumps-hold-and-others-snap-back">Why some HYPE perp jumps hold and others snap back</a>
-<a href="exp8-spot-quote-12-17.html#s-what-is-measured" class="sub">What is measured</a>
-<a href="exp8-spot-quote-12-17.html#s-the-1-minute-jumps" class="sub">The 1-minute jumps</a>
-<a href="exp8-spot-quote-12-17.html#s-which-up-ticks-hold-and-which-snap-back" class="sub">Which up-ticks hold and which snap back</a>
-<a href="exp8-spot-quote-12-17.html#s-where-makers-put-their-quotes-relative-to-the-spot-mid" class="sub">Where makers put their quotes relative to the spot mid</a>
-<a href="exp8-spot-quote-12-17.html#s-the-same-addresses-make-markets-on-both-venues" class="sub">The same addresses make markets on both venues</a>
-<a href="exp8-spot-quote-12-17.html#s-validation" class="sub">Validation</a>
-<a href="exp8-spot-quote-12-17.html#s-what-this-does-not-establish" class="sub">What this does not establish</a>
-</nav></details>
-<details><summary>The taker-surge storyline (2026-09-15)</summary>
-<nav aria-label="The taker-surge storyline (2026-09-15)">
-<a class="open" href="storyline.html">Open The taker-surge storyline (2026-09-15) &rarr;</a>
-<a href="storyline.html#story-figure">The flow chart</a>
-<a href="storyline.html#story-evidence">Evidence behind each node</a>
-<a href="storyline.html#story-map">Read against the draft's Figure 1</a>
-</nav></details>
-<details><summary>Review status (updated 2026-09-16)</summary>
-<nav aria-label="Review status (updated 2026-09-16)">
-<a class="open" href="review-status.html">Open Review status (updated 2026-09-16) &rarr;</a>
-<a href="review-status.html#r0916">The 2026-09-11 and 2026-09-15 reviews</a>
-<a href="review-status.html#r0916-exp8" class="sub">Exp8 page points</a>
-<a href="review-status.html#r0916-exp10" class="sub">Exp10 page points</a>
-<a href="review-status.html#r0916-asks" class="sub">Analysis requests</a>
-<a href="review-status.html#r0916-plans" class="sub">Plans: executed and open</a>
-<a href="review-status.html#r0916-decisions" class="sub">Decisions waiting for Xinmeng</a>
-<a href="review-status.html#r0902">The 2026-09-02 review</a>
-</nav></details>
-<details><summary>Exp8 &mdash; Full report (2026-09-04)</summary>
-<nav aria-label="Exp8 &mdash; Full report (2026-09-04)">
-<a class="open" href="exp8-report.html">Open Exp8 &mdash; Full report (2026-09-04) &rarr;</a>
-<a href="exp8-report.html#summary">Summary</a>
-<a href="exp8-report.html#brief">Overview: both studies</a>
-<a href="exp8-report.html#brief-scope" class="sub">Scope of each</a>
-<a href="exp8-report.html#brief-exp5" class="sub">What Exp5 observed</a>
-<a href="exp8-report.html#brief-exp8" class="sub">What Exp8 observed</a>
-<a href="exp8-report.html#brief-bridge" class="sub">Why two catalogues</a>
-<a href="exp8-report.html#brief-limits" class="sub">What neither establishes</a>
-<a href="exp8-report.html#definitions">A. Definitions</a>
-<a href="exp8-report.html#detector">B. What a shock is</a>
-<a href="exp8-report.html#b-tried" class="sub">B1. What we tried</a>
-<a href="exp8-report.html#b-final" class="sub">B2. Final parameters</a>
-<a href="exp8-report.html#b-v3" class="sub">B3. Velocity rule (v3)</a>
-<a href="exp8-report.html#cause">C. What causes a shock</a>
-<a href="exp8-report.html#c-flow181" class="sub">C, all 181 shocks: one-sided?</a>
-<a href="exp8-report.html#population">D. Who else was there</a>
-<a href="exp8-report.html#d-absorb181" class="sub">D, how wide is the absorbing side?</a>
-<a href="exp8-report.html#d-side" class="sub">D1. Same side?</a>
-<a href="exp8-report.html#d-each" class="sub">D2. Trading each other</a>
-<a href="exp8-report.html#d-cp181" class="sub">D2, all 181: who is on the other side</a>
-<a href="exp8-report.html#d-axis" class="sub">D3. Alone / few / broad</a>
-<a href="exp8-report.html#d-pop181" class="sub">D3, against all active MMs</a>
-<a href="exp8-report.html#d-take" class="sub">D4. Take or quote out? (all shocked MMs)</a>
-<a href="exp8-report.html#unwind">E. Getting out</a>
-<a href="exp8-report.html#e-path" class="sub">E1. The path</a>
-<a href="exp8-report.html#e-price" class="sub">E2. The price</a>
-<a href="exp8-report.html#e-chain" class="sub">E3. Archetypes → outcomes</a>
-<a href="exp8-report.html#e-drivers" class="sub">E4. What decides recovery speed</a>
-<a href="exp8-report.html#atlas">F. Shock atlas</a>
-<a href="exp8-report.html#quoting">G. Book response</a>
-<a href="exp8-report.html#g-evolution" class="sub">G, 5-min grid: Figure 20</a>
-<a href="exp8-report.html#g-distances" class="sub">G, quote distances: Figure 21</a>
-<a href="exp8-report.html#limits">H. Limits</a>
-<a href="exp8-report.html#gallery">I. Figure gallery</a>
-<a href="exp8-report.html#g-audit" class="sub">I1. A sample of shocks</a>
-<a href="exp8-report.html#g-ep39" class="sub">I2. Episode 39</a>
-<a href="exp8-report.html#g-ep47" class="sub">I3. Episode 47</a>
-<a href="exp8-report.html#g-ep71" class="sub">I4. Episode 71</a>
-<a href="exp8-report.html#appendix">J. Appendix</a>
-<a href="exp8-unwind-activity.html">D4 in full &mdash; take, or quote, their way out?</a>
-<a href="exp8-unwind-activity.html#summary" class="sub">Summary</a>
-<a href="exp8-unwind-activity.html#defs" class="sub">Definitions</a>
-<a href="exp8-unwind-activity.html#taker" class="sub">1. Taker volume</a>
-<a href="exp8-unwind-activity.html#orders" class="sub">2. Orders: counts and sides</a>
-<a href="exp8-unwind-activity.html#fills" class="sub">3. Where the unwind shows up</a>
-<a href="exp8-unwind-activity.html#curves" class="sub">4. Event-time figures</a>
-<a href="exp8-unwind-activity.html#ranks" class="sub">5. By roster rank</a>
-<a href="exp8-unwind-activity.html#validation" class="sub">6. Validation</a>
-<a href="exp8-unwind-activity.html#limits" class="sub">7. Not established</a>
-<a href="exp8-unwind-activity.html#provenance" class="sub">Provenance</a>
-</nav></details>
-<details class="current" open><summary>The story so far (2026-09-04)</summary>
-<nav aria-label="The story so far (2026-09-04)">
-<a class="open" href="#">This page, top &uarr;</a>
-<a href="#story">The story in one paragraph</a>
-<a href="#thread-a">A. Anatomy of a shock</a>
-<a href="#thread-b">B. Getting out</a>
-<a href="#thread-c">C. Who is hit</a>
-<a href="#thread-d">D. Equity and constraint</a>
-<a href="#thread-e">E. The MMs differ</a>
-<a href="#hypotheses">Six tests</a>
-<a href="#next">Order of work</a>
-<a href="#limits">What it does not establish</a>
-<a href="#runsheet">15-minute running order</a>
-</nav></details>
-<p class="foot">Descriptive, not causal. Wallets by roster rank only. Generated by <code>make_public_site.py</code>.</p></aside>
+<script>(function(){try{var t=localStorage.getItem('mm-site-theme');if(t)document.documentElement.setAttribute('data-theme',t);if(localStorage.getItem('mm-site-nav')==='off'&&!matchMedia('(max-width:900px)').matches)document.getElementById('navoff').checked=true;}catch(e){}})();</script>
+<div class="navrail"><label class="navbtn" for="navoff" title="Show the menu" aria-label="Show the menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg></label><a class="navbtn" id="navhome" href="overview.html" title="All reports" aria-label="All reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4.5 20 11"/><path d="M6.5 9.5V19.5h11V9.5"/></svg></a><button class="navbtn" type="button" data-navtheme title="Light or dark" aria-label="Light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" stroke="none"/></svg></button></div>
+<label class="navscrim" for="navoff" aria-hidden="true"></label>
+<aside class="sitenav" id="sitenav" aria-label="Site menu"><div class="navhead"><a class="navbrand homelink" href="overview.html">HYPE MM inventory</a><button class="navbtn" type="button" data-navtheme title="Light or dark" aria-label="Light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" stroke="none"/></svg></button><label class="navbtn" for="navoff" title="Hide the menu" aria-label="Hide the menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg></label></div>
+<div class="navscroll">
+<a class="navitem" href="overview.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4.5 20 11"/><path d="M6.5 9.5V19.5h11V9.5"/></svg>All reports</a>
+<p class="navgroup">Reports</p>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-inventory-shock-09-08.html"><span class="t">Exp8 &mdash; Inventory shocks, redefinition</span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsecs"><div><div class="navlist">
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#summary-h">Summary</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#notation-h">Notation and shared definitions</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#events-h">Event definitions: five event sets</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#axes-h">The three axes of the shock definition</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#lit-h">What the literature does with order imbalance</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#imb-h">Market taker-imbalance shocks: which measure, which cutoff, which bin</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#imb-def">Definitions</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#imb-cutoffs">Which rule</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#imb-3way">The three-way split on the recommended rule</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#imb-alt">Two shock definitions: price-first and flow-first</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#pop-h">The HYPE MM population around events and matched controls</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#pop-def">Definitions</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#pop-summary">Broad absorption, concentrated inventory displacement</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#pop-state">State before the event at two horizons</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#pop-unwind">Early and late unwinders among absorbers that accumulated inventory</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#pop-aggr">Aggressiveness of the unwind</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#pop-peers">Shocked against unshocked MMs, before and after</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#pop-equity">Equity, closed PnL and cross-coin context</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#pop-counterparty">Who is on the other side of the unwind? Not the other MMs.</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#prof-h">The MM profile: state variables across all active HYPE market makers</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#prof-def">Definitions</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#prof-table">Population distribution</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#prof-scale">Inventory scale and outcomes</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#prof-frequency">Population-wide shock frequency and unwind speed</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#ticka-h">Tick replay A: a +7.6% move with no liquidations</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#ticka-anatomy">Did takers consume the book, or did makers cancel and re-quote away?</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#ticka-order">Did the taker surge lead the price, or follow it?</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#ticka-age">The book that absorbed the move was seconds old</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#ticka-partb">Part B: the two shocked MMs, end to end</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#ticka-replay-h">The move every 10 seconds</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#ticka-replay-1s">The five biggest 10-second slices, second by second</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#ticka-replay-ticks">The five biggest single ticks: what was filled, cancelled and posted in one millisecond</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#ticka-replay-anim">Animation: price, top of book and depth</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#liq-h">Tick replay B: a −3.6% move with liquidations</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#liq-pick">Why this event</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#liq-seq">What came first</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#liq-cross">HYPE-driven, not cross-margin</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#liq-absorb">Who absorbed the forced flow, and what the roster shocks were made of</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#tickb-h">Replay B on the order stream: the same engine, a slower move, a third of it vacated by cancels</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#absorbers-h">Who absorbs the flow, and who the shock rule flags</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-def">Definitions</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-escape">In 38.6% of events the rule flags none of the five biggest absorbers</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-scale">The absorbers move the most inventory and carry the largest own scale</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-roundtrip">Three quarters never reach the threshold; the rest reach it and give it back</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-rule">What the peak rule would flag that the end rule does not</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#families-h">Taker-surge event families: what a one-sided rule sees that the net rule does not</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#families-def">Definitions</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#families-sets">The two rules disagree about which half hours matter</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#families-timing">The 30-minute bin label is not the event</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#families-price">Price: the surge almost never runs against the move, and a third of big moves come back</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#families-status">What exists and what is still open</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#families-f1-def">The one-sided family F1, as implemented</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#families-f1-pop">The section 4 statistics on F1, shocked against unshocked</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#x9-book-h">What a shocked roster MM does to its own resting orders</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-book-def">Definitions</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-book-headline">After the peak the accumulating-side quote moves away and the unwind-side quote barely moves</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-book-cells">Olga's four predicted signs: touch posts confirm, touch cancels come out with the opposite sign</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-book-latency">The book reacts within 9 minutes at the median and is refilled within 30 minutes in 87% of shocks</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-book-grid">On a 5-minute grid the SAME quote is furthest out 5 minutes after the peak and back within an hour</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-book-valid">Limits</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#x9-pop-h">Population shocks: how fast MMs recover, and what quote skew says about it</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-pop-def">Definitions</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-pop-funnel">812 shocks on 88 of 148 MMs, 5.2 per wallet per 100 active days</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-pop-recovery">Half of the shocks have 60% of the excursion back within 30 minutes; 11.9% never do within six hours</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-pop-skew">Exit-side quoting orders recovery speed across MMs, not shock by shock</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#x9-unwind-h">How MMs quote while they unwind, by recovery speed</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-unwind-def">Definitions</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-unwind-window">Over the whole unwind window the median wallet-event shows no tilt</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-unwind-state">While at least 75% of the position is still on, fast unwinders lean toward the exit</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-unwind-tests">Faster unwinders lean more, between MMs and hardly within one</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x9-unwind-absorbers">Fast and slow unwinders among the MMs that accumulated inventory</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#x10-min-h">Why a few MMs absorb most of a shock: two episodes at one minute</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x10-min-def">Definitions</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x10-min-who">The largest absorbers quoted closer than their peers or rested far more size</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x10-min-stories">MM01 did not pull, the far resting orders were run through, and small MMs were refilled</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x10-min-build">Nearly every observed MM builds in each burst, and half are reducing ten minutes later</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x10-min-valid">Limits</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#x10-tick-h">The same two episodes at tick level: a few large taker orders, two outcomes</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x10-tick-def">Definitions</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x10-tick-orders">The surge is a few single taker orders, each crossing 80 to 370 price levels in one millisecond</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x10-tick-outcomes">The same orders fill both groups; what the MM does next separates them</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#x10-tick-seconds">Second by second around the $9.29m sell</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#data-h">Four things about the data that change how earlier results must be read</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#synthesis-h">Synthesis: what the study establishes</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-mech">Quoting is broad, carrying is not</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-controls">Controls turn several apparent responses into ordinary market making</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-ticks">The event clock hides a two-stage microstructure</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-flag">Absorbing the flow and being flagged for it are different measurements</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-trigger">The trigger is stable; the price label is a choice</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-boundary">What remains descriptive</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#limits-h">What this does not establish</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#decisions-h">Decisions for Xinmeng, and open questions</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#dec-rules">Definitions</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#dec-labels">Labels and framing</a>
+<a class="navsub" href="exp8-inventory-shock-09-08.html#dec-followups">Follow-ups the results point to</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#appendix-h">Appendix: data sources</a><div class="navsubs"><div>
+</div></div></div>
+</div></div></div></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp10-tick-level-09-10.html"><span class="t">Exp10 &mdash; Absorbers at tick level</span><span class="d">rev. 2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsecs"><div><div class="navlist">
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-summary">Summary</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-1-what-was-measured">What was measured</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-2-the-surge-is-a-few-very-large-taker-orders">The surge is a few very large taker orders</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-3-same-taker-orders-two-outcomes">Same taker orders, two outcomes</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-4-second-by-second-order-by-order">Second by second, order by order</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-5-animation">Animation</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-6-the-whole-mm-population-recovery-speed-and-quote-skew">The whole MM population: recovery speed and quote skew</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-7-what-this-does-not-establish">What this does not establish</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-8-decisions-for-xinmeng">Decisions for Xinmeng</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-appendix-data-sources">Appendix: data sources</a><div class="navsubs"><div>
+</div></div></div>
+</div></div></div></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-spot-quote-12-17.html"><span class="t">Exp8 &mdash; Spot quotes, 2025-12-17</span><span class="d">2026-09-10</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsecs"><div><div class="navlist">
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-spot-quotes-and-perp-price-discovery-in-the-december-17-replay">Spot quotes and perp price discovery in the December 17 replay</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-1-what-is-measured">What is measured</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-2-spot-and-perp-rise-together-with-much-greater-perp-buying">Spot and perp rise together, with much greater perp buying</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-3-the-largest-perp-jumps-are-one-wallet-s-one-million-dollar-market-buys">The largest perp jumps are one wallet's one-million-dollar market buys</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-4-what-one-clip-does-to-the-two-books">What one clip does to the two books</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-5-are-cancellations-catching-up-to-a-higher-spot-price">Are cancellations catching up to a higher spot price?</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-6-does-spot-help-forecast-the-perp-beyond-its-own-taker-flow">Does spot help forecast the perp beyond its own taker flow?</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-7-what-can-be-said-about-individual-market-makers">What can be said about individual market makers?</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-8-the-spot-reconstruction-is-stable-and-endpoint-semantics-change-the-fastest-window-figure">The spot reconstruction is stable, and endpoint semantics change the fastest-window figure</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-9-the-next-discriminating-test">The next discriminating test</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-37-why-some-hype-perp-jumps-hold-and-others-snap-back">Why some HYPE perp jumps hold and others snap back</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-what-is-measured">What is measured</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-the-1-minute-jumps">The 1-minute jumps</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-which-up-ticks-hold-and-which-snap-back">Which up-ticks hold and which snap back</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-where-makers-put-their-quotes-relative-to-the-spot-mid">Where makers put their quotes relative to the spot mid</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-the-same-addresses-make-markets-on-both-venues">The same addresses make markets on both venues</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-validation">Validation</a>
+<a class="navsub" href="exp8-spot-quote-12-17.html#s-what-this-does-not-establish">What this does not establish</a>
+</div></div></div>
+</div></div></div></div>
+<p class="navgroup">Where the work stands</p>
+<div class="navpage"><div class="navrow"><a class="navlink" href="storyline.html"><span class="t">The taker-surge storyline</span><span class="d">2026-09-15</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsecs"><div><div class="navlist">
+<div class="navgrp"><a class="navsec" href="storyline.html#story-figure">The flow chart</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="storyline.html#story-evidence">Evidence behind each node</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="storyline.html#story-map">Read against the draft's Figure 1</a><div class="navsubs"><div>
+</div></div></div>
+</div></div></div></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="review-status.html"><span class="t">Review status</span><span class="d">updated 2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsecs"><div><div class="navlist">
+<div class="navgrp"><a class="navsec" href="review-status.html#r0916">The 2026-09-11 and 2026-09-15 reviews</a><div class="navsubs"><div>
+<a class="navsub" href="review-status.html#r0916-exp8">Exp8 page points</a>
+<a class="navsub" href="review-status.html#r0916-exp10">Exp10 page points</a>
+<a class="navsub" href="review-status.html#r0916-asks">Analysis requests</a>
+<a class="navsub" href="review-status.html#r0916-plans">Plans: executed and open</a>
+<a class="navsub" href="review-status.html#r0916-decisions">Decisions waiting for Xinmeng</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="review-status.html#r0902">The 2026-09-02 review</a><div class="navsubs"><div>
+</div></div></div>
+</div></div></div></div>
+<p class="navgroup">Earlier work</p>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-report.html"><span class="t">Exp8 &mdash; Full report</span><span class="d">2026-09-04</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsecs"><div><div class="navlist">
+<div class="navgrp"><a class="navsec" href="exp8-report.html#summary">Summary</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-report.html#brief">Overview: both studies</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-report.html#brief-scope">Scope of each</a>
+<a class="navsub" href="exp8-report.html#brief-exp5">What Exp5 observed</a>
+<a class="navsub" href="exp8-report.html#brief-exp8">What Exp8 observed</a>
+<a class="navsub" href="exp8-report.html#brief-bridge">Why two catalogues</a>
+<a class="navsub" href="exp8-report.html#brief-limits">What neither establishes</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-report.html#definitions">Definitions</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-report.html#detector">What a shock is</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-report.html#b-tried">What we tried</a>
+<a class="navsub" href="exp8-report.html#b-final">Final parameters</a>
+<a class="navsub" href="exp8-report.html#b-v3">Velocity rule (v3)</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-report.html#cause">What causes a shock</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-report.html#c-flow181">C, all 181 shocks: one-sided?</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-report.html#population">Who else was there</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-report.html#d-absorb181">D, how wide is the absorbing side?</a>
+<a class="navsub" href="exp8-report.html#d-side">Same side?</a>
+<a class="navsub" href="exp8-report.html#d-each">Trading each other</a>
+<a class="navsub" href="exp8-report.html#d-cp181">D2, all 181: who is on the other side</a>
+<a class="navsub" href="exp8-report.html#d-axis">Alone / few / broad</a>
+<a class="navsub" href="exp8-report.html#d-pop181">D3, against all active MMs</a>
+<a class="navsub" href="exp8-report.html#d-take">Take or quote out? (all shocked MMs)</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-report.html#unwind">Getting out</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-report.html#e-path">The path</a>
+<a class="navsub" href="exp8-report.html#e-price">The price</a>
+<a class="navsub" href="exp8-report.html#e-chain">Archetypes → outcomes</a>
+<a class="navsub" href="exp8-report.html#e-drivers">What decides recovery speed</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-report.html#atlas">Shock atlas</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-report.html#quoting">Book response</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-report.html#g-evolution">G, 5-min grid: Figure 20</a>
+<a class="navsub" href="exp8-report.html#g-distances">G, quote distances: Figure 21</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-report.html#limits">Limits</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-report.html#gallery">Figure gallery</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-report.html#g-audit">A sample of shocks</a>
+<a class="navsub" href="exp8-report.html#g-ep39">Episode 39</a>
+<a class="navsub" href="exp8-report.html#g-ep47">Episode 47</a>
+<a class="navsub" href="exp8-report.html#g-ep71">Episode 71</a>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-report.html#appendix">Appendix</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html">D4 in full &mdash; take, or quote, their way out?</a><div class="navsubs"><div>
+<a class="navsub" href="exp8-unwind-activity.html#summary">Summary</a>
+<a class="navsub" href="exp8-unwind-activity.html#defs">Definitions</a>
+<a class="navsub" href="exp8-unwind-activity.html#taker">Taker volume</a>
+<a class="navsub" href="exp8-unwind-activity.html#orders">Orders: counts and sides</a>
+<a class="navsub" href="exp8-unwind-activity.html#fills">Where the unwind shows up</a>
+<a class="navsub" href="exp8-unwind-activity.html#curves">Event-time figures</a>
+<a class="navsub" href="exp8-unwind-activity.html#ranks">By roster rank</a>
+<a class="navsub" href="exp8-unwind-activity.html#validation">Validation</a>
+<a class="navsub" href="exp8-unwind-activity.html#limits">Not established</a>
+<a class="navsub" href="exp8-unwind-activity.html#provenance">Provenance</a>
+</div></div></div>
+</div></div></div></div>
+<div class="navpage is-current is-open"><div class="navrow"><a class="navlink" href="#"><span class="t">The story so far</span><span class="d">2026-09-04</span></a><button class="navbtn navcaret" type="button" aria-expanded="true" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsecs"><div><div class="navlist">
+<div class="navgrp"><a class="navsec" href="#story">The story in one paragraph</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="#thread-a">Anatomy of a shock</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="#thread-b">Getting out</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="#thread-c">Who is hit</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="#thread-d">Equity and constraint</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="#thread-e">The MMs differ</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="#hypotheses">Six tests</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="#next">Order of work</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="#limits">What it does not establish</a><div class="navsubs"><div>
+</div></div></div>
+<div class="navgrp"><a class="navsec" href="#runsheet">15-minute running order</a><div class="navsubs"><div>
+</div></div></div>
+</div></div></div></div>
+</div><p class="navfoot">Descriptive, not causal. MMs appear by volume rank only.</p></aside>
 <main id="main">
 <header id="top">
   <h1>MM inventory shocks on HYPE: the story so far</h1>
@@ -716,11 +868,97 @@
 
 </main>
 <script>
+  /* site menu (make_public_site.py): remembered state, chevrons, scroll position, theme */
   (function () {
-    var c = document.getElementById('navoff'); if (!c) return;
-    try { c.checked = localStorage.getItem('mm-site-nav') === 'off'; } catch (e) {}
+    var c = document.getElementById('navoff'), side = document.querySelector('aside.sitenav');
+    if (!c || !side) return;
+    var narrow = window.matchMedia('(max-width:900px)');
+    function saved() { try { return localStorage.getItem('mm-site-nav'); } catch (e) { return null; } }
+    function sync() { c.checked = narrow.matches ? false : saved() === 'off'; }
+    sync();
+    (narrow.addEventListener ? narrow.addEventListener('change', sync) : narrow.addListener(sync));
     c.addEventListener('change', function () {
+      if (narrow.matches) return;                       /* the drawer does not change the desktop setting */
       try { localStorage.setItem('mm-site-nav', c.checked ? 'off' : 'on'); } catch (e) {}
+    });
+    requestAnimationFrame(function () { document.documentElement.classList.add('nav-ready'); });
+
+    /* chevrons open and close a page's section list */
+    side.addEventListener('click', function (ev) {
+      var b = ev.target.closest('button.navcaret');
+      if (b) {
+        var p = b.closest('.navpage'), open = !p.classList.contains('is-open');
+        p.classList.toggle('is-open', open); b.setAttribute('aria-expanded', open ? 'true' : 'false');
+        return;
+      }
+      var a = ev.target.closest('a[href^="#"]');
+      if (!a) return;
+      var id = decodeURIComponent(a.getAttribute('href').slice(1)), t = id && document.getElementById(id);
+      for (var d = t && t.parentElement; d; d = d.parentElement) {     /* open folded sections on the way */
+        if (d.tagName === 'DETAILS') d.open = true;
+      }
+      if (narrow.matches) c.checked = false;
+    });
+
+    /* highlight the section in view */
+    var links = Array.prototype.slice.call(side.querySelectorAll('.navpage.is-current a.navsec, .navpage.is-current a.navsub'))
+      .filter(function (a) { return a.getAttribute('href').charAt(0) === '#'; });
+    var targets = links.map(function (a) { return document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))); });
+    var scroller = side.querySelector('.navscroll'), current = -1, ticking = false;
+    function shown(el) {                                   /* a heading inside a closed fold: use the fold */
+      var top = el;
+      for (var d = el.parentElement; d; d = d.parentElement) {
+        if (d.tagName === 'DETAILS' && !d.open) top = d;
+      }
+      return top;
+    }
+    function spy() {
+      ticking = false;
+      var line = Math.min(140, window.innerHeight * 0.3), best = -1;
+      for (var i = 0; i < targets.length; i++) {
+        if (!targets[i]) continue;
+        var r = shown(targets[i]).getBoundingClientRect();
+        if (r.height === 0 && r.top === 0) continue;
+        if (r.top <= line) best = i;
+      }
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+        for (var k = targets.length - 1; k >= 0; k--) { if (targets[k]) { best = Math.max(best, k); break; } }
+      }
+      if (best === current) return;
+      if (current >= 0) links[current].classList.remove('is-active');
+      side.querySelectorAll('.navgrp.is-active').forEach(function (g) { g.classList.remove('is-active', 'is-open'); });
+      current = best;
+      if (best < 0) return;
+      var a = links[best], g = a.closest('.navgrp');
+      a.classList.add('is-active');
+      if (g) g.classList.add('is-active', 'is-open');
+      setTimeout(function () {                            /* keep the active row in view once the list has opened */
+        var ar = a.getBoundingClientRect(), sr = scroller.getBoundingClientRect();
+        if (ar.top < sr.top + 40 || ar.bottom > sr.bottom - 40) {
+          scroller.scrollTo({ top: scroller.scrollTop + ar.top - sr.top - sr.height / 3, behavior: 'smooth' });
+        }
+      }, 320);
+    }
+    if (targets.length) {
+      window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(spy); } }, { passive: true });
+      window.addEventListener('resize', spy);
+      document.addEventListener('toggle', spy, true);
+      spy();
+    }
+
+    /* theme: one choice for the whole site */
+    var root = document.documentElement;
+    function isDark() {
+      var t = root.getAttribute('data-theme');
+      return t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    try { var th = localStorage.getItem('mm-site-theme'); if (th) root.setAttribute('data-theme', th); } catch (e) {}
+    document.querySelectorAll('[data-navtheme]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var next = isDark() ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('mm-site-theme', next); localStorage.setItem('exp8r-theme', next); } catch (e) {}
+      });
     });
   })();
 </script>
