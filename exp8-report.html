@@ -222,19 +222,16 @@
           color:var(--muted); font-size:13px; line-height:1.38; text-decoration:none;
           transition:color .15s, background .15s; }
   .sitenav a.navsec { display:flex; gap:0; }
-  .sitenav a.navsec .n { flex:0 0 2.1em; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .sitenav a.navsec .n { flex:0 0 3em; color:var(--muted); font-variant-numeric:tabular-nums; }
   .sitenav a.navsec .x { flex:1; min-width:0; }
   .sitenav a.navsub { padding-left:20px; font-size:12.5px; }
-  /* new since the last few logged days (site_changelog.json): brighter blue and a NEW tag */
+  /* new since NEW_SINCE (site_changelog.json): the row in blue and a blue [NEW] after it (user rule 2026-09-21) */
   .sitenav a.navlink.is-new .t, .sitenav a.navsec.is-new, .sitenav a.navsub.is-new,
   .sitenav a.navsec.is-new .n { color:var(--new); }
   .sitenav a.navsec.is-new, .sitenav a.navsub.is-new { font-weight:550; }
-  [data-new]:not(.is-new) .navnew, .navgrp:has(> .navsrow > a.is-new) a.navsub .navnew,
-  .navgrp:has(> a.navsec.is-new) a.navsub .navnew { display:none; }
-  .navnew { display:inline-block; margin-left:6px; padding:0 5px; border-radius:4px; font-size:9.5px; font-weight:700;
-          letter-spacing:.05em; line-height:15px; vertical-align:1px; color:#fff; background:var(--new); }
-  html[data-theme="dark"] .navnew { color:#06121f; }
-  @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .navnew { color:#06121f; } }
+  [data-new]:not(.is-new) .navnew { display:none; }
+  .navnew { display:inline; margin-left:5px; padding:0; font-size:10.5px; font-weight:700; letter-spacing:.02em;
+          white-space:nowrap; color:var(--new); background:none; }
   .sitenav a.navsec:hover, .sitenav a.navsub:hover { color:var(--text);
           background:color-mix(in srgb, var(--text) 6%, transparent); }
   .sitenav .navgrp.is-active > a.navsec:not(.is-active),
@@ -327,472 +324,272 @@
 <div class="navscroll">
 <a class="navitem" href="overview.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4.5 20 11"/><path d="M6.5 9.5V19.5h11V9.5"/></svg>All reports</a>
 <p class="navgroup">Reports</p>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-inventory-shock-09-08.html"><span class="t">Exp8 &mdash; Taker imbalance, z<sub>NET</sub></span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html"><span class="t">Exp8 &mdash; Taker imbalance, z<sub>NET</sub><span class="navnew">[NEW]</span></span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#summary-h"><span class="n"></span><span class="x">Summary<span class="navnew">NEW</span></span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="exp8-inventory-shock-09-08.html#notation-h"><span class="n"></span><span class="x">Notation</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" data-new="2026-09-16" href="exp8-inventory-shock-09-08.html#events-h"><span class="n"></span><span class="x">Event definitions<span class="navnew">NEW</span></span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="exp8-inventory-shock-09-08.html#axes-h"><span class="n">1</span><span class="x">Changes from the earlier definition</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="exp8-inventory-shock-09-08.html#lit-h"><span class="n">2</span><span class="x">Literature on order imbalance</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#imb-h"><span class="n">3</span><span class="x">The market flow trigger<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#imb-def">Definitions</a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#imb-cutoffs">Which rule</a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#imb-3way">Event classes</a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#imb-alt">Price trigger against flow trigger</a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-h"><span class="n">4</span><span class="x">Active MMs in events and controls<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-def">Definitions<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-active">Choosing the active-MM rule<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-summary">MMs absorbing, MMs shocked<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-state">MM state before the event<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-orders">Orders by side before the event<span class="navnew">NEW</span></a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#pop-aggr">Unwind aggressiveness</a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#pop-peers">Shocked against unshocked</a>
-<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-equity">Equity and closed PnL<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-equity-attrib">Equity change: the ten-coin book<span class="navnew">NEW</span></a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#pop-counterparty">Counterparties of the unwind</a>
-<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-peakrule">Shocked under the peak rule<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-mktquality">Market quality after the event<span class="navnew">NEW</span></a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="exp8-inventory-shock-09-08.html#prof-h"><span class="n">5</span><span class="x">Profile of all active HYPE MMs</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#prof-def">Definitions</a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#prof-table">Population distribution</a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#prof-scale">Scale and outcomes</a>
-<a class="navsub" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#prof-frequency">Shock rate and minutes to half<span class="navnew">NEW</span></a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#absorbers-h"><span class="n">8</span><span class="x">Biggest absorbers against flagged MMs<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#absorbers-def">Definitions</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-inventory-shock-09-08.html#absorbers-escape">Flagged share of top absorbers<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-inventory-shock-09-08.html#absorbers-scale">Why the absorbers are not flagged<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-inventory-shock-09-08.html#absorbers-roundtrip">Peak held at the end<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-inventory-shock-09-08.html#absorbers-rule">End rule against peak rule<span class="navnew">NEW</span></a>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#data-h"><span class="n">15</span><span class="x">Data caveats<span class="navnew">NEW</span></span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="exp8-inventory-shock-09-08.html#synthesis-h"><span class="n"></span><span class="x">Synthesis</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-mech">Who quotes and who carries</a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-controls">What survives the control windows</a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-ticks">Sweep and refill inside one second</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-inventory-shock-09-08.html#syn-flag">Absorbing versus being flagged<span class="navnew">NEW</span></a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-trigger">Event trigger and price label</a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#syn-boundary">Limits</a>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="exp8-inventory-shock-09-08.html#limits-h"><span class="n">16</span><span class="x">Limits</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="exp8-inventory-shock-09-08.html#decisions-h"><span class="n">17</span><span class="x">Open decisions</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#dec-rules">Definitions</a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#dec-labels">Labels and framing</a>
-<a class="navsub" href="exp8-inventory-shock-09-08.html#dec-followups">Follow-ups</a>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="exp8-inventory-shock-09-08.html#appendix-h"><span class="n"></span><span class="x">Appendix: data sources</span></a>
-<div class="navsubs"><div>
-</div></div></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#summary-h"><span class="n"></span><span class="x">Summary<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#notation-h"><span class="n"></span><span class="x">Notation</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#events-h"><span class="n"></span><span class="x">Event definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#axes-h"><span class="n">1</span><span class="x">Changes from the earlier definition</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#lit-h"><span class="n">2</span><span class="x">Literature on order imbalance</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#imb-h"><span class="n">3</span><span class="x">The market flow trigger<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#imb-def"><span class="n">3.1</span><span class="x">Definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#imb-cutoffs"><span class="n">3.2</span><span class="x">Which rule</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#imb-3way"><span class="n">3.3</span><span class="x">Event classes</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#imb-alt"><span class="n">3.4</span><span class="x">Price trigger against flow trigger</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-h"><span class="n">4</span><span class="x">Active MMs in events and controls<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-def"><span class="n">4.1</span><span class="x">Definitions<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-active"><span class="n"></span><span class="x">Choosing the active-MM rule<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#pop-summary"><span class="n">4.2</span><span class="x">MMs absorbing, MMs shocked</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-state"><span class="n">4.3</span><span class="x">MM state before the event<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-orders"><span class="n"></span><span class="x">Orders by side before the event<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#pop-aggr"><span class="n">4.5</span><span class="x">Unwind aggressiveness</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#pop-peers"><span class="n">4.6</span><span class="x">Shocked against unshocked</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#pop-equity"><span class="n">4.7</span><span class="x">Equity and closed PnL</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-equity-attrib"><span class="n">4.7b</span><span class="x">Equity change: the ten-coin book<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#pop-counterparty"><span class="n">4.8</span><span class="x">Counterparties of the unwind</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-peakrule"><span class="n">4.9</span><span class="x">Shocked under the peak rule<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#pop-mktquality"><span class="n">4.10</span><span class="x">Market quality after the event<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#prof-h"><span class="n">5</span><span class="x">Profile of all active HYPE MMs</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#prof-def"><span class="n">5.1</span><span class="x">Definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#prof-table"><span class="n">5.2</span><span class="x">Population distribution</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#prof-scale"><span class="n">5.3</span><span class="x">Scale and outcomes</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#prof-frequency"><span class="n">5.4</span><span class="x">Shock rate and minutes to half<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#absorbers-h"><span class="n">8</span><span class="x">Biggest absorbers against flagged MMs<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#absorbers-def"><span class="n">8.1</span><span class="x">Definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#absorbers-escape"><span class="n">8.2</span><span class="x">Flagged share of top absorbers</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#absorbers-scale"><span class="n">8.3</span><span class="x">Why the absorbers are not flagged</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#absorbers-roundtrip"><span class="n">8.4</span><span class="x">Peak held at the end</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#absorbers-rule"><span class="n">8.5</span><span class="x">End rule against peak rule</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-inventory-shock-09-08.html#data-h"><span class="n">15</span><span class="x">Data caveats<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#synthesis-h"><span class="n"></span><span class="x">Synthesis</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#syn-mech"><span class="n"></span><span class="x">Who quotes and who carries</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#syn-controls"><span class="n"></span><span class="x">What survives the control windows</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#syn-ticks"><span class="n"></span><span class="x">Sweep and refill inside one second</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#syn-flag"><span class="n"></span><span class="x">Absorbing versus being flagged</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#syn-trigger"><span class="n"></span><span class="x">Event trigger and price label</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#syn-boundary"><span class="n"></span><span class="x">Limits</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#limits-h"><span class="n">16</span><span class="x">Limits</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#decisions-h"><span class="n">17</span><span class="x">Open decisions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#dec-rules"><span class="n">17.1</span><span class="x">Definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#dec-labels"><span class="n">17.2</span><span class="x">Labels and framing</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#dec-followups"><span class="n">17.3</span><span class="x">Follow-ups</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-inventory-shock-09-08.html#appendix-h"><span class="n"></span><span class="x">Appendix: data sources</span></a></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-one-sided-surges.html"><span class="t">Exp8 &mdash; One-sided taker surges</span><span class="d">2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" data-new="2026-09-17" href="exp8-one-sided-surges.html"><span class="t">Exp8 &mdash; One-sided taker surges<span class="navnew">[NEW]</span></span><span class="d">2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-one-sided-surges.html#families-h"><span class="n">9</span><span class="x">Side-surge event families<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-one-sided-surges.html#families-def">Definitions</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-one-sided-surges.html#families-sets">Overlap between the two rules<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-one-sided-surges.html#families-timing">Flow inside the half hour<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-one-sided-surges.html#families-price">Price path after the surge<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-one-sided-surges.html#families-status">Catalogue files and open items<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-one-sided-surges.html#families-f1-def">How F1 is built<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-one-sided-surges.html#families-f1-pop">Shocked against unshocked MMs on F1<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-one-sided-surges.html#families-step6">F1, F3 and F2 against controls<span class="navnew">NEW</span></a>
-</div></div></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-one-sided-surges.html#families-h"><span class="n">9</span><span class="x">Side-surge event families<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-one-sided-surges.html#families-def"><span class="n">9.1</span><span class="x">Definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-one-sided-surges.html#families-sets"><span class="n">9.2</span><span class="x">Overlap between the two rules</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-one-sided-surges.html#families-timing"><span class="n">9.3</span><span class="x">Flow inside the half hour</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-one-sided-surges.html#families-price"><span class="n">9.4</span><span class="x">Price path after the surge</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-one-sided-surges.html#families-status"><span class="n">9.5</span><span class="x">Catalogue files and open items</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-one-sided-surges.html#families-f1-def"><span class="n">9.6</span><span class="x">How F1 is built</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-one-sided-surges.html#families-f1-pop"><span class="n">9.7</span><span class="x">Shocked against unshocked MMs on F1</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-one-sided-surges.html#families-step6"><span class="n">9.8</span><span class="x">F1, F3 and F2 against controls<span class="navnew">[NEW]</span></span></a></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-event-studies.html"><span class="t">Exp8 &mdash; Event studies</span><span class="d">2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" data-new="2026-09-21" href="exp8-surge-book-cost.html"><span class="t">Exp8 &mdash; What a one-sided surge costs the book<span class="navnew">[NEW]</span></span><span class="d">2026-09-21</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-event-studies.html#ticka-h"><span class="n">6</span><span class="x">Tick replay A, no liquidations<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-event-studies.html#ticka-anatomy">Trades or cancels</a>
-<a class="navsub" href="exp8-event-studies.html#ticka-order">Flow or price first?</a>
-<a class="navsub" href="exp8-event-studies.html#ticka-age">Age of the quotes that were hit</a>
-<a class="navsub" href="exp8-event-studies.html#ticka-partb">The two shocked MMs, end to end</a>
-<a class="navsub" href="exp8-event-studies.html#ticka-replay-h">The move every 10 seconds</a>
-<a class="navsub" data-new="2026-09-17" href="exp8-event-studies.html#ticka-replay-1s">Five biggest slices, by second<span class="navnew">NEW</span></a>
-<a class="navsub" href="exp8-event-studies.html#ticka-replay-ticks">The five biggest single ticks</a>
-<a class="navsub" href="exp8-event-studies.html#ticka-replay-anim">Animation of the move</a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-event-studies.html#liq-h"><span class="n">7</span><span class="x">Tick replay B, liquidations<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-event-studies.html#liq-pick">Why this event</a>
-<a class="navsub" href="exp8-event-studies.html#liq-seq">What came first</a>
-<a class="navsub" href="exp8-event-studies.html#liq-cross">Which coin triggered the liquidations</a>
-<a class="navsub" href="exp8-event-studies.html#liq-absorb">Who filled the liquidation orders</a>
-<a class="navsub" href="exp8-event-studies.html#tickb-h">Replay B on the order stream</a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-event-studies.html#x10-min-h"><span class="n">13</span><span class="x">Two episodes, minute by minute<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-event-studies.html#x10-min-def">Definitions</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-event-studies.html#x10-min-who">Quotes before the surge<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-event-studies.html#x10-min-stories">Quotes during the surge<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-event-studies.html#x10-min-build">Who builds, who reduces<span class="navnew">NEW</span></a>
-<a class="navsub" href="exp8-event-studies.html#x10-min-valid">Limits</a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-16" href="exp8-event-studies.html#x10-tick-h"><span class="n">14</span><span class="x">The same two episodes, tick by tick<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-event-studies.html#x10-tick-def">Definitions</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-event-studies.html#x10-tick-orders">The large taker orders<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-event-studies.html#x10-tick-outcomes">After the fill: fast and held MMs<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-event-studies.html#x10-tick-seconds">Around the $9.29m sell<span class="navnew">NEW</span></a>
-</div></div></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-what-a-one-sided-taker-surge-costs-the-book"><span class="n">64</span><span class="x">What a one-sided taker surge costs the book<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-1-symbols-and-sign-convention"><span class="n">64.1</span><span class="x">Symbols and sign convention<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-2-which-minute-ends-the-accumulation-phase"><span class="n">64.2</span><span class="x">Which minute ends the accumulation phase<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-3-how-market-makers-tilt-their-quotes"><span class="n">64.3</span><span class="x">How market makers tilt their quotes<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-4-spread-depth-and-taker-cost-by-phase"><span class="n">64.4</span><span class="x">Spread, depth and taker cost by phase<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-5-what-moves-the-best-quote"><span class="n">64.5</span><span class="x">What moves the best quote<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-6-the-same-measure-between-fills-on-every-date"><span class="n">64.6</span><span class="x">The same measure between fills, on every date<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-7-how-fast-the-quote-comes-back"><span class="n">64.7</span><span class="x">How fast the quote comes back<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-8-where-this-sits-in-the-order-book-resiliency-literature"><span class="n">64.8</span><span class="x">Where this sits in the order-book resiliency literature<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-9-the-book-tables"><span class="n">64.9</span><span class="x">The book tables<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-10-what-this-does-not-establish"><span class="n">64.10</span><span class="x">What this does not establish<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-21" href="exp8-surge-book-cost.html#s-64-11-decisions-waiting"><span class="n">64.11</span><span class="x">Decisions waiting<span class="navnew">[NEW]</span></span></a></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" href="exp8-unwinders.html"><span class="t">Exp8 &mdash; Unwinders</span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" data-new="2026-09-17" href="exp8-event-studies.html"><span class="t">Exp8 &mdash; Event studies<span class="navnew">[NEW]</span></span><span class="d">2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#pop-unwind"><span class="n">4.4</span><span class="x">Early and late unwinders<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#pop-unwind-skew">Order skew by timing class<span class="navnew">NEW</span></a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#x9-book-h"><span class="n">10</span><span class="x">Resting orders after a roster shock<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-unwinders.html#x9-book-def">Definitions</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-book-headline">Quote distance and size by window<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-book-cells">Four predicted signs<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-book-latency">Reaction latency and refill<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-book-grid">The response on a 5-minute grid<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-book-valid">Limits<span class="navnew">NEW</span></a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-16" href="exp8-unwinders.html#x9-pop-h"><span class="n">11</span><span class="x">Population shocks and recovery speed<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-unwinders.html#x9-pop-def">Definitions</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-pop-funnel">Shock counts and frequency<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-pop-recovery">Recovery times<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-pop-skew">Quote skew and recovery speed<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-pop-within">Exit lean inside one MM<span class="navnew">NEW</span></a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-h"><span class="n">12</span><span class="x">Quoting during the unwind<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-unwinders.html#x9-unwind-def">Older tests: definitions</a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-window">Older test: two-hour window<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="exp8-unwinders.html#x9-unwind-state">Older test: share still held<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-tests">Older test: between or within MMs<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-absorbers">Fast unwinders lean toward the exit in the first 5 minutes; slow ones do not<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-orders">Taker orders, cancels, markouts<span class="navnew">NEW</span></a>
-</div></div></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-event-studies.html#ticka-h"><span class="n">6</span><span class="x">Tick replay A, no liquidations<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#ticka-anatomy"><span class="n">6.1</span><span class="x">Trades or cancels</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#ticka-order"><span class="n">6.2</span><span class="x">Flow or price first?</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#ticka-age"><span class="n">6.3</span><span class="x">Age of the quotes that were hit</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#ticka-partb"><span class="n">6.4</span><span class="x">The two shocked MMs, end to end</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#ticka-replay-h"><span class="n">6.5</span><span class="x">The move every 10 seconds</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-event-studies.html#ticka-replay-1s"><span class="n">6.6</span><span class="x">Five biggest slices, by second<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#ticka-replay-ticks"><span class="n">6.7</span><span class="x">The five biggest single ticks</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#ticka-replay-anim"><span class="n">6.8</span><span class="x">Animation of the move</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#liq-h"><span class="n">7</span><span class="x">Tick replay B, liquidations</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#liq-pick"><span class="n">7.1</span><span class="x">Why this event</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#liq-seq"><span class="n">7.2</span><span class="x">What came first</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#liq-cross"><span class="n">7.3</span><span class="x">Which coin triggered the liquidations</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#liq-absorb"><span class="n">7.4</span><span class="x">Who filled the liquidation orders</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#tickb-h"><span class="n">7.5</span><span class="x">Replay B on the order stream</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-event-studies.html#x10-min-h"><span class="n">13</span><span class="x">Two episodes, minute by minute<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#x10-min-def"><span class="n">13.1</span><span class="x">Definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#x10-min-who"><span class="n">13.2</span><span class="x">Quotes before the surge</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#x10-min-stories"><span class="n">13.3</span><span class="x">Quotes during the surge</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#x10-min-build"><span class="n">13.4</span><span class="x">Who builds, who reduces</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#x10-min-valid"><span class="n">13.5</span><span class="x">Limits</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#x10-tick-h"><span class="n">14</span><span class="x">The same two episodes, tick by tick</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#x10-tick-def"><span class="n">14.1</span><span class="x">Definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#x10-tick-orders"><span class="n">14.2</span><span class="x">The large taker orders</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#x10-tick-outcomes"><span class="n">14.3</span><span class="x">After the fill: fast and held MMs</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-event-studies.html#x10-tick-seconds"><span class="n">14.4</span><span class="x">Around the $9.29m sell</span></a></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" data-new="2026-09-10" href="exp10-tick-level-09-10.html"><span class="t">Exp10 &mdash; Tick level<span class="navnew">NEW</span></span><span class="d">rev. 2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" data-new="2026-09-17" href="exp8-unwinders.html"><span class="t">Exp8 &mdash; Unwinders<span class="navnew">[NEW]</span></span><span class="d">rev. 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<a class="navsec" href="exp10-tick-level-09-10.html#s-summary"><span class="n"></span><span class="x">Summary</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="exp10-tick-level-09-10.html#s-1-what-was-measured"><span class="n">1</span><span class="x">What was measured</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" data-new="2026-09-16" href="exp10-tick-level-09-10.html#s-2-the-surge-is-a-few-very-large-taker-orders"><span class="n">2</span><span class="x">A few very large taker orders<span class="navnew">NEW</span></span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" data-new="2026-09-16" href="exp10-tick-level-09-10.html#s-3-same-taker-orders-two-outcomes"><span class="n">3</span><span class="x">Same orders, two outcomes<span class="navnew">NEW</span></span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" data-new="2026-09-16" href="exp10-tick-level-09-10.html#s-4-second-by-second-order-by-order"><span class="n">4</span><span class="x">Second by second<span class="navnew">NEW</span></span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="exp10-tick-level-09-10.html#s-5-animation"><span class="n">5</span><span class="x">Animation</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="exp10-tick-level-09-10.html#s-6-the-whole-mm-population-recovery-speed-and-quote-skew"><span class="n">6</span><span class="x">Population recovery and skew</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="exp10-tick-level-09-10.html#s-7-what-this-does-not-establish"><span class="n">7</span><span class="x">Limits</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="exp10-tick-level-09-10.html#s-8-decisions-for-xinmeng"><span class="n">8</span><span class="x">Decisions</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="exp10-tick-level-09-10.html#s-appendix-data-sources"><span class="n"></span><span class="x">Appendix: data sources</span></a>
-<div class="navsubs"><div>
-</div></div></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#pop-unwind"><span class="n">4.4</span><span class="x">Early and late unwinders<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#pop-unwind-skew"><span class="n"></span><span class="x">Order skew by timing class<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-book-h"><span class="n">10</span><span class="x">Resting orders after a roster shock</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-book-def"><span class="n">10.1</span><span class="x">Definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-book-headline"><span class="n">10.2</span><span class="x">Quote distance and size by window</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-book-cells"><span class="n">10.3</span><span class="x">Four predicted signs</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-book-latency"><span class="n">10.4</span><span class="x">Reaction latency and refill</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-book-grid"><span class="n">10.5</span><span class="x">The response on a 5-minute grid</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-book-valid"><span class="n">10.6</span><span class="x">Limits</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-pop-h"><span class="n">11</span><span class="x">Population shocks and recovery speed</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-pop-def"><span class="n">11.1</span><span class="x">Definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-pop-funnel"><span class="n">11.2</span><span class="x">Shock counts and frequency</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-pop-recovery"><span class="n">11.3</span><span class="x">Recovery times</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-pop-skew"><span class="n">11.4</span><span class="x">Quote skew and recovery speed</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#x9-pop-within"><span class="n">11.5</span><span class="x">Exit lean inside one MM<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-h"><span class="n">12</span><span class="x">Quoting during the unwind<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-unwind-def"><span class="n">12.1</span><span class="x">Older tests: definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-unwind-window"><span class="n">12.2</span><span class="x">Older test: two-hour window</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-unwind-state"><span class="n">12.3</span><span class="x">Older test: share still held</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwinders.html#x9-unwind-tests"><span class="n">12.4</span><span class="x">Older test: between or within MMs</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-absorbers"><span class="n">12.5</span><span class="x">Fast unwinders lean toward the exit in the first 5 minutes; slow ones do not<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="exp8-unwinders.html#x9-unwind-orders"><span class="n">12.6</span><span class="x">Taker orders, cancels, markouts<span class="navnew">[NEW]</span></span></a></div>
+</div></div></div></div>
+<div class="navpage"><div class="navrow"><a class="navlink" href="exp10-tick-level-09-10.html"><span class="t">Exp10 &mdash; Tick level</span><span class="d">rev. 2026-09-16</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navsecs"><div><div class="navlist">
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-summary"><span class="n"></span><span class="x">Summary</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-1-what-was-measured"><span class="n">1</span><span class="x">What was measured</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-2-the-surge-is-a-few-very-large-taker-orders"><span class="n">2</span><span class="x">A few very large taker orders</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-3-same-taker-orders-two-outcomes"><span class="n">3</span><span class="x">Same orders, two outcomes</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-4-second-by-second-order-by-order"><span class="n">4</span><span class="x">Second by second</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-5-animation"><span class="n">5</span><span class="x">Animation</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-6-the-whole-mm-population-recovery-speed-and-quote-skew"><span class="n">6</span><span class="x">Population recovery and skew</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-7-what-this-does-not-establish"><span class="n">7</span><span class="x">Limits</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-8-decisions-for-xinmeng"><span class="n">8</span><span class="x">Decisions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp10-tick-level-09-10.html#s-appendix-data-sources"><span class="n"></span><span class="x">Appendix: data sources</span></a></div>
 </div></div></div></div>
 <div class="navpage"><div class="navrow"><a class="navlink" href="exp8-spot-quote-12-17.html"><span class="t">Exp8 &mdash; Spot quotes</span><span class="d">2026-09-10</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-spot-quotes-and-perp-price-discovery-in-the-december-17-replay"><span class="n">36</span><span class="x">Spot quotes, perp price discovery</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-1-what-is-measured">What is measured</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-2-spot-and-perp-rise-together-with-much-greater-perp-buying">Spot and perp rise together</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-3-the-largest-perp-jumps-are-one-wallet-s-one-million-dollar-market-buys">One wallet's $1m market buys</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-4-what-one-clip-does-to-the-two-books">One clip, two books</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-5-are-cancellations-catching-up-to-a-higher-spot-price">Cancellations and the spot price</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-6-does-spot-help-forecast-the-perp-beyond-its-own-taker-flow">Does spot forecast the perp?</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-7-what-can-be-said-about-individual-market-makers">Individual market makers</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-8-the-spot-reconstruction-is-stable-and-endpoint-semantics-change-the-fastest-window-figure">Reconstruction checks</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-36-9-the-next-discriminating-test">Next discriminating test</a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="exp8-spot-quote-12-17.html#s-37-why-some-hype-perp-jumps-hold-and-others-snap-back"><span class="n">37</span><span class="x">Jumps that hold, jumps that snap back</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-what-is-measured">What is measured</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-the-1-minute-jumps">The 1-minute jumps</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-which-up-ticks-hold-and-which-snap-back">Which up-ticks hold</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-where-makers-put-their-quotes-relative-to-the-spot-mid">Maker quotes against the spot mid</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-the-same-addresses-make-markets-on-both-venues">Same addresses on both venues</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-validation">Validation</a>
-<a class="navsub" href="exp8-spot-quote-12-17.html#s-what-this-does-not-establish">Limits</a>
-</div></div></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-spot-quotes-and-perp-price-discovery-in-the-december-17-replay"><span class="n">36</span><span class="x">Spot quotes, perp price discovery</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-1-what-is-measured"><span class="n"></span><span class="x">What is measured</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-2-spot-and-perp-rise-together-with-much-greater-perp-buying"><span class="n"></span><span class="x">Spot and perp rise together</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-3-the-largest-perp-jumps-are-one-wallet-s-one-million-dollar-market-buys"><span class="n"></span><span class="x">One wallet's $1m market buys</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-4-what-one-clip-does-to-the-two-books"><span class="n"></span><span class="x">One clip, two books</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-5-are-cancellations-catching-up-to-a-higher-spot-price"><span class="n"></span><span class="x">Cancellations and the spot price</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-6-does-spot-help-forecast-the-perp-beyond-its-own-taker-flow"><span class="n"></span><span class="x">Does spot forecast the perp?</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-7-what-can-be-said-about-individual-market-makers"><span class="n"></span><span class="x">Individual market makers</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-8-the-spot-reconstruction-is-stable-and-endpoint-semantics-change-the-fastest-window-figure"><span class="n"></span><span class="x">Reconstruction checks</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-36-9-the-next-discriminating-test"><span class="n"></span><span class="x">Next discriminating test</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-37-why-some-hype-perp-jumps-hold-and-others-snap-back"><span class="n">37</span><span class="x">Jumps that hold, jumps that snap back</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-what-is-measured"><span class="n"></span><span class="x">What is measured</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-the-1-minute-jumps"><span class="n"></span><span class="x">The 1-minute jumps</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-which-up-ticks-hold-and-which-snap-back"><span class="n"></span><span class="x">Which up-ticks hold</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-where-makers-put-their-quotes-relative-to-the-spot-mid"><span class="n"></span><span class="x">Maker quotes against the spot mid</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-the-same-addresses-make-markets-on-both-venues"><span class="n"></span><span class="x">Same addresses on both venues</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-validation"><span class="n"></span><span class="x">Validation</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-spot-quote-12-17.html#s-what-this-does-not-establish"><span class="n"></span><span class="x">Limits</span></a></div>
 </div></div></div></div>
 <p class="navgroup">Where the work stands</p>
 <div class="navpage"><div class="navrow"><a class="navlink" href="changelog.html"><span class="t">Change log</span><span class="d">every build</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<a class="navsec" href="changelog.html#d-2026-09-17"><span class="n"></span><span class="x">2026-09-17</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="changelog.html#d-2026-09-16"><span class="n"></span><span class="x">2026-09-16</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="changelog.html#d-2026-09-10"><span class="n"></span><span class="x">2026-09-10</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="changelog.html#d-2026-09-09"><span class="n"></span><span class="x">2026-09-09</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="changelog.html#d-2026-09-08"><span class="n"></span><span class="x">2026-09-08</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="changelog.html#d-2026-09-04"><span class="n"></span><span class="x">2026-09-04</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="changelog.html#d-2026-09-03"><span class="n"></span><span class="x">2026-09-03</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="changelog.html#d-2026-08-26"><span class="n"></span><span class="x">2026-08-26</span></a>
-<div class="navsubs"><div>
-</div></div></div>
+<div class="navgrp"><a class="navsec" href="changelog.html#d-2026-09-21"><span class="n"></span><span class="x">2026-09-21</span></a></div>
+<div class="navgrp"><a class="navsec" href="changelog.html#d-2026-09-17"><span class="n"></span><span class="x">2026-09-17</span></a></div>
+<div class="navgrp"><a class="navsec" href="changelog.html#d-2026-09-16"><span class="n"></span><span class="x">2026-09-16</span></a></div>
+<div class="navgrp"><a class="navsec" href="changelog.html#d-2026-09-10"><span class="n"></span><span class="x">2026-09-10</span></a></div>
+<div class="navgrp"><a class="navsec" href="changelog.html#d-2026-09-09"><span class="n"></span><span class="x">2026-09-09</span></a></div>
+<div class="navgrp"><a class="navsec" href="changelog.html#d-2026-09-08"><span class="n"></span><span class="x">2026-09-08</span></a></div>
+<div class="navgrp"><a class="navsec" href="changelog.html#d-2026-09-04"><span class="n"></span><span class="x">2026-09-04</span></a></div>
+<div class="navgrp"><a class="navsec" href="changelog.html#d-2026-09-03"><span class="n"></span><span class="x">2026-09-03</span></a></div>
+<div class="navgrp"><a class="navsec" href="changelog.html#d-2026-08-26"><span class="n"></span><span class="x">2026-08-26</span></a></div>
 </div></div></div></div>
 <div class="navpage"><div class="navrow"><a class="navlink" href="storyline.html"><span class="t">Storyline</span><span class="d">2026-09-15</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<a class="navsec" href="storyline.html#story-figure"><span class="n"></span><span class="x">The flow chart</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="storyline.html#story-evidence"><span class="n"></span><span class="x">Evidence behind each node</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="storyline.html#story-map"><span class="n"></span><span class="x">Against the draft's Figure 1</span></a>
-<div class="navsubs"><div>
-</div></div></div>
+<div class="navgrp"><a class="navsec" href="storyline.html#story-figure"><span class="n"></span><span class="x">The flow chart</span></a></div>
+<div class="navgrp"><a class="navsec" href="storyline.html#story-evidence"><span class="n"></span><span class="x">Evidence behind each node</span></a></div>
+<div class="navgrp"><a class="navsec" href="storyline.html#story-map"><span class="n"></span><span class="x">Against the draft's Figure 1</span></a></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" href="review-status.html"><span class="t">Review status</span><span class="d">updated 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage"><div class="navrow"><a class="navlink" data-new="2026-09-17" href="review-status.html"><span class="t">Review status<span class="navnew">[NEW]</span></span><span class="d">updated 2026-09-17</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-17" href="review-status.html#r0917"><span class="n"></span><span class="x">Changed on 2026-09-17<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="review-status.html#r0917-new">Sections that are new today</a>
-<a class="navsub" href="review-status.html#r0917-moved">Numbers and wording that moved</a>
-<a class="navsub" href="review-status.html#r0917-defects">Two source-data defects</a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" data-new="2026-09-16" href="review-status.html#r0916"><span class="n"></span><span class="x">Reviews of 09-11, 09-15, 09-17<span class="navnew">NEW</span></span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" data-new="2026-09-16" href="review-status.html#r0916-exp8">Exp8 page points<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="review-status.html#r0916-exp10">Exp10 page points<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="review-status.html#r0917-site">Site points<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="review-status.html#r0916-asks">Analysis requests<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-16" href="review-status.html#r0916-plans">Plans: executed and open<span class="navnew">NEW</span></a>
-<a class="navsub" data-new="2026-09-17" href="review-status.html#r0916-waiting">Decisions waiting for you<span class="navnew">NEW</span></a>
-<a class="navsub" href="review-status.html#r0916-settled">Settled decisions</a>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" data-new="2026-09-16" href="review-status.html#r0902"><span class="n"></span><span class="x">The 2026-09-02 review<span class="navnew">NEW</span></span></a>
-<div class="navsubs"><div>
-</div></div></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="review-status.html#r0917"><span class="n"></span><span class="x">Changed on 2026-09-17<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="review-status.html#r0917-new"><span class="n"></span><span class="x">Sections that are new today</span></a></div>
+<div class="navgrp"><a class="navsec" href="review-status.html#r0917-moved"><span class="n"></span><span class="x">Numbers and wording that moved</span></a></div>
+<div class="navgrp"><a class="navsec" href="review-status.html#r0917-defects"><span class="n"></span><span class="x">Two source-data defects</span></a></div>
+<div class="navgrp"><a class="navsec" href="review-status.html#r0916"><span class="n"></span><span class="x">Reviews of 09-11, 09-15, 09-17</span></a></div>
+<div class="navgrp"><a class="navsec" href="review-status.html#r0916-exp8"><span class="n"></span><span class="x">Exp8 page points</span></a></div>
+<div class="navgrp"><a class="navsec" href="review-status.html#r0916-exp10"><span class="n"></span><span class="x">Exp10 page points</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="review-status.html#r0917-site"><span class="n"></span><span class="x">Site points<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="review-status.html#r0916-asks"><span class="n"></span><span class="x">Analysis requests</span></a></div>
+<div class="navgrp"><a class="navsec" href="review-status.html#r0916-plans"><span class="n"></span><span class="x">Plans: executed and open</span></a></div>
+<div class="navgrp"><a class="navsec" data-new="2026-09-17" href="review-status.html#r0916-waiting"><span class="n"></span><span class="x">Decisions waiting for you<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec" href="review-status.html#r0916-settled"><span class="n"></span><span class="x">Settled decisions</span></a></div>
+<div class="navgrp"><a class="navsec" href="review-status.html#r0902"><span class="n"></span><span class="x">The 2026-09-02 review</span></a></div>
 </div></div></div></div>
 <p class="navgroup">Earlier work</p>
 <div class="navpage is-current is-open"><div class="navrow"><a class="navlink" href="#"><span class="t">Exp8 &mdash; Full report</span><span class="d">2026-09-04</span></a><button class="navbtn navcaret" type="button" aria-expanded="true" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<a class="navsec" href="#summary"><span class="n"></span><span class="x">Summary</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="#brief"><span class="n"></span><span class="x">Overview: both studies</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="#brief-scope">Scope of each</a>
-<a class="navsub" href="#brief-exp5">What Exp5 observed</a>
-<a class="navsub" href="#brief-exp8">What Exp8 observed</a>
-<a class="navsub" href="#brief-bridge">Why two catalogues</a>
-<a class="navsub" href="#brief-limits">What neither establishes</a>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="#definitions"><span class="n">A</span><span class="x">Definitions</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="#detector"><span class="n">B</span><span class="x">What a shock is</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="#b-tried">What we tried</a>
-<a class="navsub" href="#b-final">Final parameters</a>
-<a class="navsub" href="#b-v3">Velocity rule (v3)</a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="#cause"><span class="n">C</span><span class="x">What causes a shock</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="#c-flow181">C, all 181 shocks: one-sided?</a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="#population"><span class="n">D</span><span class="x">Who else was there</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="#d-absorb181">D, how wide is the absorbing side?</a>
-<a class="navsub" href="#d-side">Same side?</a>
-<a class="navsub" href="#d-each">Trading each other</a>
-<a class="navsub" href="#d-cp181">D2, all 181: who is on the other side</a>
-<a class="navsub" href="#d-axis">Alone / few / broad</a>
-<a class="navsub" href="#d-pop181">D3, against all active MMs</a>
-<a class="navsub" href="#d-take">Take or quote out? (all shocked MMs)</a>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="#unwind"><span class="n">E</span><span class="x">Getting out</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="#e-path">The path</a>
-<a class="navsub" href="#e-price">The price</a>
-<a class="navsub" href="#e-chain">Archetypes → outcomes</a>
-<a class="navsub" href="#e-drivers">What decides recovery speed</a>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="#atlas"><span class="n">F</span><span class="x">Shock atlas</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="#quoting"><span class="n">G</span><span class="x">Book response</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="#g-evolution">G, 5-min grid: Figure 20</a>
-<a class="navsub" href="#g-distances">G, quote distances: Figure 21</a>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="#limits"><span class="n">H</span><span class="x">Limits</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="#gallery"><span class="n">I</span><span class="x">Figure gallery</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="#g-audit">A sample of shocks</a>
-<a class="navsub" href="#g-ep39">Episode 39</a>
-<a class="navsub" href="#g-ep47">Episode 47</a>
-<a class="navsub" href="#g-ep71">Episode 71</a>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="#appendix"><span class="n">J</span><span class="x">Appendix</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<div class="navsrow"><a class="navsec" href="exp8-unwind-activity.html"><span class="n"></span><span class="x">D4 in full &mdash; take, or quote, their way out?</span></a><button class="navbtn navcaret sm" type="button" aria-expanded="false" aria-label="Sub-sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
-<div class="navsubs"><div>
-<a class="navsub" href="exp8-unwind-activity.html#summary">Summary</a>
-<a class="navsub" href="exp8-unwind-activity.html#defs">Definitions</a>
-<a class="navsub" href="exp8-unwind-activity.html#taker">Taker volume</a>
-<a class="navsub" href="exp8-unwind-activity.html#orders">Orders: counts and sides</a>
-<a class="navsub" href="exp8-unwind-activity.html#fills">Where the unwind shows up</a>
-<a class="navsub" href="exp8-unwind-activity.html#curves">Event-time figures</a>
-<a class="navsub" href="exp8-unwind-activity.html#ranks">By roster rank</a>
-<a class="navsub" href="exp8-unwind-activity.html#validation">Validation</a>
-<a class="navsub" href="exp8-unwind-activity.html#limits">Not established</a>
-<a class="navsub" href="exp8-unwind-activity.html#provenance">Provenance</a>
-</div></div></div>
+<div class="navgrp"><a class="navsec" href="#summary"><span class="n"></span><span class="x">Summary</span></a></div>
+<div class="navgrp"><a class="navsec" href="#brief"><span class="n"></span><span class="x">Overview: both studies</span></a></div>
+<div class="navgrp"><a class="navsec" href="#brief-scope"><span class="n"></span><span class="x">Scope of each</span></a></div>
+<div class="navgrp"><a class="navsec" href="#brief-exp5"><span class="n"></span><span class="x">What Exp5 observed</span></a></div>
+<div class="navgrp"><a class="navsec" href="#brief-exp8"><span class="n"></span><span class="x">What Exp8 observed</span></a></div>
+<div class="navgrp"><a class="navsec" href="#brief-bridge"><span class="n"></span><span class="x">Why two catalogues</span></a></div>
+<div class="navgrp"><a class="navsec" href="#brief-limits"><span class="n"></span><span class="x">What neither establishes</span></a></div>
+<div class="navgrp"><a class="navsec" href="#definitions"><span class="n">A</span><span class="x">Definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="#detector"><span class="n">B</span><span class="x">What a shock is</span></a></div>
+<div class="navgrp"><a class="navsec" href="#b-tried"><span class="n">B1</span><span class="x">What we tried</span></a></div>
+<div class="navgrp"><a class="navsec" href="#b-final"><span class="n">B2</span><span class="x">Final parameters</span></a></div>
+<div class="navgrp"><a class="navsec" href="#b-v3"><span class="n">B3</span><span class="x">Velocity rule (v3)</span></a></div>
+<div class="navgrp"><a class="navsec" href="#cause"><span class="n">C</span><span class="x">What causes a shock</span></a></div>
+<div class="navgrp"><a class="navsec" href="#c-flow181"><span class="n"></span><span class="x">C, all 181 shocks: one-sided?</span></a></div>
+<div class="navgrp"><a class="navsec" href="#population"><span class="n">D</span><span class="x">Who else was there</span></a></div>
+<div class="navgrp"><a class="navsec" href="#d-absorb181"><span class="n"></span><span class="x">D, how wide is the absorbing side?</span></a></div>
+<div class="navgrp"><a class="navsec" href="#d-side"><span class="n">D1</span><span class="x">Same side?</span></a></div>
+<div class="navgrp"><a class="navsec" href="#d-each"><span class="n">D2</span><span class="x">Trading each other</span></a></div>
+<div class="navgrp"><a class="navsec" href="#d-cp181"><span class="n"></span><span class="x">D2, all 181: who is on the other side</span></a></div>
+<div class="navgrp"><a class="navsec" href="#d-axis"><span class="n">D3</span><span class="x">Alone / few / broad</span></a></div>
+<div class="navgrp"><a class="navsec" href="#d-pop181"><span class="n"></span><span class="x">D3, against all active MMs</span></a></div>
+<div class="navgrp"><a class="navsec" href="#d-take"><span class="n">D4</span><span class="x">Take or quote out? (all shocked MMs)</span></a></div>
+<div class="navgrp"><a class="navsec" href="#unwind"><span class="n">E</span><span class="x">Getting out</span></a></div>
+<div class="navgrp"><a class="navsec" href="#e-path"><span class="n">E1</span><span class="x">The path</span></a></div>
+<div class="navgrp"><a class="navsec" href="#e-price"><span class="n">E2</span><span class="x">The price</span></a></div>
+<div class="navgrp"><a class="navsec" href="#e-chain"><span class="n">E3</span><span class="x">Archetypes → outcomes</span></a></div>
+<div class="navgrp"><a class="navsec" href="#e-drivers"><span class="n">E4</span><span class="x">What decides recovery speed</span></a></div>
+<div class="navgrp"><a class="navsec" href="#atlas"><span class="n">F</span><span class="x">Shock atlas</span></a></div>
+<div class="navgrp"><a class="navsec" href="#quoting"><span class="n">G</span><span class="x">Book response</span></a></div>
+<div class="navgrp"><a class="navsec" href="#g-evolution"><span class="n"></span><span class="x">G, 5-min grid: Figure 20</span></a></div>
+<div class="navgrp"><a class="navsec" href="#g-distances"><span class="n"></span><span class="x">G, quote distances: Figure 21</span></a></div>
+<div class="navgrp"><a class="navsec" href="#limits"><span class="n">H</span><span class="x">Limits</span></a></div>
+<div class="navgrp"><a class="navsec" href="#gallery"><span class="n">I</span><span class="x">Figure gallery</span></a></div>
+<div class="navgrp"><a class="navsec" href="#g-audit"><span class="n">I1</span><span class="x">A sample of shocks</span></a></div>
+<div class="navgrp"><a class="navsec" href="#g-ep39"><span class="n">I2</span><span class="x">Episode 39</span></a></div>
+<div class="navgrp"><a class="navsec" href="#g-ep47"><span class="n">I3</span><span class="x">Episode 47</span></a></div>
+<div class="navgrp"><a class="navsec" href="#g-ep71"><span class="n">I4</span><span class="x">Episode 71</span></a></div>
+<div class="navgrp"><a class="navsec" href="#appendix"><span class="n">J</span><span class="x">Appendix</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html"><span class="n"></span><span class="x">D4 in full &mdash; take, or quote, their way out?</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html#summary"><span class="n"></span><span class="x">Summary</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html#defs"><span class="n"></span><span class="x">Definitions</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html#taker"><span class="n">1</span><span class="x">Taker volume</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html#orders"><span class="n">2</span><span class="x">Orders: counts and sides</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html#fills"><span class="n">3</span><span class="x">Where the unwind shows up</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html#curves"><span class="n">4</span><span class="x">Event-time figures</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html#ranks"><span class="n">5</span><span class="x">By roster rank</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html#validation"><span class="n">6</span><span class="x">Validation</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html#limits"><span class="n">7</span><span class="x">Not established</span></a></div>
+<div class="navgrp"><a class="navsec" href="exp8-unwind-activity.html#provenance"><span class="n"></span><span class="x">Provenance</span></a></div>
 </div></div></div></div>
 <div class="navpage"><div class="navrow"><a class="navlink" href="briefing.html"><span class="t">Story so far</span><span class="d">2026-09-04</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp">
-<a class="navsec" href="briefing.html#story"><span class="n"></span><span class="x">The story in one paragraph</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="briefing.html#thread-a"><span class="n">A</span><span class="x">Anatomy of a shock</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="briefing.html#thread-b"><span class="n">B</span><span class="x">Getting out</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="briefing.html#thread-c"><span class="n">C</span><span class="x">Who is hit</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="briefing.html#thread-d"><span class="n">D</span><span class="x">Equity and constraint</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="briefing.html#thread-e"><span class="n">E</span><span class="x">The MMs differ</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="briefing.html#hypotheses"><span class="n"></span><span class="x">Six tests</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="briefing.html#next"><span class="n"></span><span class="x">Order of work</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="briefing.html#limits"><span class="n"></span><span class="x">What it does not establish</span></a>
-<div class="navsubs"><div>
-</div></div></div>
-<div class="navgrp">
-<a class="navsec" href="briefing.html#runsheet"><span class="n"></span><span class="x">15-minute running order</span></a>
-<div class="navsubs"><div>
-</div></div></div>
+<div class="navgrp"><a class="navsec" href="briefing.html#story"><span class="n"></span><span class="x">The story in one paragraph</span></a></div>
+<div class="navgrp"><a class="navsec" href="briefing.html#thread-a"><span class="n">A</span><span class="x">Anatomy of a shock</span></a></div>
+<div class="navgrp"><a class="navsec" href="briefing.html#thread-b"><span class="n">B</span><span class="x">Getting out</span></a></div>
+<div class="navgrp"><a class="navsec" href="briefing.html#thread-c"><span class="n">C</span><span class="x">Who is hit</span></a></div>
+<div class="navgrp"><a class="navsec" href="briefing.html#thread-d"><span class="n">D</span><span class="x">Equity and constraint</span></a></div>
+<div class="navgrp"><a class="navsec" href="briefing.html#thread-e"><span class="n">E</span><span class="x">The MMs differ</span></a></div>
+<div class="navgrp"><a class="navsec" href="briefing.html#hypotheses"><span class="n"></span><span class="x">Six tests</span></a></div>
+<div class="navgrp"><a class="navsec" href="briefing.html#next"><span class="n"></span><span class="x">Order of work</span></a></div>
+<div class="navgrp"><a class="navsec" href="briefing.html#limits"><span class="n"></span><span class="x">What it does not establish</span></a></div>
+<div class="navgrp"><a class="navsec" href="briefing.html#runsheet"><span class="n"></span><span class="x">15-minute running order</span></a></div>
 </div></div></div></div>
 </div><p class="navfoot">Descriptive, not causal. MMs appear by volume rank only.</p></aside>
 
@@ -4327,40 +4124,39 @@ studies are covered in total. Quote distance in these panels is maker-fill execu
       document.querySelectorAll('li.tg > details').forEach(function (d) { d.open = true; });
     });
 
-    /* what counts as new: rows dated within the reader's window (the change-log slider) */
-    function newDays() {
+    /* what counts as new: rows dated on or after the reader's floor, by default 2026-09-17 (the day the
+       new sections went up); the change-log slider moves the floor to a later logged day */
+    function newFrom() {
       var v = null;
-      try { v = localStorage.getItem('mm-site-newdays'); } catch (e) {}
-      v = v === null ? 1 : parseInt(v, 10);
-      return isNaN(v) ? 1 : Math.max(0, Math.min(7, v));
-    }
-    function cutoff(days) {                                /* the reader's own calendar day, minus the window */
-      var d = new Date(); d.setDate(d.getDate() - days);
-      return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+      try { v = localStorage.getItem('mm-site-newfrom'); } catch (e) {}
+      var ok = v && v.length === 10 && v.charAt(4) === '-' && v.charAt(7) === '-' && v >= '2026-09-17' && v < '3000';
+      return ok ? v : '2026-09-17';
     }
     function applyNew() {
-      var days = newDays(), from = cutoff(days), n = 0;
+      var from = newFrom(), n = 0;
       document.querySelectorAll('[data-new]').forEach(function (el) {
         var on = el.getAttribute('data-new') >= from;
         el.classList.toggle('is-new', on);
         if (on && el.closest('aside.sitenav')) n++;
       });
-      document.querySelectorAll('[data-newdays-out]').forEach(function (o) {
-        o.textContent = days === 0 ? 'today only' : days === 1 ? 'today and yesterday' : 'the last ' + days + ' days and today';
-      });
+      document.querySelectorAll('[data-newdays-out]').forEach(function (o) { o.textContent = from; });
       document.querySelectorAll('[data-newdays-count]').forEach(function (o) {
-        o.textContent = n === 0 ? 'Nothing in the menu is new in this window.' : n + (n === 1 ? ' menu row is' : ' menu rows are') + ' marked new.';
+        o.textContent = n === 0 ? 'Nothing in the menu is new from this day on.' : n + (n === 1 ? ' menu row is' : ' menu rows are') + ' marked new.';
       });
-      document.querySelectorAll('input[data-newdays]').forEach(function (r) { r.value = days; });
+      document.querySelectorAll('input[data-newdays]').forEach(function (r) {
+        var stops = (r.getAttribute('data-stops') || '').split(','), k = stops.indexOf(from);
+        r.value = k < 0 ? stops.length - 1 : k;
+      });
     }
     applyNew();
     document.querySelectorAll('input[data-newdays]').forEach(function (r) {
       r.addEventListener('input', function () {
-        try { localStorage.setItem('mm-site-newdays', r.value); } catch (e) {}
+        var stops = (r.getAttribute('data-stops') || '').split(',');
+        try { localStorage.setItem('mm-site-newfrom', stops[+r.value]); } catch (e) {}
         applyNew();
       });
     });
-    window.addEventListener('storage', function (e) { if (e.key === 'mm-site-newdays') applyNew(); });
+    window.addEventListener('storage', function (e) { if (e.key === 'mm-site-newfrom') applyNew(); });
 
     /* theme: one choice for the whole site */
     var root = document.documentElement;
