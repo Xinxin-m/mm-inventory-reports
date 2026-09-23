@@ -6,24 +6,23 @@ HYPE** (Hyperliquid perpetuals), covering 2025-03-27 to 2026-06-30 UTC.
 Start at the hub, which lists every page:
 <https://hype-mm-inventory.vercel.app/> (also served at <https://xinxin-m.github.io/mm-inventory-reports/>)
 
-Reports
-The one Exp8 working file is published as four pages. Each market-flow definition has its own page and the page title names it. Section, table and figure numbers are those of the single record, and an old link into a section that moved is sent on to its new page.
-
-- **[Exp8 - Taker imbalance, z_NET](exp8-inventory-shock-09-08.html)** (2026-09-08, obsolete since 2026-09-22) - 915 half hours with |z_NET| >= 3.70 (event set 1): the shock definition, every actively market-making MM around all 915 events, the 148-MM profile, absorbers against flagged MMs; plus the Summary, notation, event-set key, synthesis, limits and decisions for every page. The file keeps its `09-08` name so the shared link stays live.
-- **[Exp8 - One-sided taker surges](exp8-one-sided-surges.html)** (split out 2026-09-17) - section 9: the 922 side surges (event set 3) against the net rule, with the section 4 statistics rerun on them.
-- **[Exp8 - What a one-sided surge costs the book](exp8-surge-book-cost.html)** (2026-09-21, revised 2026-09-22) - sections 64 and 69 to 71: spread, depth and taker cost by phase on the 922 surges, the quote tilt after the peak, what moves the best quote, what separates reverting surges, and liquidation cascades (letter `report_one_sided_surges_09-22c.html`, built by `code/render_f1r0922_report.py`).
-- **[Exp8 - Who counts as an active MM](exp8-active-mm.html)** (2026-09-22) - section 65: the active-MM rule of record, the quiet MM-labelled days and the order floor.
-- **[Exp8 - Event studies](exp8-event-studies.html)** (split out 2026-09-17) - sections 6, 7, 13 and 14: two tick replays, and episodes 39 and 47 at one minute and at tick level, each chosen from the 181 roster wallet shocks.
-- **[Exp8 - Unwinders](exp8-unwinders.html)** (split out 2026-09-17) - sections 4.4 and 12 on the taker-imbalance events, sections 10 and 11 on wallet inventory shocks.
-- **[Exp10 - Absorbers at tick level](exp10-tick-level-09-10.html)** (2026-09-10, revised 2026-09-16) - episodes 39 and 47 order by order.
-- **[Exp8 - Spot quotes and price discovery, 2025-12-17](exp8-spot-quote-12-17.html)** (2026-09-10) - sections 36 and 37 of the Exp8 record.
+Reports (short pages, each a five-minute read; dates are when the results were produced)
+- **[One-sided taker surges](exp8-one-sided-surges.html)** (results 2026-09-10 to 09-22) - the 922 surges, which MMs take the inventory, and what goes with the price coming back.
+- **[What a surge does to the book](exp8-surge-book-cost.html)** (results 2026-09-21 to 09-22) - spread, depth, taker cost, what moves the best quote, and where MMs place quotes.
+- **[Who counts as an active MM](exp8-active-mm.html)** (results 2026-09-21 to 09-22) - the fill rule, the order-rate rule and the quiet MM-labelled days.
+- **[MM loss episodes (z_NET)](exp8-mm-loss-episodes.html)** (results 2026-09-17 to 09-22) - which MMs lose money around a taker-imbalance event.
 
 Where the work stands
-- **[Change log](changelog.html)** - what each day added, every line linked to its section; kept by the site builder in `code/site_changelog.json`. Results from 2026-09-17 on carry a blue [NEW] in the side menu; a slider narrows that to a later logged day (kept per browser). Wording-only revisions and pages split out of already-published sections are never new.
+- **[Storyline](storyline.html)** (2026-09-18) - the flow chart of how an MM inventory shock propagates, then the 2026-09-15 taker-surge chart.
+- **[Change log](changelog.html)** - what each day added, every line linked to its section; kept by the site builder in `code/site_changelog.json`.
 
-Earlier work
-- **[The taker-surge storyline](storyline.html)** (2026-09-15) - the flow chart, with the evidence behind each node.
-- **[Exp8 - Sudden MM inventory shocks, full report](exp8-report.html)** (2026-09-04) - the original wallet-inventory study; section D4 is published in full as [its own file](exp8-unwind-activity.html).
+Result dump (a closed toggle in the menu)
+- The full pages behind the short reports: [one-sided surges](exp8-one-sided-surges-record.html), [the book](exp8-surge-book-cost-record.html), [active MM](exp8-active-mm-record.html).
+
+Earlier work (a closed toggle in the menu)
+- [Taker imbalance, z_NET](exp8-inventory-shock-09-08.html) (obsolete), [Unwinders](exp8-unwinders.html), [Event studies](exp8-event-studies.html), [Exp10 tick level](exp10-tick-level-09-10.html), [Spot quotes](exp8-spot-quote-12-17.html), and [Exp8 - 10 roster MM](exp8-report.html) (2026-09-04, section D4 on [its own page](exp8-unwind-activity.html)).
+
+Every page carries the same side menu and a back arrow at the top.
 
 The review-status page (frozen on 2026-09-17) and the 2026-09-04 briefing still build at their old addresses but are no longer listed.
 
