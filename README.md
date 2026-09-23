@@ -9,9 +9,10 @@ Start at the hub, which lists every page:
 Reports
 The one Exp8 working file is published as four pages. Each market-flow definition has its own page and the page title names it. Section, table and figure numbers are those of the single record, and an old link into a section that moved is sent on to its new page.
 
-- **[Exp8 - Taker imbalance, z_NET](exp8-inventory-shock-09-08.html)** (2026-09-08, revised 2026-09-17) - 915 half hours with |z_NET| >= 3.70 (event set 1): the shock definition, every actively market-making MM around all 914 events, the 148-MM profile, absorbers against flagged MMs; plus the Summary, notation, event-set key, synthesis, limits and decisions for every page. The file keeps its `09-08` name so the shared link stays live.
+- **[Exp8 - Taker imbalance, z_NET](exp8-inventory-shock-09-08.html)** (2026-09-08, obsolete since 2026-09-22) - 915 half hours with |z_NET| >= 3.70 (event set 1): the shock definition, every actively market-making MM around all 915 events, the 148-MM profile, absorbers against flagged MMs; plus the Summary, notation, event-set key, synthesis, limits and decisions for every page. The file keeps its `09-08` name so the shared link stays live.
 - **[Exp8 - One-sided taker surges](exp8-one-sided-surges.html)** (split out 2026-09-17) - section 9: the 922 side surges (event set 3) against the net rule, with the section 4 statistics rerun on them.
-- **[Exp8 - What a one-sided surge costs the book](exp8-surge-book-cost.html)** (2026-09-21) - section 64: spread, depth and taker cost by phase on the 922 surges, the quote tilt, and what moves the best quote (built by `code/render_f1r0921_report.py`).
+- **[Exp8 - What a one-sided surge costs the book](exp8-surge-book-cost.html)** (2026-09-21, revised 2026-09-22) - sections 64 and 69 to 71: spread, depth and taker cost by phase on the 922 surges, the quote tilt after the peak, what moves the best quote, what separates reverting surges, and liquidation cascades (letter `report_one_sided_surges_09-22c.html`, built by `code/render_f1r0922_report.py`).
+- **[Exp8 - Who counts as an active MM](exp8-active-mm.html)** (2026-09-22) - section 65: the active-MM rule of record, the quiet MM-labelled days and the order floor.
 - **[Exp8 - Event studies](exp8-event-studies.html)** (split out 2026-09-17) - sections 6, 7, 13 and 14: two tick replays, and episodes 39 and 47 at one minute and at tick level, each chosen from the 181 roster wallet shocks.
 - **[Exp8 - Unwinders](exp8-unwinders.html)** (split out 2026-09-17) - sections 4.4 and 12 on the taker-imbalance events, sections 10 and 11 on wallet inventory shocks.
 - **[Exp10 - Absorbers at tick level](exp10-tick-level-09-10.html)** (2026-09-10, revised 2026-09-16) - episodes 39 and 47 order by order.
@@ -19,12 +20,12 @@ The one Exp8 working file is published as four pages. Each market-flow definitio
 
 Where the work stands
 - **[Change log](changelog.html)** - what each day added, every line linked to its section; kept by the site builder in `code/site_changelog.json`. Results from 2026-09-17 on carry a blue [NEW] in the side menu; a slider narrows that to a later logged day (kept per browser). Wording-only revisions and pages split out of already-published sections are never new.
-- **[The taker-surge storyline](storyline.html)** (2026-09-15) - the flow chart, with the evidence behind each node.
-- **[Review status](review-status.html)** (updated 2026-09-17) - the 2026-09-11, 2026-09-15 and 2026-09-17 review points, the analysis requests, the plans, the decisions waiting, and the 2026-09-02 review.
 
 Earlier work
+- **[The taker-surge storyline](storyline.html)** (2026-09-15) - the flow chart, with the evidence behind each node.
 - **[Exp8 - Sudden MM inventory shocks, full report](exp8-report.html)** (2026-09-04) - the original wallet-inventory study; section D4 is published in full as [its own file](exp8-unwind-activity.html).
-- **[The story so far](briefing.html)** (2026-09-04).
+
+The review-status page (frozen on 2026-09-17) and the 2026-09-04 briefing still build at their old addresses but are no longer listed.
 
 `index.html` is a copy of the hub, so the repository root and
 `overview.html` are the same page.
