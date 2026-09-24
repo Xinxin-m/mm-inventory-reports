@@ -15,6 +15,7 @@ Reports (short pages, each a five-minute read; dates are when the results were p
 
 Where the work stands
 - **[Storyline](storyline.html)** (2026-09-18) - the flow chart of how an MM inventory shock propagates, then the 2026-09-15 taker-surge chart.
+- **[Plan: wrapping up the one-sided surges](plan-surge-wrapup.html)** (plan 2026-09-23, status 2026-09-24) - the order of work for the wrap-up page along the flow chart, with the active-MM and absorber tests.
 - **[Change log](changelog.html)** - what each day added, every line linked to its section; kept by the site builder in `code/site_changelog.json`.
 
 Result dump (a closed toggle in the menu)
