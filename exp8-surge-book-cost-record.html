@@ -984,7 +984,7 @@ t_c  = argmax of C(t) over the run minutes t in [t0, t1)
 </table></div>
 </div>
 <div class="setup-issue">
-<p><strong>Set-up problem.</strong> The spread build also writes <code>ACC_pv = [t0, t_pv)</code> and an unwind window <code>UNW_ev = [t_c, t1)</code>, which this page does not show. <code>UNW_ev</code> is 1 minute long on at least 75% of surges and 7 minutes at p95, because <code>t_c</code> is usually the run's last minute, so it holds almost no unwind; a fixed window after <code>t_c</code> is proposed in its place.</p>
+<p><strong>Set-up problem: the event-level unwind window <code>UNW_ev = [t_c, t1)</code> is not used.</strong> <code>t_c</code> is the run's last minute on 76.5% of surges, so the window is 1 minute long there (7 minutes at p95) and holds almost none of the MMs' unwinding: 42.7% of accumulating MMs peak after <code>t1</code>. Every result built on it has been deleted. The event-level unwind will be the 2 hours from <code>t_c</code>, in buckets of 0-5, 5-10, 10-30, 30-60 and 60-120 minutes. The spread build also writes <code>ACC_pv = [t0, t_pv)</code>, which this page does not show.</p>
 </div>
 <details>
 <summary>Column key and source</summary>
