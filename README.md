@@ -10,6 +10,7 @@ Reports (short pages, each a five-minute read; dates are when the results were p
 - **[One-sided taker surges](exp8-one-sided-surges.html)** (results 2026-09-10 to 09-22) - the 922 surges, which MMs take the inventory, and what goes with the price coming back.
 - **[What a surge does to the book](exp8-surge-book-cost.html)** (results 2026-09-21 to 09-22) - spread, depth, taker cost, what moves the best quote, and where MMs place quotes.
 - **[Who counts as an active MM](exp8-active-mm.html)** (results 2026-09-21 to 09-22) - the fill rule, the order-rate rule and the quiet MM-labelled days.
+- **[The clause-(d) wallets, one by one](exp8-clause-d-wallets.html)** (results 2026-09-23) - the 306 wallets the MM label admits only through clause (d): market makers or algorithmic traders, and what remains to decide.
 - **[MM loss episodes (z_NET)](exp8-mm-loss-episodes.html)** (results 2026-09-17 to 09-22) - which MMs lose money around a taker-imbalance event.
 
 Where the work stands

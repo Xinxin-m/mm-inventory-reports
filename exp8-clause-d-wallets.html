@@ -1,150 +1,193 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<meta name="robots" content="noindex, nofollow">
-<title>MM inventory events on HYPE</title>
-<style>
-  :root { --bg:#f5f7f8; --surface:#fff; --text:#172126; --muted:#5a6b74;
-          --line:#d8e0e4; --accent:#176b87; --warn:#99620d; --good:#1a6b45; }
-  html[data-theme="dark"] { --bg:#101619; --surface:#182126; --text:#eef5f6;
-          --muted:#a9b8be; --line:#34444c; --accent:#70c7df; --warn:#efbd66; --good:#6bcf9f; }
-  @media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]) { --bg:#101619; --surface:#182126; --text:#eef5f6;
-          --muted:#a9b8be; --line:#34444c; --accent:#70c7df; --warn:#efbd66; --good:#6bcf9f; }
-  }
-  * { box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body { margin:0; color:var(--text); background:var(--bg);
-         font:15px/1.65 system-ui,-apple-system,Segoe UI,sans-serif; }
-  a { color:var(--accent); text-underline-offset:3px; }
-  a:focus-visible, button:focus-visible, summary:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
-  main { max-width:1140px; padding:38px clamp(20px,4vw,60px) 80px; }   /* margin-left: NAV_CSS */
-  /* content classes (same as the report) */
-  h1 { margin:0; font-size:clamp(27px,4vw,40px); letter-spacing:-.03em; }
-  h2 { margin-top:54px; padding-bottom:6px; border-bottom:1px solid var(--line); }
-  h3 { margin-top:34px; font-size:18px; }
-  .lede { color:var(--muted); max-width:78ch; }
-  .metadata { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:11px; margin:22px 0; }
-  .findings { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; margin:22px 0; }
-  .metadata div, .finding, .callout, .panel, .note { padding:15px 16px; background:var(--surface);
-           border:1px solid var(--line); border-radius:11px; }
-  .metadata span { display:block; color:var(--muted); font-size:12px; margin-bottom:3px; }
-  .metadata strong { font-size:14px; }
-  .finding strong { display:block; margin-bottom:5px; font-size:15px; }
-  .finding small { color:var(--muted); font-size:13.5px; line-height:1.55; display:block; }
-  .callout { border-left:5px solid var(--warn); margin:20px 0; }
-  .callout.ok { border-left-color:var(--good); }
-  .callout p { margin:6px 0; }
-  .note { border-left:5px solid var(--accent); margin:20px 0; font-size:14.5px; }
-  .table-wrap { overflow-x:auto; margin:16px 0; }
-  table { width:100%; min-width:600px; border-collapse:collapse; font-size:14px; }
-  th, td { padding:8px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
-  th { font-weight:600; color:var(--muted); font-size:13px; }
-  figure { margin:26px 0; }
-  figure img { display:block; max-width:100%; height:auto; border:1px solid var(--line); border-radius:9px; }
-  figcaption { margin-top:8px; color:var(--muted); font-size:13.5px; max-width:88ch; }
-  ol.rules { padding-left:22px; } ol.rules li { margin-bottom:9px; }
-  ul.tight li { margin-bottom:7px; }
-  p.small { font-size:13px; color:var(--muted); }
-  code { padding:1px 5px; background:color-mix(in srgb, var(--text) 8%, transparent);
-         border-radius:4px; font-size:13px; }
-  .tag { display:inline-block; padding:1px 7px; border-radius:20px; font-size:11.5px;
-         border:1px solid var(--line); color:var(--muted); }
-  .st { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px;
-        font-weight:700; letter-spacing:.02em; color:#fff; }
-  .st.done { background:#2e7d4f; } .st.partial { background:#9a5b00; } .st.todo { background:#b3261e; }
-  main.status td:nth-child(1) { white-space:nowrap; color:var(--muted); }
-  main.status td:nth-child(2) { min-width:18ch; }
-  main.status td:nth-child(3) { white-space:nowrap; }
-  main.status td:nth-child(4) { min-width:22ch; }
-  /* hub (2026-09-17 redesign): a hero, a featured "start here" card, then one grid per group */
-  main.hub { max-width:1140px; padding-top:56px; }
-  #navoff:checked ~ main.hub { padding-top:72px; }
-  .hub .hubinner { max-width:1000px; margin:0 auto; }
-  .hub .eyebrow { margin:0 0 12px; font-size:12.5px; font-weight:600; letter-spacing:.06em;
-          text-transform:uppercase; color:var(--accent); }
-  .hub h1 { font-size:clamp(30px,4.4vw,46px); line-height:1.08; letter-spacing:-.035em; max-width:22ch; }
-  .hub .lede { margin:16px 0 0; font-size:17px; line-height:1.6; max-width:64ch; }
-  .hub .hubsec { margin:52px 0 0; }
-  .hub h2.hubgroup { display:flex; align-items:baseline; gap:12px; margin:0 0 14px; padding:0; border:0;
-          font-size:13px; font-weight:650; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); }
-  .hub h2.hubgroup sub, .sitenav .navgroup sub { text-transform:none; font-size:.8em; }
-  .hub p.hubdef { margin:-6px 0 14px; max-width:760px; font-size:14px; line-height:1.5; color:var(--muted); }
-  .hub h2.hubgroup + p.hubdef + .card.featured { margin-top:0; }
-  .hub h2.hubgroup::after { content:""; flex:1; height:1px; background:var(--line); transform:translateY(-4px); }
-  .hub .cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin:0; }
-  .hub .card { position:relative; display:flex; flex-direction:column; gap:8px; margin:0; padding:20px 22px 18px;
-          background:var(--surface); border:1px solid var(--line); border-radius:14px; color:inherit;
-          transition:border-color .18s, box-shadow .18s, transform .18s; }
-  .hub .card:hover { border-color:color-mix(in srgb, var(--accent) 55%, var(--line));
-          box-shadow:0 8px 28px rgba(0,0,0,.08); transform:translateY(-1px); }
-  .hub .card .when { align-self:flex-start; font-size:12px; font-weight:500; color:var(--muted);
-          letter-spacing:.01em; }
-  .hub .card .when b { display:inline-block; margin-right:7px; padding:1px 8px; border-radius:999px;
-          font-size:11px; font-weight:650; letter-spacing:.03em; text-transform:uppercase;
-          color:var(--good); background:color-mix(in srgb, var(--good) 14%, transparent); }
-  .hub .card h3 { margin:0; font-size:18.5px; line-height:1.3; letter-spacing:-.015em; }
-  .hub .card h3 a { color:var(--text); text-decoration:none; }
-  .hub .card h3 a::after { content:""; position:absolute; inset:0; border-radius:14px; }   /* the whole card is the link */
-  .hub .card h3 .arrow { display:inline-block; color:var(--accent); transition:transform .18s; }
-  .hub .card:hover h3 .arrow { transform:translateX(3px); }
-  .hub .card p { margin:0; color:var(--muted); font-size:14.5px; line-height:1.58; }
-  .hub .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:6px; }
-  .hub .chips span { padding:2px 9px; border-radius:999px; font-size:12px; color:var(--muted);
-          background:color-mix(in srgb, var(--text) 6%, transparent); }
-  .hub .card .also { position:relative; z-index:1; margin-top:4px; padding-top:10px;
-          border-top:1px solid var(--line); font-size:13.5px; color:var(--muted); }
-  .hub .card.featured { padding:28px 30px 24px; gap:10px;
-          background:linear-gradient(160deg, color-mix(in srgb, var(--accent) 9%, var(--surface)) 0%, var(--surface) 55%);
-          border-color:color-mix(in srgb, var(--accent) 35%, var(--line)); }
-  .hub .card.featured h3 { font-size:clamp(22px,2.6vw,28px); letter-spacing:-.025em; }
-  .hub .card.featured p { font-size:15.5px; max-width:70ch; }
-  .hub .card details { position:relative; z-index:1; margin:6px 0 0; padding:0; background:none; border:0; }
-  .hub .card details summary { display:inline-flex; align-items:center; gap:6px; padding:5px 11px 5px 9px;
-          border-radius:999px; list-style:none; cursor:pointer; font-size:13px; font-weight:550; color:var(--accent);
-          background:color-mix(in srgb, var(--accent) 10%, transparent); }
-  .hub .card details summary::-webkit-details-marker { display:none; }
-  .hub .card details summary::before { content:""; width:7px; height:7px; margin-top:-2px;
-          border-right:2px solid currentColor; border-bottom:2px solid currentColor;
-          transform:rotate(-45deg); transition:transform .2s; }
-  .hub .card details[open] summary::before { transform:rotate(45deg); margin-top:-5px; }
-  .hub .card details ul { margin:12px 0 2px; padding-left:20px; color:var(--muted); font-size:14px;
-          line-height:1.55; columns:2; column-gap:34px; }
-  .hub .card details li { margin:0 0 6px; break-inside:avoid; }
-  .hub .keysec { margin-top:40px; }
-  .hub .keys { display:grid; grid-template-columns:1fr; gap:8px; align-items:start; max-width:860px; }
-  .hub .key { margin:0; padding:0; background:var(--surface); border:1px solid var(--line); border-radius:12px;
-          box-shadow:inset 3px 0 0 var(--accent); max-width:none; }
-  .hub .key > div { max-width:none; }
-  .hub .key > summary { display:block; position:relative; padding:13px 38px 13px 16px; list-style:none; cursor:pointer;
-          font-size:15px; font-weight:600; line-height:1.4; letter-spacing:-.005em; color:var(--text); }
-  .hub .key > summary::-webkit-details-marker { display:none; }
-  .hub .key > summary::after { content:""; position:absolute; right:17px; top:19px; width:7px; height:7px;
-          border-right:2px solid var(--muted); border-bottom:2px solid var(--muted); transform:rotate(45deg);
-          transition:transform .2s; }
-  .hub .key[open] > summary::after { transform:rotate(-135deg); top:23px; }
-  .hub .key > summary:hover { color:var(--accent); }
-  .hub .key > div { padding:0 16px 14px; color:var(--muted); font-size:14px; line-height:1.58; }
-  .hub .key > div a { display:inline-block; margin-top:6px; font-weight:550; text-decoration:none; }
-  .hub .keynote { margin:12px 2px 0; font-size:13.5px; color:var(--muted); }
-  @media (max-width:820px) { .hub .keys { grid-template-columns:1fr; } }
-  .hub .readnote { margin:52px 0 0; padding:18px 22px; border-radius:14px; font-size:14.5px; line-height:1.6;
-          background:color-mix(in srgb, var(--text) 4%, transparent); border:1px solid var(--line); }
-  .hub .readnote strong { color:var(--text); }
-  .hub footer { margin-top:28px; border-top:0; padding-top:0; font-size:13px; }
-  @media (max-width:900px) { main.hub, #navoff:checked ~ main.hub { padding-top:72px; } }
-  @media (max-width:820px) {
-    .hub .cards { grid-template-columns:1fr; }
-    .hub .card details ul { columns:1; }
-    .hub .card.featured { padding:22px 20px 20px; }
-  }
-  footer { margin-top:40px; padding-top:16px; border-top:1px solid var(--line);
-           color:var(--muted); font-size:14px; }
-  @media (max-width:900px) { .metadata, .findings { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-  @media (max-width:480px) { .metadata, .findings { grid-template-columns:1fr; } }
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>The 306 clause-(d) wallets, one by one: market makers or algorithmic traders?</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"><style>
+:root{
+ --sans:"Inter","SF Pro Text",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+ --mono:ui-monospace,"SF Mono",SFMono-Regular,"JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+ --bar-h:54px; --nav-w:276px; --wrap:880px;
+ color-scheme:light;
+ --bg:#fff; --bg-elev:#fafbfc; --surface:#f5f6f9; --surface-2:#eceff4;
+ --fg:#14171c; --fg-soft:#39414b; --fg-muted:#6a7381;
+ --border:#e5e8ed; --border-strong:#d4d9e1;
+ --accent:#0a5fc4; --accent-soft:#eaf2fe;
+ --code-bg:rgba(16,24,40,.055); --code-fg:#2b3546;
+ --bar:rgba(255,255,255,.88); --shadow:0 12px 38px rgba(15,23,42,.16);
+ --up:#1d7a4f; --down:#b8383f;
+}
+html.dark{
+ color-scheme:dark;
+ --bg:#0f1216; --bg-elev:#151a21; --surface:#191f27; --surface-2:#212a35;
+ --fg:#e8edf4; --fg-soft:#c4cdd9; --fg-muted:#8d99a9;
+ --border:#252d38; --border-strong:#36404e;
+ --accent:#79aeff; --accent-soft:#16233a;
+ --code-bg:rgba(255,255,255,.08); --code-fg:#d7e0ed;
+ --bar:rgba(15,18,22,.9); --shadow:0 12px 38px rgba(0,0,0,.55);
+ --up:#4cc38a; --down:#f0787f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--bar-h) + 18px)}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:400 17px/1.72 var(--sans);letter-spacing:-.003em;
+ -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+/* ---------- top bar ---------- */
+.topbar{position:fixed;inset:0 0 auto 0;height:var(--bar-h);z-index:40;display:flex;align-items:center;
+ gap:6px;padding:0 14px;background:var(--bar);border-bottom:1px solid var(--border);
+ -webkit-backdrop-filter:saturate(180%) blur(18px);backdrop-filter:saturate(180%) blur(18px)}
+.topbar .title{font-size:14px;font-weight:600;color:var(--fg-soft);letter-spacing:-.01em;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-left:4px}
+.topbar .grow{flex:1}
+.progress{position:absolute;left:0;right:0;bottom:-1px;height:2px;pointer-events:none}
+.progress i{display:block;height:100%;background:var(--accent);transform:scaleX(0);transform-origin:0 50%;
+ transition:transform .08s linear}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 auto;
+ border:1px solid transparent;border-radius:9px;background:none;color:var(--fg-muted);cursor:pointer;
+ padding:0;transition:background .15s,color .15s,border-color .15s}
+.icon-btn:hover{background:var(--surface-2);color:var(--fg);border-color:var(--border)}
+.icon-btn:active{transform:translateY(.5px)}
+.icon-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.totop{position:fixed;right:20px;bottom:24px;z-index:35;width:38px;height:38px;border-radius:50%;
+ background:var(--bg-elev);border:1px solid var(--border);box-shadow:var(--shadow);
+ opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .2s,transform .2s}
+body.scrolled .totop{opacity:1;transform:none;pointer-events:auto}
+
+/* ---------- sidebar ---------- */
+nav{position:fixed;top:var(--bar-h);left:0;bottom:0;width:276px;z-index:30;overflow-y:auto;overscroll-behavior:contain;
+ padding:20px 12px 40px;background:var(--bg-elev);border-right:1px solid var(--border);
+ transition:transform .26s cubic-bezier(.32,.72,0,1)}
+html.navhidden nav{transform:translateX(-100%)}
+nav .eyebrow{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+ color:var(--fg-muted);padding:0 12px;margin:2px 0 12px}
+nav a{display:block;padding:7px 12px;margin:1px 0;border:0;border-radius:8px;font-size:14px;line-height:1.42;
+ color:var(--fg-muted);text-decoration:none;font-weight:500;transition:background .14s,color .14s}
+nav a:hover{background:var(--surface-2);color:var(--fg)}
+nav a.lvl2{font-size:14.5px;font-weight:650;color:var(--fg-soft);margin-bottom:8px}
+nav a.lvl3{padding-left:22px}
+nav a.active{color:var(--accent);background:var(--accent-soft);font-weight:600}
+.backdrop{position:fixed;inset:0;z-index:25;background:rgba(8,11,16,.42);opacity:0;pointer-events:none;
+ transition:opacity .2s}
+
+/* ---------- content column: equal left and right margins ---------- */
+main{margin-left:var(--nav-w);transition:margin-left .26s cubic-bezier(.32,.72,0,1)}
+html.navhidden main{margin-left:0}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:calc(var(--bar-h) + 34px) 30px 140px}
+
+/* ---------- typography ---------- */
+h1,h2,h3,h4{color:var(--fg);letter-spacing:-.021em;line-height:1.24;font-weight:650;
+ scroll-margin-top:calc(var(--bar-h) + 20px)}
+h2{font-size:31px;margin:6px 0 24px}
+h3{font-size:22px;margin:66px 0 18px;padding-top:34px;border-top:1px solid var(--border)}
+h4{font-size:18px;margin:34px 0 12px}
+p{margin:0 0 18px}
+strong{font-weight:650;color:var(--fg)}
+em{color:var(--fg-soft)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 30%,transparent);
+ transition:border-color .15s}
+a:hover{border-bottom-color:var(--accent)}
+ul,ol{padding-left:24px;margin:0 0 20px}
+li{margin-bottom:9px}
+li>ul,li>ol{margin-top:9px}
+hr{border:0;border-top:1px solid var(--border);margin:44px 0}
+blockquote{margin:22px 0;padding:2px 0 2px 18px;border-left:3px solid var(--border-strong);color:var(--fg-soft)}
+.anchor{opacity:0;margin-left:10px;border:0;color:var(--fg-muted);vertical-align:middle;transition:opacity .15s}
+h2:hover .anchor,h3:hover .anchor{opacity:1}
+.anchor:hover{color:var(--accent)}
+.pagemeta{font-size:13.5px;color:var(--fg-muted);padding-bottom:18px;margin-bottom:6px;
+ border-bottom:1px solid var(--border)}
+.pagemeta a{color:var(--fg-muted);border-bottom-color:var(--border-strong)}
+.pagemeta a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.meta{font-size:14px;line-height:1.62;color:var(--fg-muted)}
+.caption{font-size:14.5px;line-height:1.62;color:var(--fg-muted);margin:0 0 26px}
+.caption strong,.meta strong{color:var(--fg-soft)}
+.new{display:inline-block;background:var(--accent-soft);color:var(--accent);font-size:10px;font-weight:700;
+ letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;border-radius:999px;vertical-align:2px;
+ margin-left:8px;border:1px solid color-mix(in srgb,var(--accent) 26%,transparent)}
+
+/* ---------- code ---------- */
+code{font:500 .855em/1.5 var(--mono);background:var(--code-bg);color:var(--code-fg);
+ padding:.14em .4em;border-radius:5px;overflow-wrap:anywhere;white-space:normal;letter-spacing:0}
+a code{color:inherit}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;
+ overflow:auto;font-size:13.5px;line-height:1.6}
+pre code{background:none;padding:0;font-size:inherit;color:var(--fg-soft)}
+
+/* ---------- tables ---------- */
+.table-wrap{border:1px solid var(--border);border-radius:12px;overflow:auto;margin:18px 0 14px;
+ background:var(--bg-elev);-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap;
+ font-variant-numeric:tabular-nums}
+th,td{padding:9px 14px;text-align:right;border-bottom:1px solid var(--border)}
+th{background:var(--surface);color:var(--fg-soft);font-weight:600;font-size:12px;letter-spacing:.01em;
+ white-space:nowrap}
+th:first-child,td:first-child{text-align:left;color:var(--fg)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--surface-2)}
+
+/* ---------- figures ---------- */
+img{display:block;width:100%;height:auto;background:#fff;border:1px solid var(--border);border-radius:12px;
+ margin:6px 0 14px}
+
+/* ---------- cards and disclosures ---------- */
+.definitions{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+ padding:20px 24px;margin:24px 0}
+.definitions ul,.definitions ol,.definitions p:last-child{margin-bottom:0}
+.definitions li:last-child{margin-bottom:0}
+details{margin:24px 0;border:1px solid var(--border);border-radius:12px;background:var(--bg-elev);
+ overflow:hidden}
+summary{cursor:pointer;list-style:none;display:flex;align-items:flex-start;gap:11px;padding:13px 17px;
+ font-size:15px;font-weight:600;color:var(--fg-soft);transition:background .14s,color .14s}
+summary::-webkit-details-marker{display:none}
+summary:hover{background:var(--surface);color:var(--fg)}
+summary::before{content:"";flex:0 0 auto;width:15px;height:15px;margin-top:4px;background:currentColor;
+ -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M9.5 6l6 6-6 6'/></svg>") center/13px no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M9.5 6l6 6-6 6'/></svg>") center/13px no-repeat;
+ transition:transform .2s ease}
+details[open]>summary{border-bottom:1px solid var(--border)}
+details[open]>summary::before{transform:rotate(90deg)}
+details>:not(summary){margin-left:18px;margin-right:18px}
+details>:not(summary):first-of-type{margin-top:18px}
+details>:not(summary):last-child{margin-bottom:18px}
+details .table-wrap,details img{margin-top:14px}
+
+/* ---------- controls ---------- */
+button,select,input{font:inherit}
+button{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:34px;padding:0 13px;
+ border:1px solid var(--border-strong);border-radius:9px;background:var(--bg-elev);color:var(--fg-soft);
+ font-size:14px;font-weight:550;cursor:pointer;transition:background .14s,color .14s,border-color .14s}
+button:hover{background:var(--surface-2);color:var(--fg)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select{height:34px;max-width:100%;padding:0 36px 0 13px;border:1px solid var(--border-strong);border-radius:9px;
+ background:var(--bg-elev) SELurl("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M9.5 6l6 6-6 6'/></svg>") right 12px center/13px no-repeat;color:var(--fg-soft);font-size:14px;
+ -webkit-appearance:none;appearance:none;cursor:pointer}
+select:hover{color:var(--fg)}
+
+/* ---------- tick inspector ---------- */
+#tick-inspector .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+#tick-inspector .row select{flex:1 1 340px}
+#tick-inspector .headline{font-size:15px;font-weight:600;color:var(--fg);margin:0 0 14px}
+#tick-inspector .headline span{color:var(--fg-muted);font-weight:450}
+.ladder td{text-align:center;font-variant-numeric:tabular-nums}
+.ladder td.a{color:var(--down)}
+.ladder td.b{color:var(--up)}
+.ladder td.mid{background:var(--surface);color:var(--fg);font-style:normal;font-weight:600}
+.ladder td:first-child{color:var(--fg-muted);text-align:left;font-weight:500}
+
+/* ---------- narrow screens ---------- */
+@media(max-width:1000px){
+ :root{--nav-w:0px}
+ main{margin-left:0}
+ nav{transform:translateX(-100%);box-shadow:var(--shadow)}
+ html:not(.navhidden) nav{transform:none}
+ html:not(.navhidden) .backdrop{opacity:1;pointer-events:auto}
+ .wrap{padding-left:20px;padding-right:20px}
+ h2{font-size:26px}
+ h3{font-size:20px;margin-top:52px}
+ body{font-size:16.5px}
+}
+@media print{
+ .topbar,nav,.totop,.backdrop{display:none}
+ main{margin:0}
+ .wrap{padding:0;max-width:none}
+ details{break-inside:avoid}
+ details>:not(summary){display:block !important}
+}
 
   /* left menu (make_public_site.py; identical on every page). Redesigned 2026-09-17:
      a sidebar in the ChatGPT pattern. Page rows link straight to the page, a chevron
@@ -357,16 +400,37 @@
   a.finding.keyres { display:block; text-decoration:none; color:inherit; transition:border-color .15s; }
   a.finding.keyres:hover { border-color:var(--accent); }
   a.finding.keyres small { margin-top:2px; color:var(--accent); }
-</style>
-</head>
-<body>
-<input type="checkbox" id="navoff" aria-label="Hide the menu">
+
+  /* the spot page's own shell uses other token names and an html.dark class: map them onto the site menu's */
+  :root { --text:var(--fg); --muted:var(--fg-muted); --line:var(--border); --bar-h:0px; }
+  .topbar, .backdrop, .totop { display:none !important; }
+  .sitenav a, .navrail a, .sitenav a:hover { border-bottom:0; }
+  main { margin-left:var(--navw); }
+  #navoff:checked ~ main { margin-left:0; }
+  main :is(p, li, dd):not(.tabcap) { max-width:none; }
+  @media (max-width:900px) { main, #navoff:checked ~ main { margin-left:0; } }
+</style><script>(function(){var h=document.documentElement;function s(){var t=h.getAttribute('data-theme');h.classList.toggle('dark',t?t==='dark':matchMedia('(prefers-color-scheme:dark)').matches);}try{var t=localStorage.getItem('mm-site-theme');if(t)h.setAttribute('data-theme',t);}catch(e){}s();new MutationObserver(s).observe(h,{attributes:true,attributeFilter:['data-theme']});})();</script><style>
+/* zf0922: obsolete banners and red set-up notes (2026-09-22) */
+.obsolete { margin:14px 0 16px; padding:11px 15px; border:1px solid var(--line, rgba(127,127,127,.35)); border-left:5px solid #7a7a7a;
+            border-radius:10px; background:var(--surface, transparent); color:var(--muted, inherit); }
+.obsolete strong:first-child { color:inherit; letter-spacing:.02em; text-transform:uppercase; font-size:.86em; margin-right:.35em; }
+.setup-issue { margin:12px 0 16px; padding:9px 14px; border-left:4px solid #d32f2f; border-radius:6px;
+               background:rgba(211,47,47,.06); color:#b71c1c; }
+.setup-issue strong:first-child { color:#b71c1c; }
+.setup-issue a { color:inherit; text-decoration:underline; }
+[data-theme="dark"] .setup-issue { color:#ff8a80; border-left-color:#ff5252; background:rgba(255,82,82,.09); }
+[data-theme="dark"] .setup-issue strong:first-child { color:#ff8a80; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .setup-issue { color:#ff8a80; border-left-color:#ff5252; background:rgba(255,82,82,.09); }
+  :root:not([data-theme="light"]) .setup-issue strong:first-child { color:#ff8a80; }
+}
+</style></head><body><input type="checkbox" id="navoff" aria-label="Hide the menu">
 <script>window.mmBack=function(){try{var r=document.referrer;if(r&&new URL(r).origin===location.origin&&history.length>1){history.back();return false;}}catch(e){}return true;};(function(){try{var t=localStorage.getItem('mm-site-theme');if(t)document.documentElement.setAttribute('data-theme',t);if(localStorage.getItem('mm-site-nav')==='off'&&!matchMedia('(max-width:900px)').matches)document.getElementById('navoff').checked=true;}catch(e){}})();</script>
-<div class="navrail"><label class="navbtn" for="navoff" title="Show the menu" aria-label="Show the menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg></label><a class="navbtn navback" href="overview.html" title="Back" aria-label="Back" onclick="return mmBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5.5"/><path d="m11 5.5-6.5 6.5 6.5 6.5"/></svg></a><a class="navbtn" id="navhome" href="#" title="All reports" aria-label="All reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4.5 20 11"/><path d="M6.5 9.5V19.5h11V9.5"/></svg></a><button class="navbtn" type="button" data-navtheme title="Light or dark" aria-label="Light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" stroke="none"/></svg></button></div>
+<div class="navrail"><label class="navbtn" for="navoff" title="Show the menu" aria-label="Show the menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg></label><a class="navbtn navback" href="overview.html" title="Back" aria-label="Back" onclick="return mmBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5.5"/><path d="m11 5.5-6.5 6.5 6.5 6.5"/></svg></a><a class="navbtn" id="navhome" href="overview.html" title="All reports" aria-label="All reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4.5 20 11"/><path d="M6.5 9.5V19.5h11V9.5"/></svg></a><button class="navbtn" type="button" data-navtheme title="Light or dark" aria-label="Light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" stroke="none"/></svg></button></div>
 <label class="navscrim" for="navoff" aria-hidden="true"></label>
-<aside class="sitenav" id="sitenav" aria-label="Site menu"><div class="navhead"><a class="navbtn navback" href="overview.html" title="Back" aria-label="Back" onclick="return mmBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5.5"/><path d="m11 5.5-6.5 6.5 6.5 6.5"/></svg></a><a class="navbrand homelink" href="#">HYPE MM inventory</a><button class="navbtn" type="button" data-navtheme title="Light or dark" aria-label="Light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" stroke="none"/></svg></button><label class="navbtn" for="navoff" title="Hide the menu" aria-label="Hide the menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg></label></div>
+<aside class="sitenav" id="sitenav" aria-label="Site menu"><div class="navhead"><a class="navbtn navback" href="overview.html" title="Back" aria-label="Back" onclick="return mmBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5.5"/><path d="m11 5.5-6.5 6.5 6.5 6.5"/></svg></a><a class="navbrand homelink" href="overview.html">HYPE MM inventory</a><button class="navbtn" type="button" data-navtheme title="Light or dark" aria-label="Light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" stroke="none"/></svg></button><label class="navbtn" for="navoff" title="Hide the menu" aria-label="Hide the menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg></label></div>
 <div class="navscroll">
-<a class="navitem is-current" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4.5 20 11"/><path d="M6.5 9.5V19.5h11V9.5"/></svg>All reports</a>
+<a class="navitem" href="overview.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11 12 4.5 20 11"/><path d="M6.5 9.5V19.5h11V9.5"/></svg>All reports</a>
 <p class="navgroup">Reports</p>
 <div class="navpage"><div class="navrow"><a class="navlink" href="exp8-one-sided-surges.html"><span class="t">One-sided taker surges</span><span class="d">2026-09-10 to 09-22</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
@@ -393,16 +457,16 @@
 <div class="navgrp"><a class="navsec navtop" href="exp8-active-mm.html#s-3-quiet-mm-labelled-days"><span class="n">3</span><span class="x">Quiet MM-labelled days</span></a></div>
 <div class="navgrp"><a class="navsec navtop" href="exp8-active-mm.html#s-appendix-where-the-rest-lives"><span class="n"></span><span class="x">Appendix: where the rest lives</span></a></div>
 </div></div></div></div>
-<div class="navpage"><div class="navrow"><a class="navlink" data-new="2026-09-24" href="exp8-clause-d-wallets.html"><span class="t">The clause-(d) wallets, one by one<span class="navnew">[NEW]</span></span><span class="d">2026-09-23</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+<div class="navpage is-current is-open"><div class="navrow"><a class="navlink" data-new="2026-09-24" href="#"><span class="t">The clause-(d) wallets, one by one<span class="navnew">[NEW]</span></span><span class="d">2026-09-23</span></a><button class="navbtn navcaret" type="button" aria-expanded="true" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
-<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="exp8-clause-d-wallets.html#s-key-results"><span class="n"></span><span class="x">Key results<span class="navnew">[NEW]</span></span></a></div>
-<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="exp8-clause-d-wallets.html#s-1-the-mm-label-and-the-306-wallets"><span class="n">1</span><span class="x">The MM label and the 306 wallets<span class="navnew">[NEW]</span></span></a></div>
-<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="exp8-clause-d-wallets.html#s-2-how-each-wallet-is-labeled"><span class="n">2</span><span class="x">How each wallet is labeled<span class="navnew">[NEW]</span></span></a></div>
-<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="exp8-clause-d-wallets.html#s-3-the-306-by-label-against-true-mms"><span class="n">3</span><span class="x">The 306 by label, against true MMs<span class="navnew">[NEW]</span></span></a></div>
-<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="exp8-clause-d-wallets.html#s-4-the-261-algo-wallets-and-their-orders"><span class="n">4</span><span class="x">The 261 algo wallets and their orders<span class="navnew">[NEW]</span></span></a></div>
-<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="exp8-clause-d-wallets.html#s-5-their-other-coins"><span class="n">5</span><span class="x">Their other coins<span class="navnew">[NEW]</span></span></a></div>
-<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="exp8-clause-d-wallets.html#s-6-a-test-to-replace-clause-d"><span class="n">6</span><span class="x">A test to replace clause (d)<span class="navnew">[NEW]</span></span></a></div>
-<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="exp8-clause-d-wallets.html#s-appendix-where-the-rest-lives"><span class="n"></span><span class="x">Appendix: where the rest lives<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="#s-key-results"><span class="n"></span><span class="x">Key results<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="#s-1-the-mm-label-and-the-306-wallets"><span class="n">1</span><span class="x">The MM label and the 306 wallets<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="#s-2-how-each-wallet-is-labeled"><span class="n">2</span><span class="x">How each wallet is labeled<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="#s-3-the-306-by-label-against-true-mms"><span class="n">3</span><span class="x">The 306 by label, against true MMs<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="#s-4-the-261-algo-wallets-and-their-orders"><span class="n">4</span><span class="x">The 261 algo wallets and their orders<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="#s-5-their-other-coins"><span class="n">5</span><span class="x">Their other coins<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="#s-6-a-test-to-replace-clause-d"><span class="n">6</span><span class="x">A test to replace clause (d)<span class="navnew">[NEW]</span></span></a></div>
+<div class="navgrp"><a class="navsec navtop" data-new="2026-09-24" href="#s-appendix-where-the-rest-lives"><span class="n"></span><span class="x">Appendix: where the rest lives<span class="navnew">[NEW]</span></span></a></div>
 </div></div></div></div>
 <div class="navpage"><div class="navrow"><a class="navlink" href="exp8-mm-loss-episodes.html"><span class="t">Exp8 &mdash; MM loss episodes (z<sub>NET</sub>)</span><span class="d">2026-09-17 to 09-22</span></a><button class="navbtn navcaret" type="button" aria-expanded="false" aria-label="Sections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
 <div class="navsecs"><div><div class="navlist">
@@ -656,111 +720,1098 @@
 <div class="navpage"><div class="navrow"><a class="navlink" href="exp8-report.html"><span class="t">Exp8 &mdash; 10 roster MM</span><span class="d">2026-09-04</span></a></div>
 </div>
 </details>
-</div><p class="navfoot">Descriptive, not causal. MMs appear by volume rank only.</p></aside>
-<main id="top" class="hub"><div class="hubinner">
-  <p class="eyebrow">Hyperliquid &middot; HYPE perpetual &middot; 2025-03-27 to 2026-06-30 UTC</p>
-  <h1>Market-maker inventory events on HYPE</h1>
-  <div class="readnote" style="margin:14px 0 18px;font-size:1.05em"><p><strong>We study 922 one-sided taker
-  surges on HYPE and the market makers (MMs) around them.</strong> A surge is a half hour in which taker buys, or
-  taker sells, jump far above their level over the previous week and far outweigh the other side. Each surge is timed
-  by its run: the minutes in which the surging side keeps outtrading the other (median 14 minutes). Around each surge
-  we follow every active HYPE MM, a median 100 per surge. Two short pages carry the results and a third defines
-  which MMs count as active. A fourth page asks which MMs lose money, on the older net-flow events.</p></div>
+</div><p class="navfoot">Descriptive, not causal. MMs appear by volume rank only.</p></aside><main><div class="wrap"><p class="pagemeta">Results 2026-09-23 &middot; HYPE label, ten coins of orders, every perp coin of fills &middot; 2025-03-27 to 2026-06-30 &middot; Source: Exp8 <code>analysis.md</code>, section 65.10 &middot; <a href="overview.html">All reports</a></p><style>
+.topbox{border:1px solid var(--border-strong);border-left:4px solid var(--accent,#2f6fdf);border-radius:10px;
+ padding:14px 18px;margin:8px 0 22px;background:var(--bg-soft,transparent)}
+.topbox p{margin:6px 0}.topbox p.big{font-size:1.12em;line-height:1.5}
+.keys ol{padding-left:1.3em}.keys li{margin-bottom:8px}
+.m i{font-style:italic}.m sub{font-size:.75em}.tno,.fno{font-weight:inherit}
+td.n,th.n{text-align:right}table.compact td,table.compact th{vertical-align:top}
+details.tblfold>summary strong{font-weight:600}
+h1.pagetitle{font-size:1.75em;line-height:1.25;margin:4px 0 14px}.topbox p.big{margin-top:2px}
+</style><h1 class="pagetitle">The 306 clause-(d) wallets, one by one: market makers or algorithmic traders?</h1><!-- title: The 306 clause-(d) wallets, one by one: market makers or algorithmic traders? -->
+<!-- short: The clause-(d) wallets -->
+<!-- sections:  65.10 -->
+<!-- created: Results 2026-09-23 &middot; HYPE label, ten coins of orders, every perp coin of fills &middot; 2025-03-27 to 2026-06-30 -->
 
-  <section class="hubsec keysec" aria-labelledby="keyresults">
-  <h2 class="hubgroup" id="keyresults">Key results</h2>
-  <div class="keys">
-<details class="key"><summary>A surge shocks six times as many MMs as the same clock time on a nearby day without a surge</summary><div>An MM is shocked when its HYPE position changes during the surge by at least 3 times its own typical 24-hour swing. 5.9% of active MMs are shocked in a surge, against 1.0% in control windows: the same clock time and length on a nearby day with no surge. 90% of the shocked MMs moved the way a maker filling the takers moves: they bought when the takers sold, and sold when the takers bought.<br><a href="exp8-one-sided-surges.html#s-2-who-takes-the-inventory">One-sided taker surges, Section 2 &rarr;</a></div></details>
-<details class="key"><summary>The spread nearly doubles at the flow peak and is close to normal about an hour later</summary><div>Around the minute with the most surge taker volume, the bid-ask spread is 1.82 times its mean over the event's own 12-hour baseline. An hour after the run it is 6% above that mean; after a liquidation cascade it is still 35% above. The resting size within 10 bps of the mid stays at its level before the surge, so takers pay through the wider spread rather than a thinner book.<br><a href="exp8-surge-book-cost.html#s-1-spread-depth-and-what-takers-pay">What a surge does to the book, Section 1 &rarr;</a></div></details>
-<details class="key"><summary>Trades, not cancels, move the best quote away, and it does not come back during the surge</summary><div>The surge-side best quote is the best price on the side the takers hit (the best ask in a buy surge). On dates where every book update is stored, trades cause 57% to 63% of its move away from the mid during a surge, against 32% to 35% in quiet control windows; cancellations cause most of the rest. After a trade moves the quote away, the quote moves about as far again away from the mid over the next 50 updates that move that best price or trade at it.<br><a href="exp8-surge-book-cost.html#s-2-what-moves-the-best-quote">What a surge does to the book, Sections 2 and 3 &rarr;</a></div></details>
-<details class="key"><summary>Whether the price comes back goes with the taker flow after the run, not with the MMs</summary><div>Sort the surges into five equal groups by how far the price comes back in the two hours after the run. In every group the MMs absorb the same 27% to 36% of the surge and quote the same way. In one regression of the two-hour reversal on eight candidate measures, only the net taker flow in the 15 minutes after the run has a coefficient distinguishable from zero; the two windows overlap, so this is an association. At the end of the run the MMs hold a position equal to 26% to 32% of the surge's taker volume in every group. Two hours later they hold none of it where the price came back most, and 23% where the price kept going.<br><a href="exp8-one-sided-surges.html#s-3-after-the-run-price-inventory-and-quotes">One-sided taker surges, Section 3 &rarr;</a></div></details>
-<details class="key"><summary>MMs lean toward the exit by about one basis point at most</summary><div>The absorbing side is the side of the book the surging takers hit; the exit side is the other side, where an MM can unload what it absorbed. Compared with its own 2 hours before the surge, an MM places new absorbing-side orders further from the best quote than new exit-side orders. The gap is 0.6 bps while the MM builds its position and 1.1 bps in the first 5 minutes after its position peaks. Most of the gap comes from the absorbing-side orders moving back.<br><a href="exp8-surge-book-cost.html#s-4-where-mms-place-their-quotes">What a surge does to the book, Section 4 &rarr;</a></div></details>
+<style>
+li.fb{margin-bottom:9px}
+details.fb{margin:0;border:0;border-radius:0;background:none;overflow:visible;box-shadow:none}
+details.fb>summary{display:inline;padding:0;margin:0;font-size:inherit;font-weight:inherit;color:inherit;
+ background:none;border:0;cursor:pointer;list-style:none}
+details.fb>summary:hover{background:none;color:inherit}
+details.fb>summary::before{content:none;display:none}
+details.fb>summary::after{content:"more";margin-left:8px;font-size:12px;font-weight:500;letter-spacing:.02em;
+ color:var(--fg-muted);border-bottom:1px dotted var(--border-strong);white-space:nowrap}
+details.fb[open]>summary::after{content:"less"}
+details.fb>p.fb-body{margin:6px 0 4px 0;font-size:.95em;color:var(--fg-soft)}
+.todecide{border:2px solid #d32f2f;border-radius:10px;padding:10px 18px 6px;margin:18px 0 24px;background:rgba(211,47,47,.05)}
+.todecide>p.tdh{color:#b71c1c;font-weight:700;margin:4px 0 8px;letter-spacing:.02em}
+.todecide li{margin-bottom:10px}.todecide li strong{color:#b71c1c}
+html.dark .todecide{border-color:#ff5252;background:rgba(255,82,82,.08)}
+html.dark .todecide>p.tdh,html.dark .todecide li strong{color:#ff8a80}
+</style>
 
-  </div>
-  <p class="keynote">Open a line for the numbers behind it. <a href="changelog.html">What changed recently &rarr;</a></p>
-  </section>
+<!-- fold-findings -->
 
-  <section class="hubsec" aria-labelledby="reports">
-  <h2 class="hubgroup" id="reports">Reports</h2>
-  <div class="cards" style="margin-top:14px">
-  <article class="card featured">
-    <span class="when"><b>Start here</b>results 2026-09-10 to 09-22</span>
-    <h3><a href="exp8-one-sided-surges.html">One-sided taker surges <span class="arrow">&rarr;</span></a></h3>
-    <p>The 922 surges, which MMs take the inventory, and what goes with the price coming back. A five-minute read.</p>
-  </article>
-  <article class="card">
-    <span class="when">results 2026-09-21 to 09-22</span>
-    <h3><a href="exp8-surge-book-cost.html">What a surge does to the book <span class="arrow">&rarr;</span></a></h3>
-    <p>Spread, depth and taker cost by phase, what moves the best quote, whether it comes back, and where MMs place
-    their quotes. A five-minute read.</p>
-  </article>
-  <article class="card">
-    <span class="when">results 2026-09-21 to 09-22</span>
-    <h3><a href="exp8-active-mm.html">Who counts as an active MM <span class="arrow">&rarr;</span></a></h3>
-    <p>Which wallets labeled as MMs count as active around an event: they must trade HYPE before and during it and
-    place at least 1 order a minute. Also what the labeled MMs that barely trade look like. A five-minute read.</p>
-  </article>
-  <article class="card">
-    <span class="when">results 2026-09-17 to 09-22</span>
-    <h3><a href="exp8-mm-loss-episodes.html">MM loss episodes (z<sub>NET</sub>) <span class="arrow">&rarr;</span></a></h3>
-    <p>Which MMs lose money around the 915 net-flow events, the earlier event set: half hours of extreme net taker
-    flow. The event window is built from 30-minute bins, which may be too coarse.</p>
-  </article>
-  </div>
-  </section>
-
-  <section class="hubsec" aria-labelledby="planning">
-  <h2 class="hubgroup" id="planning">Where the work stands</h2>
-  <div class="cards">
-  <article class="card">
-    <span class="when">2026-09-18</span>
-    <h3><a href="storyline.html">Storyline <span class="arrow">&rarr;</span></a></h3>
-    <p>The flow chart of how an MM inventory shock propagates, then the 2026-09-15 taker-surge chart with the
-    evidence behind each node.</p>
-  </article>
-  <article class="card">
-    <span class="when">kept by every build</span>
-    <h3><a href="changelog.html">Change log <span class="arrow">&rarr;</span></a></h3>
-    <p>What each day added, each linked to the place it describes. Results added from 2026-09-23 on carry a blue
-    [NEW] tag, here and in the side menu.</p>
-  </article>
-  </div>
-  </section>
-
-  <section class="hubsec" aria-labelledby="dump">
-  <h2 class="hubgroup" id="dump">Result dump</h2>
-  <details class="more"><summary>The full pages behind the short reports (three pages)</summary>
-  <ul>
-    <li><a href="exp8-one-sided-surges-record.html">One-sided taker surges, full record</a>: section 9 of the Exp8
-    record, every table and figure.</li>
-    <li><a href="exp8-surge-book-cost-record.html">What a surge does to the book, full record</a>: sections 64 and
-    69 to 71.</li>
-    <li><a href="exp8-active-mm-record.html">Who counts as an active MM, full record</a>: section 65.</li>
-  </ul>
-  </details>
-  </section>
-
-  <section class="hubsec" aria-labelledby="earlier">
-  <h2 class="hubgroup" id="earlier">Earlier work</h2>
-  <details class="more"><summary>Pages not revised since the one-sided surges became the event set of record (six pages)</summary>
-  <ul>
-    <li><a href="exp8-inventory-shock-09-08.html">Taker-imbalance events, |z<sub>NET</sub>| &ge; 3.70</a> (obsolete since 2026-09-22): 915
-    net-flow half hours and the MM population around them.</li>
-    <li><a href="exp8-unwinders.html">Unwinders</a>: early and late unwinders (z<sub>NET</sub>, obsolete) and the resting
-    orders and recovery of wallet shocks.</li>
-    <li><a href="exp8-event-studies.html">Event studies</a>: two tick replays and two episodes of the 181 roster wallet shocks.</li>
-    <li><a href="exp10-tick-level-09-10.html">Exp10, tick level</a>: episodes 39 and 47 replayed order by order.</li>
-    <li><a href="exp8-spot-quote-12-17.html">Spot quotes and price discovery, 2025-12-17</a>.</li>
-    <li><a href="exp8-report.html">Exp8 &mdash; 10 roster MM</a> (2026-09-04): the original study of 181 inventory
-    shocks of the ten roster MMs, with <a href="exp8-unwind-activity.html">section D4</a> on its own page.</li>
-  </ul>
-  </details>
-  </section>
-
-  <footer>Working research output, not a paper. Every result is a descriptive association. Wallet identities are
-  never published. The written record is Exp8 <code>analysis.md</code>; built by <code>make_public_site.py</code>.</footer>
-</div></main>
-<script>
+<div class="topbox">
+<div class="defs">
+<p class="big"><strong>We read, one by one, the 306 wallets that the daily MM label admits only through its clause (d).</strong></p>
+<ul>
+<li><strong>Who.</strong> 306 wallets labeled HYPE market maker (MM) on at least one day, 2025-03-27 to 2026-06-30, never through the label's main clauses.</li>
+<li><strong>How.</strong> Each wallet is classified twice: by a fixed rule on its order and fill statistics, and by an AI reader that sees the same statistics without the wallet's identity.</li>
+<li><strong>Answer.</strong> 261 are algorithmic traders, 3 are MMs, 19 are contested between MM and algo, and 21 are retail.</li>
+</ul>
+</div>
+</div>
+<h2 id="s-key-results">Key results<a class="anchor" href="#s-key-results" aria-label="Link to this section"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.2 13.8a3.8 3.8 0 0 0 5.4 0l2.5-2.5a3.8 3.8 0 0 0-5.4-5.4l-1 1"/><path d="M13.8 10.2a3.8 3.8 0 0 0-5.4 0l-2.5 2.5a3.8 3.8 0 0 0 5.4 5.4l1-1"/></svg></a></h2>
+<ol>
+<li class="fb"><details class="fb"><summary><strong>Almost all of them are algorithmic traders, not market makers.</strong></summary><p class="fb-body">261 of 306 are algo; 3 are MMs on both reads, with 10.6M of volume (<a href="#s-2-how-each-wallet-is-labeled">Section 2</a>).</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>They make as often as MMs, but one side at a time.</strong></summary><p class="fb-body">Maker share 0.74 for the algo wallets against 0.82 for true MMs; a buy and a sell go out in the same minute on 0.009 of their quoting minutes against 0.72 (<a href="#s-3-the-306-by-label-against-true-mms">Section 3</a>).</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>Their order mix looks like an MM's, which is why clause (d) catches them.</strong></summary><p class="fb-body">Post-only orders are 0.85 of an algo wallet's orders and 0.98 of a true MM's (<a href="#s-4-the-261-algo-wallets-and-their-orders">Section 4</a>).</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>They trade in short sessions at a low rate.</strong></summary><p class="fb-body">5.0 hours in the market a day and 6.8 orders per hour in the market, against 24 hours and 1,514 orders for true MMs (<a href="#s-3-the-306-by-label-against-true-mms">Section 3</a>).</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>A both-sides test would replace clause (d) without an order floor.</strong></summary><p class="fb-body">"Quotes both sides within 30 bps of the mid" keeps 83% of true MMs' MM days and 3% of these wallets' clause-(d) days (<a href="#s-6-a-test-to-replace-clause-d">Section 6</a>).</p></details></li>
+</ol>
+<div class="todecide">
+<p class="tdh">TO DECIDE: three kinds of wallet that the rule and the reader cannot settle</p>
+<div class="defs">
+<ol>
+<li><strong>A program with frontend clicks: an MM operator who also clicks, or a person placing post-only orders by hand?</strong> 77 of the 306 mix frontend market orders with program activity: 47 alternate frontend days and program days, 11 change once, 19 mix both within a day.<ul>
+<li>Most of their flow is a program. Median order gap 3.8 s, a quarter of their gaps under 1 s, frontend market orders 1.3% of orders.</li>
+<li>The order data cannot say which post-only order was clicked: the web app can send post-only orders too.</li>
+<li>True MMs mix as well: 39 of 120 have 3 or more days with a frontend order inside a program day.</li>
+<li>Current: the label follows the program (MM or algo); retail only where frontend orders are 30% or more of a day.</li>
+</ul>
+</li>
+<li><strong>One-sided makers (①, ②, ③; 146 wallets, $622.8M of volume): MM or algo?</strong> They fill as maker (0.86) and fill 26% of their post-only orders, against 1.2% for true MMs, which cancel and requote. But they quote one side at a time (two-sided minute share 0.005 against 0.72) and place 38 orders a day.<ul>
+<li>The algo label is not only takers. Matched algo wallets are 0.06 maker, but the whole algo class is 0.90 maker at the median, mostly through GTC orders.</li>
+<li>Options: algo (current), MM, or a separate one-sided-maker class.</li>
+</ul>
+</li>
+<li><strong>Grids far from the mid (④; 21 wallets, $16.9M of volume): MM or algo?</strong> They rest both sides (0.50 of the time) about 20 hours a day, but a median 100 bps from the mid, so they rarely set the best price.<ul>
+<li>Options: algo (current), or MM with a flag.</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<h2 id="s-1-the-mm-label-and-the-306-wallets">1. The MM label and the 306 wallets<a class="anchor" href="#s-1-the-mm-label-and-the-306-wallets" aria-label="Link to this section"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.2 13.8a3.8 3.8 0 0 0 5.4 0l2.5-2.5a3.8 3.8 0 0 0-5.4-5.4l-1 1"/><path d="M13.8 10.2a3.8 3.8 0 0 0-5.4 0l-2.5 2.5a3.8 3.8 0 0 0 5.4 5.4l1-1"/></svg></a></h2>
+<p><strong>The daily MM label (v5d).</strong> For each wallet and day on HYPE, the label tests four clauses in the order (c), (a), (b), (d); the day is MM if one holds. A post-only order can only rest on the book, never take. Frontend orders come from the Hyperliquid web app.</p>
+<div class="defs">
+<ul>
+<li><strong>(c)</strong> 2,000 or more post-only orders that day.</li>
+<li><strong>(a)</strong> 1,000 or more post-only orders over today and yesterday, 70% or more of all orders.</li>
+<li><strong>(b)</strong> 200 or more post-only orders today, 70% or more of orders, two orders under 1 s apart, frontend orders under 1%.</li>
+<li><strong>(d)</strong> Active on 5 or more of the last 14 days. Over the last 5 active days: post-only 80% or more of orders, the day's shortest order gap averaging 1 s or less, frontend under 1%. <strong>No minimum number of orders.</strong></li>
+<li><strong>Second pass.</strong> A day that fails all four stays MM if the previous HYPE day was MM and the wallet's post-only orders on all coins stay high.</li>
+</ul>
+</div>
+<p><strong>The 306 wallets ((d)-only).</strong> Of the 3,130 wallets labeled MM on HYPE on at least one day, the 306 whose every MM-labeled day comes from clause (d) or the second pass, never from (a), (b) or (c).</p>
+<p><strong>Comparison groups.</strong></p>
+<div class="defs">
+<ul>
+<li><strong>True MM (120 wallets).</strong> Drawn at random from the 972 wallets whose MM days come mostly (half or more) from clause (c).</li>
+<li><strong>Algo, frontend and retail wallets.</strong> HYPE wallets never labeled MM, grouped by their most common label: algo, retail through the frontend clause, or retail with no frontend orders.</li>
+<li><strong>Matched.</strong> Only wallets that trade about as often as the 306: 11 to 44 HYPE orders per active day and 15 or more active HYPE days (the 306's middle half).</li>
+</ul>
+</div>
+<h2 id="s-2-how-each-wallet-is-labeled">2. How each wallet is labeled<a class="anchor" href="#s-2-how-each-wallet-is-labeled" aria-label="Link to this section"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.2 13.8a3.8 3.8 0 0 0 5.4 0l2.5-2.5a3.8 3.8 0 0 0-5.4-5.4l-1 1"/><path d="M13.8 10.2a3.8 3.8 0 0 0-5.4 0l-2.5 2.5a3.8 3.8 0 0 0 5.4 5.4l1-1"/></svg></a></h2>
+<p><strong>The rule</strong> (first match wins; ten coins, whole window).</p>
+<div class="defs">
+<ul>
+<li><strong>Too few:</strong> under 50 orders.</li>
+<li><strong>Program:</strong> half or more of its active days are program days (frontend and TP/SL under 10% of orders, and half the order gaps under 10 s or post-only orders living under 10 s). Or: frontend and TP/SL under 10%, and a median gap of 10 s or less, 12 or more hours with orders on the median day, or 500 or more orders a day.</li>
+<li><strong>MM:</strong> a program with 25% or more of its volume on coins where it quotes both sides near the mid: median quote within 30 bps, and a bid and an ask resting together half the time, or a buy and a sell placed in the same minute on 20% of its quoting minutes.</li>
+<li><strong>Algo:</strong> any other program.</li>
+<li><strong>Retail:</strong> not a program, and frontend or TP/SL orders 10% or more, or frontend days 30% or more.</li>
+<li><strong>Unclear:</strong> the rest.</li>
+</ul>
+</div>
+<details>
+<summary>Where each threshold comes from</summary>
+<ul>
+<li>12 or more hours and 500 or more orders a day: the bot signals of the relabeling study (Allium, section 8.5). A buy and a sell in the same minute on 20% of minutes: its market-maker test.</li>
+<li>Frontend 30% of the day's orders: the label's retail clause.</li>
+<li>10 s gaps and order lives, 10% frontend, 0.5 resting share, 25% of volume and 50 orders: set for this study.</li>
+<li>30 bps: set after the reader's verdicts were in. It gave 15 wallets the rule calls MM and the reader does not; a looser version gave 23. Agreement on the MM class is therefore not an independent check.</li>
+</ul>
+</details>
+<p><strong>The reader.</strong> An AI agent receives a prompt that describes the three kinds of wallet and one unlabeled wallet's activity statistics, and guesses the label.</p>
+<div class="defs">
+<ul>
+<li><strong>The three kinds, as the prompt describes them.</strong> <em>MM:</em> a program that quotes both sides at once near the best prices and ends the day near flat. <em>Algo:</em> a program that is not market making, such as a one-sided post-only buyer, a grid, or a taker bot. <em>Retail:</em> a person clicking, with frontend market orders, TP/SL orders and long irregular gaps.</li>
+<li><strong>Blind.</strong> Four agents each read about 107 wallets: the 306 mixed with 120 wallets from the comparison groups. None sees the address, group or current label.</li>
+<li><strong>Output.</strong> A label (MM, algo, retail or unclear), a confidence, and a one-line reason.</li>
+</ul>
+</div>
+<details>
+<summary>What the reader is given for each wallet</summary>
+<ul>
+<li><strong>Activity:</strong> orders, active days, first-to-last active days, orders per active day.</li>
+<li><strong>Time in the market:</strong> hours in the market per day; mean, median and longest run of consecutive active hours; orders per hour in the market.</li>
+<li><strong>Order gaps:</strong> p5, p25, p50, p75, p95 of the seconds between consecutive orders; share of orders in the same millisecond as another.</li>
+<li><strong>Order types:</strong> post-only, GTC, IOC, frontend market and TP/SL shares; days with a frontend order; client order id share; share of orders at the wallet's five usual sizes.</li>
+<li><strong>Order life and distance:</strong> post-only cancel share, life and distance from the mid; GTC life and distance; share of post-only orders within 10 bps.</li>
+<li><strong>Quoting and fills:</strong> two-sided resting share, limit buy share, volume, maker share, one-way share, turnover, end-of-day position over the largest position, typical position size.</li>
+<li><strong>Day counts:</strong> frontend, program, two-sided program, slow, light and mixed days.</li>
+<li><strong>Coins:</strong> active coins, and the top three coins with their maker, two-sided and frontend shares.</li>
+</ul>
+</details>
+<p><strong>The final label.</strong> Where the rule and the reader agree, that label. Where the rule is unclear, the reader's label. Where the rule says retail only because of TP/SL orders sent by a program, algo. Where one of the two says MM, "MM, contested".</p>
+<p class="caption"><strong>Table 1. Final label of the 306, and how it was reached.</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left;">Final label</th>
+<th style="text-align: right;">Wallets</th>
+<th style="text-align: right;">Volume (USD)</th>
+<th style="text-align: right;">Agree</th>
+<th style="text-align: right;">Reader, rule unclear</th>
+<th style="text-align: right;">Reader, TP/SL override</th>
+<th style="text-align: right;">Split</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">algo</td>
+<td style="text-align: right;">261</td>
+<td style="text-align: right;">4.4B</td>
+<td style="text-align: right;">208</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">retail</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">137.0M</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">MM</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">10.6M</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">MM, contested</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">40.5M</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr>
+<td style="text-align: left;">contested: algo / retail</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">135k</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">unclear</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">178k</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">all</td>
+<td style="text-align: right;">306</td>
+<td style="text-align: right;">4.6B</td>
+<td style="text-align: right;">222</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">18</td>
+</tr>
+</tbody>
+</table></div>
+<details>
+<summary>Column key and source</summary>
+<ul>
+<li>One row per final label. Volume is the ten-coin USD volume of the row's wallets, 2025-03-27 to 2026-06-30.</li>
+<li>The last four columns count wallets by how the label was reached. <strong>Agree:</strong> rule and reader give the same label. <strong>Reader, rule unclear:</strong> the rule reached no label. <strong>Reader, TP/SL override:</strong> the rule said retail only because of TP/SL orders; the reader saw a program. <strong>Split:</strong> one of the two says MM, or they disagree otherwise.</li>
+<li>Source: Exp8 <code>tables/d3g0923_donly_final.csv</code>, one row per wallet with the reader's reason.</li>
+</ul>
+</details>
+<ul>
+<li><strong>The rule and the reader agree on 87% of the wallets the rule decides.</strong></li>
+<li class="fb"><details class="fb"><summary><strong>The reader tells the known groups apart.</strong></summary><p class="fb-body">It calls all 25 matched frontend wallets retail, all 40 algo wallets algo, and 19 of 25 true MMs MM.</p></details></li>
+</ul>
+<details class="tblfold">
+<summary><strong>Table 2. The reader's labels, by group.</strong></summary>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left;">Group</th>
+<th style="text-align: right;">Wallets read</th>
+<th style="text-align: right;">Reader: MM</th>
+<th style="text-align: right;">Reader: algo</th>
+<th style="text-align: right;">Reader: retail</th>
+<th style="text-align: right;">Reader: unclear</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">(d)-only</td>
+<td style="text-align: right;">306</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">273</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td style="text-align: left;">True MM</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Algo, matched</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Algo, all</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Frontend, matched</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Retail no-FM, matched</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table></div>
+<details>
+<summary>Column key and source</summary>
+<ul>
+<li>One row per group (Section 1). The reader saw each wallet without its group. Source: Exp8 <code>tables/d3g0923_blind_joined.csv</code>.</li>
+</ul>
+</details>
+</details>
+<h2 id="s-3-the-306-by-label-against-true-mms">3. The 306 by label, against true MMs<a class="anchor" href="#s-3-the-306-by-label-against-true-mms" aria-label="Link to this section"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.2 13.8a3.8 3.8 0 0 0 5.4 0l2.5-2.5a3.8 3.8 0 0 0-5.4-5.4l-1 1"/><path d="M13.8 10.2a3.8 3.8 0 0 0-5.4 0l-2.5 2.5a3.8 3.8 0 0 0 5.4 5.4l1-1"/></svg></a></h2>
+<p class="caption"><strong>Table 3. The 306 by final label, against true MMs (medians across wallets).</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left;">Measure</th>
+<th style="text-align: right;">True MM (120)</th>
+<th style="text-align: right;">MM (3)</th>
+<th style="text-align: right;">Contested (19)</th>
+<th style="text-align: right;">Algo (261)</th>
+<th style="text-align: right;">Retail (21)</th>
+<th style="text-align: right;">Switching (77)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Volume (USD)</td>
+<td style="text-align: right;">46.9M</td>
+<td style="text-align: right;">2.3M</td>
+<td style="text-align: right;">325k</td>
+<td style="text-align: right;">329k</td>
+<td style="text-align: right;">1.2M</td>
+<td style="text-align: right;">1.7M</td>
+</tr>
+<tr>
+<td style="text-align: left;">Active days</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">72</td>
+</tr>
+<tr>
+<td style="text-align: left;">Orders per active day</td>
+<td style="text-align: right;">27k</td>
+<td style="text-align: right;">394</td>
+<td style="text-align: right;">263</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">57</td>
+</tr>
+<tr>
+<td style="text-align: left;">Order gap p50 (s)</td>
+<td style="text-align: right;">1.1</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">6.7</td>
+<td style="text-align: right;">5.3</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">3.8</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hours in the market</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">8.0</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">7.0</td>
+<td style="text-align: right;">5.0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Orders per hour in the market</td>
+<td style="text-align: right;">1,514</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">6.8</td>
+<td style="text-align: right;">3.8</td>
+<td style="text-align: right;">8.4</td>
+</tr>
+<tr>
+<td style="text-align: left;">Maker share of USD</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">0.74</td>
+<td style="text-align: right;">0.30</td>
+<td style="text-align: right;">0.55</td>
+</tr>
+<tr>
+<td style="text-align: left;">Two-sided minute share</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">0.01</td>
+</tr>
+<tr>
+<td style="text-align: left;">Two-sided resting share</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">0.52</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.02</td>
+</tr>
+<tr>
+<td style="text-align: left;">Quote distance (bps)</td>
+<td style="text-align: right;">6.7</td>
+<td style="text-align: right;">1.2</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">183</td>
+<td style="text-align: right;">0.76</td>
+</tr>
+<tr>
+<td style="text-align: left;">Post-only share of orders</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">0.68</td>
+</tr>
+<tr>
+<td style="text-align: left;">GTC share</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.005</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.10</td>
+</tr>
+<tr>
+<td style="text-align: left;">IOC share</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.03</td>
+</tr>
+<tr>
+<td style="text-align: left;">Frontend market share</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.01</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP/SL share</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.006</td>
+</tr>
+<tr>
+<td style="text-align: left;">One-way share</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">0.63</td>
+<td style="text-align: right;">0.24</td>
+</tr>
+<tr>
+<td style="text-align: left;">Turnover</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">4.8</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">2.0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Fill USD outside ten coins</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">0.26</td>
+</tr>
+</tbody>
+</table></div>
+<details>
+<summary>Column key and source</summary>
+<ul>
+<li>One column per group; the number of wallets is in the header. MM, Contested (MM, contested), Algo and Retail are final labels of the 306 (Table 1). <strong>Switching</strong> is every one of the 306 that trades from the web app on some days and through a program on others, or mixes both on 3 or more days; it overlaps the label columns (62 algo, 8 retail, 3 MM, 3 MM contested).</li>
+<li>One value per wallet over 2025-03-27 to 2026-06-30, ten coins merged; the cell is the median across wallets.</li>
+<li><strong>Order gap:</strong> seconds between consecutive orders within a UTC day. <strong>Hours in the market:</strong> UTC hours with an order placed or resting. <strong>Two-sided minute share:</strong> minutes with both a buy and a sell limit order placed, over minutes with any limit order. <strong>Two-sided resting share:</strong> time with a bid and an ask resting together, over time with any order resting. <strong>One-way share:</strong> on a day with fills, |bought − sold| / (bought + sold); 0 is balanced, 1 is one direction. <strong>Turnover:</strong> coin traded over the day's largest position.</li>
+<li>Source: Exp8 <code>data/d3g0923_wallet_cards.parquet</code>, <code>data/d3g0923_allcoin_wallets.parquet</code>; this table with p5 to p95 in <code>tables/d3g0924_subpop_quantiles.csv</code>.</li>
+</ul>
+</details>
+<ul>
+<li class="fb"><details class="fb"><summary><strong>Only the MM column quotes both sides.</strong></summary><p class="fb-body">Two-sided minute share 0.48 for the 3 MMs, 0.72 for true MMs, and 0.009 for the algo wallets.</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>The contested wallets sit between the two.</strong></summary><p class="fb-body">They fill as maker (0.89) and end the day flat (one-way share 0.05), but rest both sides 0.20 of the time.</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>The retail wallets are large directional traders.</strong></summary><p class="fb-body">A median 1.2M of volume, one-way share 0.63, and TP/SL 0.06 of their orders.</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>The switching wallets are mostly algo.</strong></summary><p class="fb-body">62 of 77 carry the algo label; they alternate web-app days and program days.</p></details></li>
+</ul>
+<details class="tblfold">
+<summary><strong>Table 4. The same measures, p5 / p25 / p50 / p75 / p95 across wallets.</strong></summary>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left;">Measure</th>
+<th style="text-align: left;">True MM (120)</th>
+<th style="text-align: left;">MM (3)</th>
+<th style="text-align: left;">Contested (19)</th>
+<th style="text-align: left;">Algo (261)</th>
+<th style="text-align: left;">Retail (21)</th>
+<th style="text-align: left;">Switching (77)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Volume (USD)</td>
+<td style="text-align: left;">19k / 1.4M / 46.9M / 354.5M / 6.2B</td>
+<td style="text-align: left;">236k / 1.2M / 2.3M / 5.3M / 7.6M</td>
+<td style="text-align: left;">26k / 58k / 325k / 812k / 6.2M</td>
+<td style="text-align: left;">5,972 / 45k / 329k / 4.0M / 58.7M</td>
+<td style="text-align: left;">54k / 204k / 1.2M / 3.2M / 27.8M</td>
+<td style="text-align: left;">21k / 250k / 1.7M / 13.5M / 171.4M</td>
+</tr>
+<tr>
+<td style="text-align: left;">Active days</td>
+<td style="text-align: left;">2.0 / 22 / 67 / 231 / 428</td>
+<td style="text-align: left;">28 / 82 / 150 / 164 / 174</td>
+<td style="text-align: left;">11 / 17 / 33 / 50 / 210</td>
+<td style="text-align: left;">11 / 30 / 63 / 108 / 258</td>
+<td style="text-align: left;">18 / 43 / 90 / 125 / 268</td>
+<td style="text-align: left;">15 / 32 / 72 / 129 / 261</td>
+</tr>
+<tr>
+<td style="text-align: left;">Orders per active day</td>
+<td style="text-align: left;">1,044 / 5,532 / 27k / 52k / 1.6M</td>
+<td style="text-align: left;">67 / 212 / 394 / 858 / 1,229</td>
+<td style="text-align: left;">37 / 96 / 263 / 563 / 1,153</td>
+<td style="text-align: left;">8.6 / 19 / 39 / 98 / 440</td>
+<td style="text-align: left;">7.9 / 15 / 23 / 42 / 85</td>
+<td style="text-align: left;">11 / 28 / 57 / 121 / 486</td>
+</tr>
+<tr>
+<td style="text-align: left;">Order gap p50 (s)</td>
+<td style="text-align: left;">0.13 / 0.52 / 1.1 / 1.9 / 11</td>
+<td style="text-align: left;">1.9 / 3.7 / 6.0 / 6.0 / 6.0</td>
+<td style="text-align: left;">1.8 / 2.7 / 6.7 / 11 / 61</td>
+<td style="text-align: left;">0.75 / 1.5 / 5.3 / 15 / 299</td>
+<td style="text-align: left;">12 / 21 / 53 / 168 / 596</td>
+<td style="text-align: left;">0.84 / 1.5 / 3.8 / 11 / 53</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hours in the market</td>
+<td style="text-align: left;">2.0 / 8.4 / 24 / 24 / 24</td>
+<td style="text-align: left;">2.6 / 5.0 / 8.0 / 8.5 / 8.9</td>
+<td style="text-align: left;">3.0 / 4.0 / 13 / 21 / 21</td>
+<td style="text-align: left;">1.0 / 2.0 / 5.0 / 10 / 23</td>
+<td style="text-align: left;">2.0 / 4.0 / 7.0 / 10 / 15</td>
+<td style="text-align: left;">1.0 / 3.0 / 5.0 / 10 / 20</td>
+</tr>
+<tr>
+<td style="text-align: left;">Orders per hour in the market</td>
+<td style="text-align: left;">145 / 552 / 1,514 / 4,030 / 69k</td>
+<td style="text-align: left;">10 / 21 / 35 / 100 / 152</td>
+<td style="text-align: left;">2.6 / 7.7 / 23 / 52 / 189</td>
+<td style="text-align: left;">1.9 / 3.8 / 6.8 / 13 / 46</td>
+<td style="text-align: left;">0.72 / 2.2 / 3.8 / 4.8 / 10</td>
+<td style="text-align: left;">2.3 / 4.8 / 8.4 / 20 / 57</td>
+</tr>
+<tr>
+<td style="text-align: left;">Maker share of USD</td>
+<td style="text-align: left;">0.21 / 0.42 / 0.82 / 0.97 / 1.00</td>
+<td style="text-align: left;">0.38 / 0.51 / 0.68 / 0.81 / 0.91</td>
+<td style="text-align: left;">0.26 / 0.62 / 0.89 / 0.97 / 1.00</td>
+<td style="text-align: left;">0.19 / 0.49 / 0.74 / 0.95 / 1.00</td>
+<td style="text-align: left;">0.10 / 0.21 / 0.30 / 0.64 / 0.88</td>
+<td style="text-align: left;">0.10 / 0.27 / 0.55 / 0.68 / 0.87</td>
+</tr>
+<tr>
+<td style="text-align: left;">Two-sided minute share</td>
+<td style="text-align: left;">0.08 / 0.50 / 0.72 / 0.88 / 0.98</td>
+<td style="text-align: left;">0.32 / 0.39 / 0.48 / 0.65 / 0.78</td>
+<td style="text-align: left;">0.001 / 0.14 / 0.22 / 0.39 / 0.76</td>
+<td style="text-align: left;">0 / 0.001 / 0.009 / 0.03 / 0.58</td>
+<td style="text-align: left;">0 / 0.006 / 0.009 / 0.04 / 0.10</td>
+<td style="text-align: left;">0 / 0.005 / 0.01 / 0.11 / 0.69</td>
+</tr>
+<tr>
+<td style="text-align: left;">Two-sided resting share</td>
+<td style="text-align: left;">0.01 / 0.34 / 0.67 / 0.83 / 0.97</td>
+<td style="text-align: left;">0.08 / 0.28 / 0.52 / 0.74 / 0.91</td>
+<td style="text-align: left;">0.000 / 0.01 / 0.20 / 0.59 / 0.96</td>
+<td style="text-align: left;">0 / 0 / 0.000 / 0.05 / 0.53</td>
+<td style="text-align: left;">0.000 / 0.03 / 0.07 / 0.09 / 0.23</td>
+<td style="text-align: left;">0 / 0.000 / 0.02 / 0.13 / 0.75</td>
+</tr>
+<tr>
+<td style="text-align: left;">Quote distance (bps)</td>
+<td style="text-align: left;">-0.20 / 2.9 / 6.7 / 17 / 91</td>
+<td style="text-align: left;">0.39 / 0.74 / 1.2 / 3.6 / 5.6</td>
+<td style="text-align: left;">0.10 / 0.25 / 1.5 / 7.3 / 225</td>
+<td style="text-align: left;">0.10 / 0.20 / 0.41 / 5.5 / 301</td>
+<td style="text-align: left;">0.20 / 41 / 183 / 406 / 740</td>
+<td style="text-align: left;">0.10 / 0.30 / 0.76 / 11 / 340</td>
+</tr>
+<tr>
+<td style="text-align: left;">Post-only share of orders</td>
+<td style="text-align: left;">0.58 / 0.85 / 0.98 / 1.00 / 1.00</td>
+<td style="text-align: left;">0.67 / 0.80 / 0.97 / 0.98 / 0.98</td>
+<td style="text-align: left;">0.07 / 0.64 / 0.89 / 0.99 / 1.00</td>
+<td style="text-align: left;">0.22 / 0.62 / 0.85 / 0.99 / 1.00</td>
+<td style="text-align: left;">0.19 / 0.39 / 0.63 / 0.82 / 0.89</td>
+<td style="text-align: left;">0.13 / 0.43 / 0.68 / 0.81 / 0.97</td>
+</tr>
+<tr>
+<td style="text-align: left;">GTC share</td>
+<td style="text-align: left;">0 / 0.000 / 0.002 / 0.05 / 0.41</td>
+<td style="text-align: left;">0.000 / 0.000 / 0.000 / 0.14 / 0.26</td>
+<td style="text-align: left;">0 / 0.000 / 0.005 / 0.15 / 0.67</td>
+<td style="text-align: left;">0 / 0 / 0.02 / 0.11 / 0.58</td>
+<td style="text-align: left;">0.02 / 0.07 / 0.14 / 0.35 / 0.58</td>
+<td style="text-align: left;">0 / 0.03 / 0.10 / 0.23 / 0.77</td>
+</tr>
+<tr>
+<td style="text-align: left;">IOC share</td>
+<td style="text-align: left;">0 / 0.000 / 0.002 / 0.01 / 0.12</td>
+<td style="text-align: left;">0 / 0 / 0 / 0.005 / 0.009</td>
+<td style="text-align: left;">0 / 0.000 / 0.01 / 0.03 / 0.24</td>
+<td style="text-align: left;">0 / 0 / 0.01 / 0.10 / 0.44</td>
+<td style="text-align: left;">0 / 0 / 0.001 / 0.04 / 0.08</td>
+<td style="text-align: left;">0 / 0.005 / 0.03 / 0.10 / 0.45</td>
+</tr>
+<tr>
+<td style="text-align: left;">Frontend market share</td>
+<td style="text-align: left;">0 / 0 / 0.000 / 0.000 / 0.002</td>
+<td style="text-align: left;">0.002 / 0.008 / 0.02 / 0.02 / 0.03</td>
+<td style="text-align: left;">0 / 0.000 / 0.001 / 0.002 / 0.01</td>
+<td style="text-align: left;">0 / 0 / 0.001 / 0.005 / 0.05</td>
+<td style="text-align: left;">0.005 / 0.01 / 0.06 / 0.10 / 0.19</td>
+<td style="text-align: left;">0.000 / 0.003 / 0.01 / 0.04 / 0.14</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP/SL share</td>
+<td style="text-align: left;">0 / 0 / 0 / 0 / 0.000</td>
+<td style="text-align: left;">0 / 0 / 0 / 0.000 / 0.000</td>
+<td style="text-align: left;">0 / 0 / 0 / 0.000 / 0.002</td>
+<td style="text-align: left;">0 / 0 / 0 / 0.005 / 0.07</td>
+<td style="text-align: left;">0 / 0.009 / 0.06 / 0.11 / 0.26</td>
+<td style="text-align: left;">0 / 0 / 0.006 / 0.04 / 0.16</td>
+</tr>
+<tr>
+<td style="text-align: left;">One-way share</td>
+<td style="text-align: left;">0.000 / 0.002 / 0.04 / 0.33 / 0.73</td>
+<td style="text-align: left;">0.000 / 0.000 / 0.000 / 0.13 / 0.23</td>
+<td style="text-align: left;">0.000 / 0.007 / 0.05 / 0.33 / 1.0</td>
+<td style="text-align: left;">0 / 0.05 / 0.33 / 1.0 / 1.0</td>
+<td style="text-align: left;">0.000 / 0.14 / 0.63 / 1.0 / 1.0</td>
+<td style="text-align: left;">0 / 0.03 / 0.24 / 0.80 / 1.0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Turnover</td>
+<td style="text-align: left;">0.80 / 1.5 / 3.9 / 13 / 115</td>
+<td style="text-align: left;">2.6 / 3.6 / 4.8 / 7.4 / 9.5</td>
+<td style="text-align: left;">0.91 / 1.7 / 3.0 / 6.6 / 9.9</td>
+<td style="text-align: left;">0.33 / 1.0 / 2.0 / 2.0 / 4.8</td>
+<td style="text-align: left;">0.65 / 1.0 / 1.0 / 2.0 / 2.9</td>
+<td style="text-align: left;">0.72 / 1.0 / 2.0 / 3.0 / 4.3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Fill USD outside ten coins</td>
+<td style="text-align: left;">0 / 0.009 / 0.13 / 0.49 / 0.86</td>
+<td style="text-align: left;">0.000 / 0.001 / 0.001 / 0.04 / 0.08</td>
+<td style="text-align: left;">0.01 / 0.08 / 0.19 / 0.78 / 0.88</td>
+<td style="text-align: left;">0 / 0.07 / 0.31 / 0.64 / 0.87</td>
+<td style="text-align: left;">0.005 / 0.05 / 0.28 / 0.44 / 0.67</td>
+<td style="text-align: left;">0.005 / 0.08 / 0.26 / 0.49 / 0.85</td>
+</tr>
+</tbody>
+</table></div>
+</details>
+<h2 id="s-4-the-261-algo-wallets-and-their-orders">4. The 261 algo wallets and their orders<a class="anchor" href="#s-4-the-261-algo-wallets-and-their-orders" aria-label="Link to this section"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.2 13.8a3.8 3.8 0 0 0 5.4 0l2.5-2.5a3.8 3.8 0 0 0-5.4-5.4l-1 1"/><path d="M13.8 10.2a3.8 3.8 0 0 0-5.4 0l-2.5 2.5a3.8 3.8 0 0 0 5.4 5.4l1-1"/></svg></a></h2>
+<p>Each algo wallet falls into one of six kinds.</p>
+<div class="defs">
+<ul>
+<li><strong>① One-sided maker, directional (80).</strong> Maker share 0.5 or more, one side at a time, and most of the day's fills in one direction. It builds or unwinds a position with post-only orders at the best price.</li>
+<li><strong>② One-sided maker, one round trip a day (59).</strong> As ①, but it buys about as much as it sells each day (one-way share 0.3 or less) and trades under 4 times its largest position: it opens a position and closes it.</li>
+<li><strong>③ One-sided maker, repeated round trips (7).</strong> As ②, turnover 4 or more. The closest to an MM, but still one side at a time.</li>
+<li><strong>④ Two-sided, far from the mid (21).</strong> Both sides on a coin, but more than 30 bps from the mid: a grid.</li>
+<li><strong>⑤ Mostly taker (41).</strong> Maker share under 0.5.</li>
+<li><strong>⑥ Rule undecided, reader: algo (53).</strong> The rule said unclear (too slow for its program test) or retail (TP/SL orders sent by a program); the reader saw post-only orders, fixed sizes and client order ids.</li>
+</ul>
+</div>
+<p class="caption"><strong>Table 5. The 261 algo wallets by kind, with their orders (medians across wallets).</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left;">Measure</th>
+<th style="text-align: right;">①</th>
+<th style="text-align: right;">②</th>
+<th style="text-align: right;">③</th>
+<th style="text-align: right;">④</th>
+<th style="text-align: right;">⑤</th>
+<th style="text-align: right;">⑥</th>
+<th style="text-align: right;">All</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Wallets</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">261</td>
+</tr>
+<tr>
+<td style="text-align: left;">Volume (USD)</td>
+<td style="text-align: right;">346.8M</td>
+<td style="text-align: right;">267.7M</td>
+<td style="text-align: right;">8.4M</td>
+<td style="text-align: right;">16.9M</td>
+<td style="text-align: right;">986.7M</td>
+<td style="text-align: right;">2.8B</td>
+<td style="text-align: right;">4.4B</td>
+</tr>
+<tr>
+<td style="text-align: left;">Orders per active day</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">121</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">39</td>
+</tr>
+<tr>
+<td style="text-align: left;">Order gap p50 (s)</td>
+<td style="text-align: right;">3.3</td>
+<td style="text-align: right;">4.2</td>
+<td style="text-align: right;">6.7</td>
+<td style="text-align: right;">2.1</td>
+<td style="text-align: right;">3.3</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">5.3</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hours in the market</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">5.0</td>
+</tr>
+<tr>
+<td style="text-align: left;">Maker share</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">0.74</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">0.64</td>
+<td style="text-align: right;">0.74</td>
+</tr>
+<tr>
+<td style="text-align: left;">Post-only share</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">0.77</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">0.58</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">0.85</td>
+</tr>
+<tr>
+<td style="text-align: left;">GTC share</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.02</td>
+</tr>
+<tr>
+<td style="text-align: left;">IOC share</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.005</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">0.01</td>
+</tr>
+<tr>
+<td style="text-align: left;">Frontend market share</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">0.001</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP/SL share</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table></div>
+<details>
+<summary>Column key and source</summary>
+<ul>
+<li>One column per kind (① to ⑥, defined above the table) and one for all 261. Volume is summed; every other row is the median across the kind's wallets.</li>
+<li><strong>Post-only, GTC, IOC, frontend market:</strong> shares of the wallet's orders; each order has one of these. <strong>TP/SL:</strong> share of orders that are take-profit or stop-loss triggers, on top of the four.</li>
+<li>Other measures as in Table 3. Source: Exp8 <code>tables/d3g0923_donly_final.csv</code>, <code>data/d3g0923_wallet_cards.parquet</code>; p5 to p95 in <code>tables/d3g0924_algo_kinds.csv</code>.</li>
+</ul>
+</details>
+<ul>
+<li class="fb"><details class="fb"><summary><strong>Every kind sends mostly post-only orders.</strong></summary><p class="fb-body">Even the takers (⑤) are 0.58 post-only, with IOC at 0.18; frontend market and TP/SL orders are near zero in every kind.</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>They are fast between orders but place few.</strong></summary><p class="fb-body">① and ② place a median 23 and 39 orders per active day; true MMs place 27k.</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>⑥ is the largest by volume.</strong></summary><p class="fb-body">Its wallets place orders every 30 s at the median, too slow for the rule's program test.</p></details></li>
+</ul>
+<details class="tblfold">
+<summary><strong>Table 6. The same measures, p5 / p25 / p50 / p75 / p95 across wallets.</strong></summary>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left;">Measure</th>
+<th style="text-align: left;">①</th>
+<th style="text-align: left;">②</th>
+<th style="text-align: left;">③</th>
+<th style="text-align: left;">④</th>
+<th style="text-align: left;">⑤</th>
+<th style="text-align: left;">⑥</th>
+<th style="text-align: left;">All</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Orders per active day</td>
+<td style="text-align: left;">6.1 / 13 / 23 / 69 / 282</td>
+<td style="text-align: left;">12 / 23 / 39 / 108 / 226</td>
+<td style="text-align: left;">53 / 108 / 175 / 416 / 677</td>
+<td style="text-align: left;">31 / 62 / 121 / 213 / 856</td>
+<td style="text-align: left;">12 / 28 / 43 / 102 / 461</td>
+<td style="text-align: left;">8.6 / 19 / 31 / 59 / 131</td>
+<td style="text-align: left;">8.6 / 19 / 39 / 98 / 440</td>
+</tr>
+<tr>
+<td style="text-align: left;">Order gap p50 (s)</td>
+<td style="text-align: left;">0.84 / 1.5 / 3.3 / 7.7 / 33</td>
+<td style="text-align: left;">0.83 / 1.3 / 4.2 / 9.4 / 77</td>
+<td style="text-align: left;">1.0 / 2.3 / 6.7 / 23 / 753</td>
+<td style="text-align: left;">0.53 / 0.84 / 2.1 / 27 / 299</td>
+<td style="text-align: left;">0.75 / 1.2 / 3.3 / 12 / 60</td>
+<td style="text-align: left;">1.1 / 12 / 30 / 84 / 596</td>
+<td style="text-align: left;">0.75 / 1.5 / 5.3 / 15 / 299</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hours in the market</td>
+<td style="text-align: left;">1.0 / 1.0 / 3.0 / 5.2 / 22</td>
+<td style="text-align: left;">2.0 / 2.2 / 6.0 / 10 / 17</td>
+<td style="text-align: left;">4.9 / 8.0 / 16 / 21 / 24</td>
+<td style="text-align: left;">2.5 / 7.0 / 20 / 22 / 24</td>
+<td style="text-align: left;">1.0 / 3.0 / 4.0 / 6.5 / 18</td>
+<td style="text-align: left;">2.0 / 4.0 / 6.0 / 11 / 20</td>
+<td style="text-align: left;">1.0 / 2.0 / 5.0 / 10 / 23</td>
+</tr>
+<tr>
+<td style="text-align: left;">Maker share</td>
+<td style="text-align: left;">0.55 / 0.73 / 0.90 / 0.99 / 1.0</td>
+<td style="text-align: left;">0.59 / 0.70 / 0.86 / 0.99 / 1.0</td>
+<td style="text-align: left;">0.53 / 0.56 / 0.75 / 0.83 / 0.97</td>
+<td style="text-align: left;">0.14 / 0.39 / 0.74 / 0.91 / 0.99</td>
+<td style="text-align: left;">0.06 / 0.20 / 0.34 / 0.44 / 0.48</td>
+<td style="text-align: left;">0.22 / 0.39 / 0.64 / 0.88 / 0.99</td>
+<td style="text-align: left;">0.19 / 0.49 / 0.74 / 0.95 / 1.00</td>
+</tr>
+<tr>
+<td style="text-align: left;">Post-only share</td>
+<td style="text-align: left;">0.42 / 0.81 / 0.95 / 0.99 / 1.0</td>
+<td style="text-align: left;">0.38 / 0.80 / 0.95 / 1.00 / 1.0</td>
+<td style="text-align: left;">0.17 / 0.40 / 0.77 / 0.89 / 0.97</td>
+<td style="text-align: left;">0.08 / 0.70 / 0.92 / 0.98 / 1.00</td>
+<td style="text-align: left;">0.16 / 0.40 / 0.58 / 0.76 / 0.86</td>
+<td style="text-align: left;">0.18 / 0.52 / 0.72 / 0.88 / 0.99</td>
+<td style="text-align: left;">0.22 / 0.62 / 0.85 / 0.99 / 1.00</td>
+</tr>
+<tr>
+<td style="text-align: left;">GTC share</td>
+<td style="text-align: left;">0 / 0 / 0.006 / 0.09 / 0.41</td>
+<td style="text-align: left;">0 / 0 / 0.003 / 0.04 / 0.41</td>
+<td style="text-align: left;">0 / 0 / 0 / 0.04 / 0.67</td>
+<td style="text-align: left;">0 / 0 / 0.010 / 0.08 / 0.89</td>
+<td style="text-align: left;">0 / 0.003 / 0.04 / 0.15 / 0.68</td>
+<td style="text-align: left;">0 / 0.02 / 0.10 / 0.28 / 0.75</td>
+<td style="text-align: left;">0 / 0 / 0.02 / 0.11 / 0.58</td>
+</tr>
+<tr>
+<td style="text-align: left;">IOC share</td>
+<td style="text-align: left;">0 / 0 / 0.006 / 0.03 / 0.16</td>
+<td style="text-align: left;">0 / 0 / 0.005 / 0.05 / 0.29</td>
+<td style="text-align: left;">0.001 / 0.009 / 0.09 / 0.35 / 0.60</td>
+<td style="text-align: left;">0 / 0.001 / 0.02 / 0.10 / 0.17</td>
+<td style="text-align: left;">0 / 0.03 / 0.18 / 0.29 / 0.66</td>
+<td style="text-align: left;">0 / 0 / 0.003 / 0.05 / 0.39</td>
+<td style="text-align: left;">0 / 0 / 0.01 / 0.10 / 0.44</td>
+</tr>
+<tr>
+<td style="text-align: left;">Frontend market share</td>
+<td style="text-align: left;">0 / 0 / 0 / 0.002 / 0.05</td>
+<td style="text-align: left;">0 / 0 / 0.000 / 0.003 / 0.01</td>
+<td style="text-align: left;">0 / 0.000 / 0.001 / 0.002 / 0.003</td>
+<td style="text-align: left;">0 / 0.001 / 0.003 / 0.005 / 0.01</td>
+<td style="text-align: left;">0 / 0.000 / 0.003 / 0.02 / 0.08</td>
+<td style="text-align: left;">0 / 0.000 / 0.003 / 0.01 / 0.08</td>
+<td style="text-align: left;">0 / 0 / 0.001 / 0.005 / 0.05</td>
+</tr>
+<tr>
+<td style="text-align: left;">TP/SL share</td>
+<td style="text-align: left;">0 / 0 / 0 / 0.001 / 0.03</td>
+<td style="text-align: left;">0 / 0 / 0 / 0.003 / 0.06</td>
+<td style="text-align: left;">0 / 0 / 0 / 0 / 0.06</td>
+<td style="text-align: left;">0 / 0 / 0 / 0 / 0.000</td>
+<td style="text-align: left;">0 / 0 / 0 / 0.008 / 0.02</td>
+<td style="text-align: left;">0 / 0 / 0.003 / 0.03 / 0.15</td>
+<td style="text-align: left;">0 / 0 / 0 / 0.005 / 0.07</td>
+</tr>
+</tbody>
+</table></div>
+</details>
+<h2 id="s-5-their-other-coins">5. Their other coins<a class="anchor" href="#s-5-their-other-coins" aria-label="Link to this section"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.2 13.8a3.8 3.8 0 0 0 5.4 0l2.5-2.5a3.8 3.8 0 0 0-5.4-5.4l-1 1"/><path d="M13.8 10.2a3.8 3.8 0 0 0-5.4 0l-2.5 2.5a3.8 3.8 0 0 0 5.4 5.4l1-1"/></svg></a></h2>
+<ul>
+<li class="fb"><details class="fb"><summary><strong>They trade many coins beyond the ten with order data.</strong></summary><p class="fb-body">The median wallet has fills on 30 perp coins and does 28% of its fill USD outside the ten, more than true MMs (13%).</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>There too they fill one side at a time and slowly.</strong></summary><p class="fb-body">One-way share 0.60 against 0.13 for true MMs; 6.3 fills per hour with a fill against 41.</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>31 wallets could be MMs on other coins.</strong></summary><p class="fb-body">They do half or more of their volume outside the ten, fill as maker there and balance buys and sells. Orders on those coins exist only to 2025-11-24, so whether they quote both sides cannot be tested.</p></details></li>
+</ul>
+<details class="tblfold">
+<summary><strong>Table 7. Activity on every coin (medians across wallets).</strong></summary>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left;">Measure</th>
+<th style="text-align: right;">(d)-only</th>
+<th style="text-align: right;">True MM</th>
+<th style="text-align: right;">Algo, matched</th>
+<th style="text-align: right;">Frontend, matched</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Perp coins with a fill</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr>
+<td style="text-align: left;">Fill USD outside the ten coins (share)</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.14</td>
+</tr>
+<tr>
+<td style="text-align: left;">Outside the ten: maker share</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.03</td>
+</tr>
+<tr>
+<td style="text-align: left;">Outside the ten: one-way share</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.16</td>
+</tr>
+<tr>
+<td style="text-align: left;">Outside the ten: fills per hour with a fill</td>
+<td style="text-align: right;">6.3</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">6.5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Orders on the median day, ten coins</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">36k</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td style="text-align: left;">Orders on the median day, 143 coins</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">66k</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">14</td>
+</tr>
+</tbody>
+</table></div>
+<details>
+<summary>Column key and source</summary>
+<ul>
+<li>Fills on every perp coin (the exchange's fill files, 2025-03-27 to 2026-06-30). Orders on 143 coins exist to 2025-11-24; the last two rows compare the median active day to that date.</li>
+<li>Source: Exp8 <code>tables/d3g0923_allcoin_quantiles.csv</code>; the 31 wallets in <code>tables/d3g0923_mm_elsewhere_candidates.csv</code>.</li>
+</ul>
+</details>
+</details>
+<h2 id="s-6-a-test-to-replace-clause-d">6. A test to replace clause (d)<a class="anchor" href="#s-6-a-test-to-replace-clause-d" aria-label="Link to this section"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.2 13.8a3.8 3.8 0 0 0 5.4 0l2.5-2.5a3.8 3.8 0 0 0-5.4-5.4l-1 1"/><path d="M13.8 10.2a3.8 3.8 0 0 0-5.4 0l-2.5 2.5a3.8 3.8 0 0 0 5.4 5.4l1-1"/></svg></a></h2>
+<p><strong>The test.</strong> Over the wallet's last 5 HYPE order days: a bid and an ask resting together half the time, or a buy and a sell placed in the same minute on 20% of quoting minutes; and a median post-only quote within 30 bps of the mid. A clause-(d) day that fails becomes algo.</p>
+<p class="caption"><strong>Table 8. The test on MM-labeled HYPE days.</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th style="text-align: left;">Group</th>
+<th style="text-align: left;">Clause</th>
+<th style="text-align: right;">MM days</th>
+<th style="text-align: right;">Quote distance (bps)</th>
+<th style="text-align: right;">Both sides</th>
+<th style="text-align: right;">Both sides, 30 bps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">True MM</td>
+<td style="text-align: left;">(a), (b) or (c)</td>
+<td style="text-align: right;">6,573</td>
+<td style="text-align: right;">6.7</td>
+<td style="text-align: right;">90%</td>
+<td style="text-align: right;">83%</td>
+</tr>
+<tr>
+<td style="text-align: left;">(d)-only</td>
+<td style="text-align: left;">(d)</td>
+<td style="text-align: right;">2,914</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">27%</td>
+<td style="text-align: right;">3%</td>
+</tr>
+<tr>
+<td style="text-align: left;">(d)-mostly</td>
+<td style="text-align: left;">(d)</td>
+<td style="text-align: right;">5,672</td>
+<td style="text-align: right;">74</td>
+<td style="text-align: right;">51%</td>
+<td style="text-align: right;">3%</td>
+</tr>
+<tr>
+<td style="text-align: left;">(d)-mostly</td>
+<td style="text-align: left;">(a), (b) or (c)</td>
+<td style="text-align: right;">1,590</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">46%</td>
+<td style="text-align: right;">5%</td>
+</tr>
+</tbody>
+</table></div>
+<details>
+<summary>Column key and source</summary>
+<ul>
+<li>One row per group (Section 1) and the label clause that made the day MM. Each day is judged on the wallet's last 5 HYPE order days.</li>
+<li><strong>Clause:</strong> the label clause that made the day MM. <strong>MM days:</strong> MM-labeled HYPE days in the row.</li>
+<li><strong>Quote distance:</strong> median post-only distance from the mid, median across the row's days. <strong>Both sides:</strong> share of days meeting the two-sided part of the test. <strong>Both sides, 30 bps:</strong> share of days meeting the whole test.</li>
+<li>Source: Exp8 <code>tables/d3g0923_rule_days.csv</code>.</li>
+</ul>
+</details>
+<ul>
+<li class="fb"><details class="fb"><summary><strong>It keeps real MMs and drops the one-sided programs.</strong></summary><p class="fb-body">83% of true MMs' days pass; 3% of the 306's clause-(d) days pass.</p></details></li>
+<li class="fb"><details class="fb"><summary><strong>It needs no order count.</strong></summary><p class="fb-body">A small or part-time MM that quotes both sides near the mid keeps its label; a floor of 200 orders a day would drop it.</p></details></li>
+</ul>
+<p><strong>Other decisions waiting.</strong></p>
+<div class="defs">
+<ul>
+<li>Replace clause (d) with this test. It needs two new daily features in the labeler: the two-sided share and the quote distance.</li>
+<li>The 19 contested wallets (40.5M of volume) stay algo.</li>
+<li>TP/SL orders stop counting as a sign of a person; only frontend market orders do.</li>
+<li>The 31 wallets that may be MMs on other coins stay algo until orders on those coins can be checked.</li>
+</ul>
+</div>
+<h2 id="s-appendix-where-the-rest-lives">Appendix: where the rest lives<a class="anchor" href="#s-appendix-where-the-rest-lives" aria-label="Link to this section"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.2 13.8a3.8 3.8 0 0 0 5.4 0l2.5-2.5a3.8 3.8 0 0 0-5.4-5.4l-1 1"/><path d="M13.8 10.2a3.8 3.8 0 0 0-5.4 0l-2.5 2.5a3.8 3.8 0 0 0 5.4 5.4l1-1"/></svg></a></h2>
+<div class="defs">
+<ul>
+<li><strong>Written record.</strong> Exp8 <code>analysis.md</code>, section 65.10 (Tables 34 to 44): order-type shares for every comparison group, day classes and switching, the full test table, the per-wallet lists of MM and contested wallets.</li>
+<li><strong>Tables.</strong> Exp8 <code>tables/d3g0923_*.csv</code> (per wallet: <code>d3g0923_donly_final.csv</code>); this page's tables <code>tables/d3g0924_*.csv</code>.</li>
+<li><strong>Code.</strong> <code>code/d3g0923_pass.py</code>, <code>d3g0923_analyze.py</code>, <code>d3g0923_allcoin.py</code>; this page <code>code/d3g0924_page.py</code>.</li>
+</ul>
+</div></div></main><button class="icon-btn totop" onclick="scrollTo({top:0,behavior:'smooth'})" title="Back to top" aria-label="Back to top"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19.5V5.5M6 11.5l6-6 6 6"/></svg></button><script>
   /* site menu (make_public_site.py): remembered state, chevrons, scroll position, theme */
   (function () {
     var c = document.getElementById('navoff'), side = document.querySelector('aside.sitenav');
@@ -972,5 +2023,4 @@
     });
   })();
 </script>
-</body>
-</html>
+</body></html>
