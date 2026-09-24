@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta name="robots" content="noindex, nofollow">
-<title>Exp8 review status</title>
+<title>The flow-shock chart</title>
 <style>
   :root { --bg:#f5f7f8; --surface:#fff; --text:#172126; --muted:#5a6b74;
           --line:#d8e0e4; --accent:#176b87; --warn:#99620d; --good:#1a6b45; }
@@ -357,6 +357,24 @@
   a.finding.keyres { display:block; text-decoration:none; color:inherit; transition:border-color .15s; }
   a.finding.keyres:hover { border-color:var(--accent); }
   a.finding.keyres small { margin-top:2px; color:var(--accent); }
+
+  main.viewer { max-width:none; margin-right:0; padding:26px 20px 20px; }
+  .viewer h1 { margin:0 0 4px; font-size:1.5rem; }
+  .viewer .vsub { margin:0 0 12px; color:var(--muted); max-width:none; }
+  .vbar { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0 0 10px; }
+  .vbar button { font:600 14px Inter,system-ui,sans-serif; min-width:40px; height:34px; padding:0 12px;
+          border:1px solid var(--line); border-radius:9px; background:var(--surface); color:var(--text); cursor:pointer; }
+  .vbar button:hover { background:color-mix(in srgb, var(--text) 8%, var(--surface)); }
+  .vbar .vzoom { font:600 14px Inter,system-ui,sans-serif; min-width:52px; text-align:center; color:var(--text); }
+  .vbar .vhint { color:var(--muted); font-size:13px; margin-left:6px; }
+  .vstage { position:relative; overflow:hidden; height:calc(100vh - 150px); min-height:340px;
+          border:1px solid var(--line); border-radius:12px; background:#fbfaf7;
+          touch-action:none; cursor:grab; user-select:none; -webkit-user-select:none; }
+  .vstage.drag { cursor:grabbing; }
+  .vstage img { position:absolute; left:0; top:0; max-width:none !important; border:0; border-radius:0;
+          transform-origin:0 0; -webkit-user-drag:none; pointer-events:none; }
+  @media (max-width:900px) { main.viewer { padding:70px 10px 12px; } .vstage { height:calc(100vh - 190px); }
+          .vbar .vhint { display:none; } }
 </style>
 </head>
 <body>
@@ -646,522 +664,70 @@
 </div>
 </details>
 </div><p class="navfoot">Descriptive, not causal. MMs appear by volume rank only.</p></aside>
-<main class="status" id="top">
-  <style>
-    main.status table.plans td:nth-child(1) { white-space:normal; min-width:24ch; }
-    main.status table.plans td:nth-child(2) { min-width:0; white-space:nowrap; }
-    main.status table.plans td:nth-child(3) { white-space:normal; min-width:14ch; }
-    main.status table.plans td:nth-child(4) { min-width:36ch; }
-    main.status table.decisions td:nth-child(2) { min-width:30ch; }
-    main.status table.decisions td:nth-child(3) { white-space:normal; min-width:26ch; }
-    main.status table.decisions td:nth-child(4) { white-space:nowrap; }
-    main.status table.decisions.waiting td:nth-child(2) { white-space:normal; min-width:28ch; }
-    main.status table.decisions.waiting td:nth-child(3) { white-space:normal; min-width:30ch; }
-    main.status table.decisions.waiting td:nth-child(4) { white-space:normal; min-width:12ch; }
-    main.status table.decisions.waiting td:nth-child(5) { white-space:nowrap; }
-  </style>
-  <div class="callout"><p><strong>Frozen on 2026-09-17.</strong> Current decisions are in the chat logs C001-C009.</p></div>
-  <h1>Review status</h1>
-  <p class="lede">Where each point of the 2026-09-11, 2026-09-15 and 2026-09-17 reviews of the report pages stands, where
-  on the page it is answered, which analysis requests and plans have run, and what waits for a decision. Updated
-  2026-09-17. Pages: <a href="exp8-inventory-shock-09-08.html">Exp8 inventory shocks</a> &middot;
-  <a href="exp10-tick-level-09-10.html">Exp10 at tick level</a> &middot; <a href="storyline.html">the storyline</a>
-  &middot; <a href="overview.html">all reports</a>. The 2026-09-02 review, written against the 2026-09-04 report,
-  is at the bottom.</p>
-
-  <div class="note"><strong>How to read the state column.</strong>
-  <span class="st done">DONE</span> the point is answered on the deployed page at the linked place.
-  <span class="st partial">PARTIAL</span> part of it is there; the gap is named.
-  <span class="st todo">NOT DONE</span> nothing on a page yet; where it will go is named.</div>
-
-  <h2 id="r0917">What changed on 2026-09-17</h2>
-  <p class="small">Fourteen builds of the Exp8 report went live today, letters i to x, each one a patch on the letter
-  before it. New sections first, then what moved inside sections that were already there, then the two data defects
-  found on the way. Every exhibit below is on all 915 events and 915 controls and includes 2025-10-10.</p>
-
-  <h3 id="r0917-new">Sections that are new today</h3>
-  <ul class="tight">
-    <li><strong>&sect;4.9, the peak rule as a second shock flag.</strong> Reading the peak of an MM&rsquo;s position
-    against its level at the start of the window, instead of its level at the end, gives 10 shocked MMs per event
-    instead of 5, and events with no shocked MM fall from 63 to 20. Both flags are now reported side by side; the end
-    rule stays the rule of record. <a href="exp8-inventory-shock-09-08.html#pop-peakrule">&sect;4.9</a></li>
-    <li><strong>&sect;4.10, what the market pays after the event (test H6).</strong> Spread is 1.38 times the matched
-    control during the event and still 1.35 times in the first 10 minutes after it, 1.22 times at 30 to 40 minutes and
-    1.14 times at 110 to 120. Liquidation cascades are the slow case: 2.05 times in the first 10 minutes and still
-    1.26 times after two hours. Surge-side takers pay 0.61 bps more in the first 10 minutes.
-    <a href="exp8-inventory-shock-09-08.html#pop-mktquality">&sect;4.10</a></li>
-    <li><strong>&sect;4.7b, the equity shock (test H2).</strong> The mark-to-market of the shock inventory, on the
-    ten-coin book with funding. <a href="exp8-inventory-shock-09-08.html#pop-equity-attrib">&sect;4.7b</a></li>
-    <li><strong>&sect;9.8, the one-sided surge families against the net-flow events.</strong> The shocked share of rows
-    is 5.30% in the one-sided family against 0.87% in its controls, 6.1 times; two-sided 6.21% against 1.31%, 4.7
-    times; net-flow 5.98% against 1.38%, 4.3 times. The absorbing direction holds in 90.2% of one-sided rows against
-    about 47% in controls, and the top five absorbers take a median 30% of the surging side&rsquo;s taker dollars in
-    every family. The &sect;8 mechanism survives the change of event selection.
-    <a href="exp8-one-sided-surges-record.html#families-step6">&sect;9.8</a></li>
-    <li><strong>&sect;11.5, the tilt test on all 812 population shocks.</strong> Across MMs the lean orders speed;
-    inside one MM it does not: &minus;0.03 with p = 0.52, a per-MM median of &minus;0.08, and only 31% of MMs with the
-    sign the across-MM story predicts. <a href="exp8-unwinders.html#x9-pop-within">&sect;11.5</a></li>
-    <li><strong>&sect;12.6, the orders behind the unwind.</strong> Cancels run 0.93 to 0.98 per new order, which is
-    record-keeping: the venue writes a modify as a cancel plus a new order.
-    <a href="exp8-unwinders.html#x9-unwind-orders">&sect;12.6</a></li>
-  </ul>
-
-  <h3 id="r0917-moved">Numbers and wording that moved</h3>
-  <ul class="tight">
-    <li><strong>&sect;4 now reads every placement day and every date.</strong> Order-state coverage rises to 100.0% of
-    shocked rows, the event count goes 910 to 915 and shocked rows 7,109 to 7,193. The &sect;4 finding holds:
-    absorption-side resting size is 1.14 times the opposite side in the two hours before the event.
-    <a href="exp8-inventory-shock-09-08.html#pop-def">&sect;4.1</a></li>
-    <li><strong>&sect;12.5 rewritten on the 35,612 accumulating MMs</strong>, with the 6,236 shocked rows reported
-    separately and every short window timed from the MM&rsquo;s own inventory peak. The 2026-09-16 version is folded
-    underneath as superseded. <a href="exp8-unwinders.html#x9-unwind-absorbers">&sect;12.5</a></li>
-    <li><strong>The tilt headline is corrected.</strong> &ldquo;Fast MMs do not tilt at all&rdquo; holds only for the
-    two-hour average. While they still hold the position they lean the most: +4.41 bps toward the exit against +0.56
-    for slow MMs, for a median of 4 minutes. <a href="exp8-unwinders.html#tab-x9-fs-skew">Table 52</a></li>
-    <li><strong>Speed is throughput.</strong> In the two hours after its peak a fast MM fills 8.0 times its
-    accumulation on the exit side and 6.6 times on the absorption side; a slow MM fills about 0.5 times on each.
-    Nobody crosses the spread to get out. <a href="exp8-unwinders.html#tab-x9-fs-thru">Table 56</a></li>
-    <li><strong>Two number audits, 128 items checked, 41 cells corrected.</strong> The largest: the &sect;4.1 control
-    breakdown moves to the 915-event sample (527 / 218 / 92 / 50 / 28), the &sect;3.3 gate share is 17.8% not 15.5%,
-    the &sect;6.3 hit side is $33.4m not $40.4m, and a &sect;4.3 bullet that compared group medians was false as
-    written (the within-wallet median ratio is 1.01, not 1.14).</li>
-    <li><strong>Sections read on their own.</strong> Ninety-five closed &ldquo;Terms used here&rdquo; boxes define
-    every symbol where it is used, 218 titles were shortened, 321 sentences that only repeated a table cell were cut,
-    and quantile cells print one value per line. The open text of the page grew 0.2%.</li>
-    <li><strong>&sect;12.1 to &sect;12.4 are labelled as the older tests</strong>, so their 30 and 120-minute classes
-    are not read as the current ones. <a href="exp8-unwinders.html#x9-unwind-tests">&sect;12.4</a></li>
-    <li><strong>No 5-minute held rule.</strong> Speed classes and the tilt tables use the single-minute inventory
-    peak; MMs back within one minute stay in the fast class.</li>
-    <li><strong>Site menu and hub redesigned.</strong> Page titles open their page, chevrons open the section lists,
-    the section in view is highlighted while scrolling, and the panel slides away or becomes a drawer on a phone.</li>
-  </ul>
-
-  <h3 id="r0917-defects">Two defects found in the source data</h3>
-  <ul class="tight">
-    <li><strong>The fill table is incomplete from 2025-03-24 to 2025-05-25.</strong> Maker HYPE over taker HYPE runs
-    0.247 to 1.146 on those 63 dates against 0.5% balance on every later date. It was found by a population check that
-    fails only there: the per-MM absorption shares of 7 windows sum above 1, worst 2.25. Each exhibit is now
-    classified. Safe by their own dates: &sect;4.7, &sect;4.7b, &sect;4.8, &sect;6, &sect;7, &sect;13, &sect;14.
-    Affected but small: &sect;4.2, &sect;4.3, &sect;8, &sect;5, &sect;12, &sect;3 (110 of 915 events), &sect;9 (113 of
-    922), Exp9 (33 of 812). Unchecked: &sect;3.4, the &sect;4.3 order-placement detail, &sect;4.10.
-    <a href="exp8-inventory-shock-09-08.html#data-h">&sect;15</a></li>
-    <li><strong>The post-only flag is blank from 2026-04-16 to 2026-04-23.</strong> On those eight dates the fill table
-    records only two order-type values, so no fill can be marked post-only. The active-MM rule already handles it: it
-    reads each date&rsquo;s own fills and falls back to one maker fill when the whole population shows no post-only
-    fill, which keeps 16 events, 14 controls and 3,324 event &times; MM rows that would otherwise have no active MM at
-    all. No number moves. <a href="exp8-inventory-shock-09-08.html#tab-pop-rules">Table 6</a></li>
-  </ul>
-
-  <h2 id="r0916">The 2026-09-11, 2026-09-15 and 2026-09-17 reviews</h2>
-
-  <h3 id="r0916-exp8">Exp8 page points</h3>
-  <div class="table-wrap"><table>
-    <thead><tr><th>#</th><th>Ask</th><th>State</th><th>Where on the page</th><th>What was done, and what is missing</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td>Delete Figure 3 (the price-gate gallery).</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#imb-h">&sect;3</a></td>
-        <td>Removed; the bullet that relied on it cites its source table.</td></tr>
-      <tr><td>2</td><td>&sect;3.4 title "A price-first trigger, as the literature defines it, at the same selectivity" is bad.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#imb-alt">&sect;3.4</a></td>
-        <td>Now "Two shock definitions: price-first and flow-first".</td></tr>
-      <tr><td>3</td><td>All Exp9 and Exp10 results should be on the page.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-unwinders.html#x9-book-h">&sect;10</a> &middot; <a href="exp8-unwinders.html#x9-pop-h">&sect;11</a> &middot; <a href="exp8-unwinders.html#x9-unwind-h">&sect;12</a> &middot; <a href="exp8-event-studies.html#x10-min-h">&sect;13</a> &middot; <a href="exp8-event-studies.html#x10-tick-h">&sect;14</a></td>
-        <td>A coverage audit found 0 of 27 Exp9 results and 1 of 16 Exp10 results on the 09-11 page. Five sections were written and merged: the shocked roster MM's book (Exp9 &sect;3), the 812 population shocks and recovery against skew (Exp9 &sect;12), quoting while unwinding by recovery speed (Exp9 &sect;13), and the two Exp10 episodes at one minute and at tick level.</td></tr>
-      <tr><td>4</td><td>Sentences written to the reviewer ("Roster membership is neither a filter nor a visual category", "this revision", "the reviewer's example") must go.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#pop-def">&sect;4.1</a></td>
-        <td>None of the flagged phrases survives on the page (checked by search on the built file).</td></tr>
-      <tr><td>5</td><td>Define the shock-scale floors without a worked example; say what "$12,500 or 2%" means.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#notation-h">Notation</a></td>
-        <td>The scale is the largest of three quantities: the wallet's own robust deviation, 2% of its 95th-percentile position, and $12,500 in HYPE. A shock needs 3 &times; scale, so every shock is at least $37,500 and at least 6% of that position. The two floors are separate; the larger applies.</td></tr>
-      <tr><td>6</td><td>Delete the strict-tier sentence (|z| &ge; 6 and $100,000) if nothing uses it.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#notation-h">Notation</a></td>
-        <td>Deleted from the definitions. The 6-sigma tier survives only as an option in &sect;17.1.</td></tr>
-      <tr><td>7</td><td>Are the unshocked MMs really market making? Count orders and distinct order ids in the prior two hours; require at least one post-only fill; consider an order-count floor.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#tab-pop-activity">Table 5</a> &middot; <a href="exp8-inventory-shock-09-08.html#tab-pop-rules">Table 6</a></td>
-        <td>Median unshocked row before an event: 676 orders submitted, 29 fills, 20 post-only; 6.9% of unshocked rows have no post-only fill. The rule of record adds at least one post-only fill in the two hours before: it drops 5.3% of rows, 4.0% of shocked rows and 0.37% of absorbed maker USD. Order floors are rejected: 120 orders would drop 11.8% of shocked rows for 1.8% of the volume and cannot be measured on the 28% of rows whose date has an order-store hole. Confirming the rule is decision D6.</td></tr>
-      <tr><td>8</td><td>A second absorber definition: inventory grew on the absorption side during the event, so the accumulated amount can be measured. Propose one.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-unwinders.html#tab-pop-absacc-variants">Table 10</a> &middot; <a href="exp8-unwinders.html#pop-unwind">&sect;4.4</a></td>
-        <td>Nine variants tested. Rule of record: the event built at least one own sigma on the absorption side, the peak sits at least one own sigma from the six-hour median, and absorption-side maker fills exceed opposite-side fills up to the peak. 25,705 of 126,846 rows qualify, a median 23 per event, holding 64% of hit-side maker USD; 65% of each event's five biggest absorbers qualify against 23.6% flagged by the shock rule.</td></tr>
-      <tr><td>9</td><td>&sect;4 must say which rule its events come from, and how many shocked MMs moved with the taker flow against it.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#pop-h">&sect;4 lede</a></td>
-        <td>The lede names the rule (net taker flow in the top 5% of |z<sub>NET</sub>|, 915 events, 914 measured, 909 pooled). 87.1% of shocked MMs ended positioned against the flow, the absorbing direction: 6,186 of 7,105. By event, 444 all absorbing, 365 mixed, 37 all with the flow; control windows split 47.8%.</td></tr>
-      <tr><td>10</td><td>Five quantiles on five lines; separate absorption-side from opposite-side orders in every table (Tables 6, 7, 8 of the 09-11 page); any cell with three to five values gets one value per line.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#tab-pop-state">Table 8</a> &middot; <a href="exp8-inventory-shock-09-08.html#pop-peers">&sect;4.6</a></td>
-        <td>Every &sect;4 cell with five quantiles puts one per line with the median in bold, and every order, fill, distance, message-rate and volume row is split into absorption side and opposite side, before and after. On 2026-09-16 the same rule was applied to every table on the page: 108 cells elsewhere that held three or more values on one line now carry one value per line.</td></tr>
-      <tr><td>11</td><td>Were the same shocked-against-unshocked statistics computed for the one-sided flow events, and what are those definitions?</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-one-sided-surges-record.html#families-f1-def">&sect;9.6</a> &middot; <a href="exp8-one-sided-surges-record.html#families-f1-pop">&sect;9.7</a></td>
-        <td>Done for F1 (922 one-sided surges), twice: on the 1-minute runs and on the 30-minute boxes. Shocked share of rows 5.2% and 5.3% against 5.9% on the net-flow events; the half hours the net rule never selects shock MMs at about half the rate. <strong>Missing:</strong> F2 (399 two-sided events) is not run; F3 is not cut out of the F1 tables; no matched controls for the families; the &sect;8 absorber statistics (top-5 share, peak excursion) are not run on the families. Decisions D3, D4 and D7.</td></tr>
-      <tr><td>12</td><td>Early against late unwinders: both must be absorbers that accumulated inventory; early means already half unwound when price peaked. How many under the old definition?</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-unwinders.html#pop-unwind">&sect;4.4</a></td>
-        <td>Old definition on all 914 events: 2,948 early only, 2,606 late only, 1,694 both, 244 neither of 7,492 shocked rows; its "flow still running" clause fired on 62% of rows. New definition on the 25,705 accumulated absorbers: 5,340 early (20.8%), 16,510 late holding more than half (64.2%), 3,855 late with the peak after the price extreme (15.0%). Early MMs are half back 3 minutes after their own peak against 96 for late; the separator is book shape, not aggression. The price-extreme window is decision D5. On 2026-09-17 a review found that "early" is mostly the fast class measured against the price clock (T60 median 4 minutes, peak a median 27 minutes before the price extreme); whether to replace it with two axes is decision D12.</td></tr>
-      <tr><td>13</td><td>The menu button does not show or hide the menu.</td>
-        <td><span class="st done">DONE</span></td>
-        <td>every page</td>
-        <td>The menu is a CSS checkbox on every page of the site, so it hides and shows without scripts (the VS Code preview runs none).</td></tr>
-      <tr><td>14</td><td>Explain Spearman's test and rho at Table 12.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#prof-frequency">&sect;5.4</a></td>
-        <td>A definition box above the table: rho as the correlation of two rank orders, its range, what the p-value tests.</td></tr>
-      <tr><td>15</td><td>Delete "the level-by-level view" and put the five tick plots in a toggle; delete "Two renderings"; remove the player.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-event-studies.html#ticka-replay-ticks">&sect;6.7</a> &middot; <a href="exp8-event-studies.html#ticka-replay-anim">&sect;6.8</a></td>
-        <td>Both paragraphs deleted; the five tick figures sit in a toggle; the interactive player is gone and the replay video stays, with a WebM version beside the MP4, both embedded in the page.</td></tr>
-      <tr><td>16</td><td>Do not write "ladder", "rebound" or "print"; say the other MMs, taker order, resting orders.</td>
-        <td><span class="st done">DONE</span></td>
-        <td>whole page</td>
-        <td>Zero occurrences of "ladder", "print" or "desk" on the built page.</td></tr>
-      <tr><td>17</td><td>Name the event set and count under every section, with a box on how the event definition changed and clear start, peak and end definitions.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#events-h">Event definitions</a></td>
-        <td>A section after the notation lists the five event sets with their selection rule, start, peak and end, the 1-minute run construction, a wallet's own clock, how the definition changed from 2026-09-05 to 2026-09-15, and which set each summary finding uses. Every section heading carries a box naming its set and count.</td></tr>
-      <tr><td>18</td><td>Order-book rows of &sect;4 (resting size, distance, message rates).</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#pop-def">&sect;4.1</a></td>
-        <td>The live page still measures those rows on the 74% of rows whose date the raw order store covers, and says so. The rerun that reads every placement day is <strong>validated</strong>: order-state coverage rises to 100.0% of shocked, 99.9% of unshocked and 99.9% of control rows, all 915 events carry rows, and the &sect;4 finding holds (absorption-side resting size 1.14 times the opposite side in the two hours before, 1.20 in the 30 minutes before). It sits in the source parts and in an unpublished build, <code>report_inventory_shock_09-17b.html</code>, which lacks the 2026-09-17 &sect;4.4 wording. <strong>Missing:</strong> the fixed &sect;4 on top of the live 09-17c page, then a publish.</td></tr>
-          <tr><td>19</td><td>&sect;4.4 Table 10: define A and L before using them; write the rules as "A &ge; sig24", not "change" or "level"; say how sig24 differs for A and L; spell out ACC and other acronyms in each caption. Every section and table must read on its own.</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-unwinders.html#pop-unwind">&sect;4.4</a> &middot; <a href="exp8-unwinders.html#tab-pop-absacc-variants">Table 10</a></td>
-        <td><strong>Done in &sect;4.4:</strong> a "Symbols used in this section" list; rule rows as inequalities (<code>A &ge; sig24 and L &ge; sig24</code> in bold); one sig24 per MM per event, used for both A and L, which differ only in the reference position (window start against the six-hour median), with a worked example in HYPE; "given back" defined as a continuous share; acronyms spelled out in the captions of Tables 10 to 12. <strong>Missing:</strong> the same pass on every other section and table of the page, which the rule requires.</td></tr>
-      <tr><td>20</td><td>&sect;4.4: what is "the window" in "the price extreme over the event window plus 30 minutes"? Make it clear.</td>
-        <td><span class="st todo">NOT DONE</span></td>
-        <td>will go in <a href="exp8-unwinders.html#pop-unwind">&sect;4.4</a></td>
-        <td>Answered in chat, not on the page. The window is the event's own box [t<sub>0</sub>, t<sub>1</sub>). The accumulation A and the inventory peak are searched only inside it; the price extreme is searched over [t<sub>0</sub>, t<sub>1</sub> + 30 min) and can land up to 30 minutes after the box ends, in which case "given back" is read at that later minute. A replacement paragraph that gives both sets of counts (5,340 / 16,510 / 3,855 with the extension, 3,877 / 14,683 / 7,145 without) is drafted.</td></tr>
-      <tr><td>21</td><td>&sect;4.4 Table 12: how are ACC and UNW defined, why do only late accumulators mark out positive during ACC, what about UNW markouts, what does "censored at 360 min" mean?</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-unwinders.html#pop-unwind">&sect;4.4</a></td>
-        <td>Answered in chat with numeric checks; the captions are not yet fixed. ACC runs from the window start to the MM's own peak and UNW is a fixed two hours from the peak. The positive ACC markout is timing: fills made within 5 minutes before the price extreme mark out +10.6 bps at 30 minutes, fills 15 or more minutes before it about &minus;38 bps, in every class. The UNW markout pools both sides: absorption-side fills after the peak gain (+9.8 to +23.7 bps) while the exit-side fills that shrink the position lose (&minus;0.7 to &minus;5.8 bps), so the sentence "late unwinders mark out better on the fills that reduce the position" is wrong as written. Censored means still above half six hours after the peak; those rows mostly peak on the window's last minute. <strong>Missing:</strong> six caption and prose fixes, to be applied on the build that carries the &sect;4 order-day fix.</td></tr>
-      <tr><td>22</td><td>Do not enforce the 5-minute held rule.</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-unwinders.html#x9-unwind-absorbers">&sect;12.5</a> &middot; <a href="exp8-unwinders.html#pop-unwind">&sect;4.4</a></td>
-        <td>No table or class filters on it: the speed classes, the tilt and throughput tables and the early/late labels all use the single-minute peak. <strong>Missing:</strong> &sect;4.4 still quotes the count it would give (early falls from 20.8% to 11.2%) and the folded 2026-09-16 &sect;12.5 repeats it; both read as a candidate rule and should go.</td></tr>
-      <tr><td>23</td><td>Where does "over the first 5 minutes, faster unwinds lean more, &minus;0.53 across MMs, &minus;0.04 inside an MM" live in the report?</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-unwinders.html#tab-x9-fs-order">Table 55</a> &middot; <a href="exp8-unwinders.html#tab-x9-unwind-tests">Table 50</a></td>
-        <td>Table 55 of &sect;12.5, row "all 35,612 accumulators, first 5 min" (pooled &minus;0.29; across 353 MMs &minus;0.53; inside an MM &minus;0.04; an MM's fast unwinds lean more than its slow ones in 68% of 115 MMs). <strong>Missing:</strong> Table 50 of &sect;12.4, just above, makes the same claim on the older population and the two-hour window (&minus;0.46 across, &minus;0.09 inside, ranked on minutes to half). It should be labelled as the older test or folded.</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3 id="r0916-exp10">Exp10 page points</h3>
-  <div class="table-wrap"><table>
-    <thead><tr><th>#</th><th>Ask</th><th>State</th><th>Where on the page</th><th>What was done, and what is missing</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td>Say what the page is about before the Summary: is the whole page episodes 39 and 47?</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp10-tick-level-09-10.html#s-summary">top of the page</a></td>
-        <td>A scope paragraph before the Summary: sections 1 to 5 are episodes 39 and 47, section 6 is the 812 population shocks.</td></tr>
-      <tr><td>2</td><td>The Summary needs a paragraph on what was done before the bullets; shorten it; more space between bullets; delete the X05/X04 sentence.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp10-tick-level-09-10.html#s-summary">Summary</a></td>
-        <td>One paragraph on what was done, then five spaced bullets, each with the section it comes from.</td></tr>
-      <tr><td>3</td><td>"What was measured" is a definition and belongs in a box; clock times and the like in a toggle like the Exp8 page.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp10-tick-level-09-10.html#s-1-what-was-measured">&sect;1</a></td>
-        <td>Four definition boxes (clock times and windows; sides, surge and taker orders; peak, recovery and classes; data and wallet codes) inside one toggle, under a one-sentence lede.</td></tr>
-      <tr><td>4</td><td>Say "taker order", never "print"; no "ladder" or "rebound".</td>
-        <td><span class="st done">DONE</span></td>
-        <td>whole page</td>
-        <td>Zero occurrences on the built page.</td></tr>
-      <tr><td>5</td><td>Hide Figures 3 and 4 (the resting-order rows).</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp10-tick-level-09-10.html#s-3-same-taker-orders-two-outcomes">&sect;3</a></td>
-        <td>Both sit in a toggle at the end of &sect;3.</td></tr>
-      <tr><td>6</td><td>Remove the video player that does not work.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp10-tick-level-09-10.html#s-5-animation">&sect;5</a></td>
-        <td>The MP4 players are gone; the two GIF animations stay, embedded in the page.</td></tr>
-      <tr><td>7</td><td>Make the layout cleaner like the Exp8 page: hide detail in toggles so the findings and the structure show at a glance.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp10-tick-level-09-10.html#s-2-the-surge-is-a-few-very-large-taker-orders">&sect;2</a> onward</td>
-        <td>Every section opens with a one-sentence lede and carries its findings as bold-led bullets. Table captions keep the numbered title line and fold the column key and source; every figure keeps a one-line title and folds its reading guide; the wallet-by-wallet detail of &sect;3, the population setup of &sect;6 and the data appendix are toggles. Thirteen toggles against two before; no sentence was deleted.</td></tr>
-    </tbody>
-  </table></div>
-
-    <h3 id="r0917-site">Site points</h3>
-  <div class="table-wrap"><table>
-    <thead><tr><th>#</th><th>Ask</th><th>State</th><th>Where</th><th>What was done, and what is missing</th></tr></thead>
-    <tbody>
-      <tr><td>S1</td><td>Improve the homepage layout and the side menu the way ChatGPT's sidebar works: clicking a title opens the page, smoother toggles, the section in view highlighted while scrolling; remove the "Open &hellip; &rarr;" rows.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="overview.html">hub</a> and every page</td>
-        <td>Page titles open their page and chevrons open the section lists; the section on screen is highlighted and its subsections open; a link into a closed fold opens the fold; the panel slides away and re-centres the page, and becomes a drawer on a phone; one light/dark toggle. The hub has a "Start here" box for Exp8 with its contents folded, two boxes per row for the other pages, and event-set tags.</td></tr>
-      <tr><td>S2</td><td>The spot-quote page carries the same menu.</td>
-        <td><span class="st todo">NOT DONE</span></td>
-        <td><a href="exp8-spot-quote-12-17.html">spot-quote page</a></td>
-        <td>It keeps its own older menu because it is built from a different page template.</td></tr>
-      <tr><td>S3</td><td>Hub wording matches the pages.</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="overview.html">hub</a></td>
-        <td>The Exp8 box says "around all 914 events"; with the order-day fix every one of the 915 events carries rows. To change when that fix is published.</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3 id="r0916-asks">Analysis requests of 2026-09-15</h3>
-  <div class="table-wrap"><table>
-    <thead><tr><th>#</th><th>Ask</th><th>State</th><th>Where</th><th>What it found</th></tr></thead>
-    <tbody>
-      <tr><td>A1</td><td>Redefine early and late unwinders sensibly.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-unwinders.html#pop-unwind">&sect;4.4</a></td>
-        <td>See Exp8 point 12.</td></tr>
-      <tr><td>A2</td><td>Fast and slow are a separate axis from early and late; how should T60 thresholds be set, quantiles or fixed?</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-unwinders.html#x9-unwind-absorbers">&sect;12.5</a> &middot; Exp8 record &sect;45</td>
-        <td>Fixed cuts: fast at 10 minutes or less (27% of the 25,705 rows), slow above 60 minutes or never within six hours (49%, half of them never), middle kept as a class; 5 / 120 as the sensitivity. T60 has no natural break and 26% of rows are censored, so terciles would cut at 197 minutes inside the censored mass. 59% of the spread in log T60 is between MMs. The informative cross-cell is late but fast: 2,580 MMs held more than half at the price extreme yet were 60% back within 10 minutes of their own peak. Adopting the cuts is decision D2.</td></tr>
-      <tr><td>A3</td><td>Did we notice that very fast unwinders use more taker volume?</td>
-        <td><span class="st done">DONE</span></td>
-        <td>Exp8 record &sect;45</td>
-        <td>Only for two wallets (MM07, X05). On 7,404 shocked rows the taker share of reducing fills is 0.175 fast, 0.200 medium, 0.199 slow; rank correlation with minutes to half &minus;0.09 pooled, &minus;0.03 within an MM. Fast MMs add a small dose of IOC orders (51% use some against 25%); their bulk is post-only. On the 25,705 accumulated absorbers the median exit-side taker share is zero in every class (&sect;12.5).</td></tr>
-      <tr><td>A4</td><td>For each class (early/late, fast/slow, and their cross): order skew and distance to the touch by side, resting size by side, unwind-side taker share, the change from the two hours before, all five quantiles; markouts at 5, 10, 30, 60, 120 minutes by side, in dollars and volume-weighted bps.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-unwinders.html#x9-unwind-absorbers">&sect;12.5</a></td>
-        <td>First delivered 2026-09-16 on the 25,705 own-rule rows over the two hours after the peak, now folded as superseded. Two of its readings are out of date: "fast MMs do not tilt at all" and "inside an MM, more tilt goes with a slower unwind" both came from averaging over two hours (see A10). Still valid: exit-side taker share is zero at the median in every class, and exit-side fills after the peak lose money for fast and middle unwinders (&minus;9.5 and &minus;13.5 bps at 30 minutes) and make money for slow ones (+7.2).</td></tr>
-      <tr><td>A5</td><td>Check whether the stored markout columns can be used.</td>
-        <td><span class="st done">DONE</span></td>
-        <td>Exp8 record &sect;45</td>
-        <td>Sign s &times; (mid(t+h) &minus; fill) &times; size; volume-weighted bps within 0.03 bps of a date-safe rebuild on ordinary days and 0.41 bps on 2025-10-10. Usable in aggregate; recompute for row-level claims.</td></tr>
-      <tr><td>A6</td><td>A flow chart of the taker-surge storyline in the grammar of the draft's Figure 1, with every number tagged by its event set.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="storyline.html">the storyline page</a></td>
-        <td>Eight nodes, evidence toggles, a key of the five event sets, and a table reading the draft's nodes against ours; links and numbers refreshed to the 2026-09-16 pages.</td></tr>
-      <tr><td>A7</td><td>The top-5 absorber statistics of &sect;8 on the new taker-surge families.</td>
-        <td><span class="st todo">NOT DONE</span></td>
-        <td>will go in &sect;9</td>
-        <td>Only the &sect;4 shocked-against-unshocked pass ran on F1. The absorber pass (peak excursion, own scale, retained share) needs the &sect;8 builder pointed at the family file; about an hour of compute per family. Decision D4.</td></tr>
-      <tr><td>A8</td><td>The Vercel site was not updated with the review edits and the new results.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="overview.html">hub</a></td>
-        <td>Deployed 2026-09-16 with the rebuilt Exp8 and Exp10 pages, the spot-quote page, the storyline and this page. Updated again on 2026-09-17 with the rewritten &sect;12.5, the &sect;4.4 wording and the menu redesign.</td></tr>
-          <tr><td>A9</td><td>Run the tilt test only on MMs that accumulated inventory, flagged by an OR rule (own sigma, or the event's upper quartile), with the shocked subset on its own; if the early and fast MMs did not tilt, how do they unwind? Read episodes order by order.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-unwinders.html#tab-x9-fs-pop">Table 51</a> &middot; Exp8 record &sect;47, &sect;48</td>
-        <td>OR rule: 35,612 rows (own rule 25,081, population rule 28,530), 6,236 shocked. Fast MMs unwind by volume, not by crossing: exit-side fills 8.0 times A and absorption-side refills 6.6 times A in two hours, against about 0.5 for slow MMs; T60 against gross exit flow has Spearman &minus;0.83. Fast MMs submit and cancel about 40 orders per minute per side, slow ones about 6. Ten episodes read order by order: all fill both sides and cancel 83 to 99.8% of orders; the exit lean (4 to 53 bps) lives in the first 1 to 8 minutes after the peak; cancels take the farther orders on both sides alike.</td></tr>
-      <tr><td>A10</td><td>Was the 2026-09-16 tilt result wrong or obsolete? Are the minutes counted from each MM's own peak or from a point of the event? Put a clearly defined fast/slow comparison on the site, with the population and the number of events.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-unwinders.html#x9-unwind-absorbers">&sect;12.5</a> &middot; <a href="exp8-unwinders.html#tab-x9-fs-skew">Table 52</a> &middot; Exp8 record &sect;49</td>
-        <td>The numbers were right and two readings were out of date (A4). Every short window starts at the MM's own inventory peak, the first minute inside the event box at which the inventory built since the box opened is largest, so two MMs in one event run on different clocks. "First 5 minutes, +3.0 fast against &minus;0.8 slow" is the skew over the 5 minutes after each MM's own peak minus its skew in the two hours before the event. The section gives rows, events and MMs for every population and class: fast 9,340 rows on 907 events, slow 17,594 rows on 912 events.</td></tr>
-      <tr><td>A11</td><td>Which order measures exist on the population: new orders and cancels per side, where cancelled orders sit, taker volume and count per side and their growth against the two hours before, markouts in the short windows?</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-unwinders.html#tab-x9-fs-msg">Table 57</a> &middot; <a href="exp8-unwinders.html#tab-x9-fs-mk">Table 58</a></td>
-        <td>On the page: best and size-weighted distance to the touch and resting size per side in every window; new orders and cancels per minute per side; markouts of the MM's own maker fills after the peak. <strong>Missing:</strong> where cancelled orders sit on the population (only the ten episodes have it; needs a build that reads cancels); taker order counts per side and their growth against the two hours before; markouts tabulated over the short windows (stored per row, not tabulated).</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3 id="r0916-plans">Plans: executed and open</h3>
-  <div class="table-wrap"><table class="plans">
-    <thead><tr><th>Plan</th><th>State</th><th>Where</th><th>Executed, and what is left</th></tr></thead>
-    <tbody>
-      <tr><td>2026-09-10, taker-surge event families (7 steps)</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-one-sided-surges-record.html#families-h">&sect;9</a></td>
-        <td>Steps 0 to 5 done on 2026-09-10 (side scores, matched-count cutoff, set composition, 5-minute durations, 1-minute anchors, price patterns, the F1 / F2 / F3 catalogues; 41 of 41 checks). Step 6, the outcome table per family, is half done: the loader now accepts a family file, and F1 has the shocked-against-unshocked statistics on both windows (2026-09-15). <strong>Left:</strong> F2 (its 1-minute extent on excess total taker USD still needs confirming), F3 cut from F1, matched controls per family, the absorption-breadth and concentration table across F0 / F1 / F2 / F3. Step 7: rendered as &sect;9.6 and 9.7; the analysis record has the 2026-09-15 results as &sect;43.</td></tr>
-      <tr><td>2026-09-10, absorber excursion and unwind skew</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#absorbers-h">&sect;8</a> &middot; <a href="exp8-unwinders.html#x9-unwind-h">&sect;12</a></td>
-        <td>Part A (peak excursion of every active MM, 126,846 rows) and part B (exit-side tilt to the touch by recovery speed, 7,492 shocked wallet-events) both ran, were recorded (Exp8 &sect;40, Exp9 &sect;13) and are on the page. The start-level peak rule is decision D1.</td></tr>
-      <tr><td>2026-09-10, Exp10 at tick level</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp10-tick-level-09-10.html">Exp10 page</a></td>
-        <td>Executed and published 2026-09-10; page revised 2026-09-15 and 2026-09-16.</td></tr>
-      <tr><td>2026-09-15, quote skew, unwind-side taker share and markouts by unwind class</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-unwinders.html#x9-unwind-absorbers">&sect;12.5</a></td>
-        <td>Build ran 2026-09-15 (344 dates, 25,705 rows); the reduce ran 2026-09-16 with the T60 classes and the timing &times; speed cells; 18 of 18 checks pass. Recorded as Exp8 &sect;46; superseded on the page by the 2026-09-16 plan below.</td></tr>
-      <tr><td>2026-09-15, section 4 on all 914 events with an activity-based active rule; early/late redefinition; F1 population pass</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-inventory-shock-09-08.html#pop-h">&sect;4</a> &middot; <a href="exp8-one-sided-surges-record.html#families-f1-pop">&sect;9.7</a></td>
-        <td>All three ran and are on the page; recorded as Exp8 &sect;42 to &sect;44. The order-day rebuild that lifts order-row coverage from 74% to 100% is validated but not yet on the live page (Exp8 point 18).</td></tr>
-      <tr><td>2026-09-16, the OR-rule accumulation flag, first-minutes windows, and ten unwind episodes</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-unwinders.html#x9-unwind-absorbers">&sect;12.5</a></td>
-        <td>Flag counts, the position paths for every OR-rule row, a second pass measuring quotes over the held window and the first 5 and 15 minutes after the peak for all 35,612 rows, and the ten episodes. Recorded as Exp8 &sect;47 and &sect;48; the report rewrite and the status of the &sect;46 headline as &sect;49; on the page as the rewritten &sect;12.5 since 2026-09-17.</td></tr>
-      <tr><td>Exp9 &sect;12.9, six decisions</td>
-        <td><span class="st todo">OPEN</span></td>
-        <td><a href="exp10-tick-level-09-10.html#s-8-decisions-for-xinmeng">Exp10 &sect;8</a></td>
-        <td>Decision D8 below. None blocks a result on the page.</td></tr>
-      <tr><td>Tests from the 2026-09-04 briefing still unrun</td>
-        <td><span class="st todo">NOT DONE</span></td>
-        <td><a href="briefing.html#hypotheses">the six tests</a></td>
-        <td>H2: is the equity shock the mark-to-market of the shock inventory? Equity distributions exist; the predicted-against-observed PnL slope was never fit. H6: what the market pays afterwards (spread, depth, taker cost for two hours). Only the replay-B observation that liquidity went one-sided exists. Decision D9.</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3 id="r0916-decisions">Decisions</h3>
-  <p class="small">Five decisions wait for you; fourteen are settled and on the page. Nothing here blocks a result that is already published. Two items of the earlier D1 to D16 list moved rather than closing: the early / late label is W3 and the Slurm allocation is W5. Updated 2026-09-17.</p>
-  <h4 id="r0916-waiting">Waiting for you</h4>
-  <div class="table-wrap"><table class="decisions waiting">
-    <thead><tr><th>#</th><th>What I need from you</th><th>What it changes</th><th>Cost</th><th>Where</th></tr></thead>
-    <tbody>
-      <tr><td>W1</td><td>Rerun <strong>&sect;12.5</strong> on the rebuilt &sect;4.4 speed labels, or keep the 2026-09-15 labels with the clause that names them.</td>
-        <td>The two label builds disagree on how many MMs are fast: 5,340 / 16,510 / 3,855 on the 2026-09-15 labels against 6,067 / 12,490 / 7,148 on the rebuilt ones. No finding in &sect;12.5 reverses either way; the class sizes move. The page currently prints the 2026-09-15 labels and says so.</td>
-        <td>About 40 minutes of compute, then one letter.</td>
-        <td><a href="exp8-unwinders.html#x9-unwind-absorbers">&sect;12.5</a></td></tr>
-      <tr><td>W2</td><td>Build <strong>matched controls for the two-sided family&rsquo;s 30-minute boxes</strong>, the one piece of Step 6 not run.</td>
-        <td>F2 is the only family whose box construction has no control arm; its 1-minute runs do have one, and the &sect;9.8 comparison rests on those.</td>
-        <td>About 2 hours at 256 GB.</td>
-        <td><a href="exp8-one-sided-surges-record.html#families-step6">&sect;9.8</a></td></tr>
-      <tr><td>W3</td><td>Replace the <strong>early / late label</strong> in &sect;4.4 with two axes, T60 speed and the peak&rsquo;s position on the event clock, keeping &ldquo;given back half by the price extreme&rdquo; as a cost measure.</td>
-        <td>Early rows have a median T60 of 4 minutes and peak a median 27 minutes before the price extreme, so &ldquo;early&rdquo; largely repeats the fast class; 16% of late-held rows are fast MMs whose peak fell near the turn. &sect;12.5 has already dropped the label; &sect;4.4 still carries it.</td>
-        <td>A rewrite of &sect;4.4&rsquo;s label columns, no new compute.</td>
-        <td><a href="exp8-unwinders.html#pop-unwind">&sect;4.4</a></td></tr>
-      <tr><td>W4</td><td>Check the <strong>three exhibits not yet classified</strong> against the incomplete-fill-table stretch of 2025-03-24 to 2025-05-25.</td>
-        <td>&sect;3.4, the &sect;4.3 order-placement detail and &sect;4.10 are the only exhibits still marked unchecked in the exposure map; everything else is classified safe or affected-but-small.</td>
-        <td>Half a day.</td>
-        <td><a href="exp8-inventory-shock-09-08.html#data-h">&sect;15</a></td></tr>
-      <tr><td>W5</td><td>Release the <strong>interactive Slurm allocation on soal-5</strong>, running more than seven days.</td>
-        <td>Cluster resources. Cancelling it ends every session inside it, which is why it has not been done here.</td>
-        <td>Immediate, and destructive.</td>
-        <td>&ndash;</td></tr>
-    </tbody>
-  </table></div>
-
-  <h4 id="r0916-settled">Settled, and where the answer is</h4>
-  <div class="table-wrap"><table class="decisions">
-    <thead><tr><th>#</th><th>Decision</th><th>How it was settled</th><th>Where</th></tr></thead>
-    <tbody>
-      <tr><td>D1</td><td>Carry the start-level <strong>peak rule</strong> beside the end rule as a second shock flag.</td>
-        <td>Adopted as a second flag, not a replacement. &sect;4.9 reports both: 10 shocked MMs per event instead of 5, and events with no shocked MM fall from 63 to 20. The end rule stays the rule of record.</td>
-        <td><a href="exp8-inventory-shock-09-08.html#pop-peakrule">&sect;4.9</a></td></tr>
-      <tr><td>D2</td><td>Confirm <strong>T60 fast &le; 10 / slow &gt; 60 minutes</strong> as the speed classes of record.</td>
-        <td>Confirmed and in use in &sect;4.4 and &sect;12.5. The Exp10 (10 / 30) and Exp9 (30 / 120) cuts are not yet aligned on it; their sections say which cut they use.</td>
-        <td><a href="exp8-unwinders.html#tab-x9-fs-pop">Table 51</a></td></tr>
-      <tr><td>D3</td><td>The <strong>two-sided family&rsquo;s 1-minute extent</strong> on excess total taker USD.</td>
-        <td>Confirmed as the construction of record; the F2 catalogue and &sect;9.8 are built on it.</td>
-        <td><a href="exp8-one-sided-surges-record.html#families-step6">&sect;9.8</a></td></tr>
-      <tr><td>D4</td><td>Authorise the rest of <strong>Step 6</strong> on the surge families.</td>
-        <td>Run and shipped as &sect;9.8: F1, F2 and F3 population passes, matched controls (one per event, no overlap with the family or the 915), and the &sect;8 absorber pass. The &sect;8 mechanism survives the change of event selection. Only the F2 box controls are outstanding, as W2.</td>
-        <td><a href="exp8-one-sided-surges-record.html#families-step6">&sect;9.8</a></td></tr>
-      <tr><td>D5</td><td>The <strong>price-extreme window</strong> for early and late.</td>
-        <td>Kept as the event window plus 30 minutes; 91.1% of rows keep their label under the window alone. Moot if W3 drops the label.</td>
-        <td><a href="exp8-unwinders.html#pop-unwind">&sect;4.4</a></td></tr>
-      <tr><td>D6</td><td>Confirm the <strong>active-MM rule</strong> of record.</td>
-        <td>Confirmed: the fill gate plus at least one post-only fill in the two hours before. The fallback was audited on 2026-09-17 and is data-driven, not a date range: it fires on any date whose whole population shows no post-only fill, which is 2026-04-16 to 2026-04-23 here, and it keeps 16 events, 14 controls and 3,324 event &times; MM rows. The alternative order-count floors stay rejected.</td>
-        <td><a href="exp8-inventory-shock-09-08.html#tab-pop-rules">Table 6</a></td></tr>
-      <tr><td>D7</td><td>Which <strong>F1 window is the one of record</strong> for the outcome pass.</td>
-        <td>The catalogue&rsquo;s 1-minute run, median 14 minutes. The 30-minute box that selected it is reported beside it.</td>
-        <td><a href="exp8-one-sided-surges-record.html#families-f1-pop">&sect;9.7</a></td></tr>
-      <tr><td>D8</td><td>The six <strong>Exp9 &sect;12.9</strong> items, including quotes for the out-of-window population shocks.</td>
-        <td>The quote build ran on all 812 population shocks, and the within-MM test is now &sect;11.5: across MMs the lean orders speed, inside one MM it does not (&minus;0.03, p = 0.52; per-MM median &minus;0.08; 31% of MMs).</td>
-        <td><a href="exp8-unwinders.html#x9-pop-within">&sect;11.5</a></td></tr>
-      <tr><td>D9</td><td>Run the two <strong>unrun tests of the 2026-09-04 briefing</strong>, H2 and H6.</td>
-        <td>Both ran. H2 is &sect;4.7b, the equity attribution on the ten-coin book with funding. H6 is &sect;4.10: spread 1.38 times control during the event, 1.14 times two hours later, and 2.05 times in the first 10 minutes of a liquidation cascade.</td>
-        <td><a href="exp8-inventory-shock-09-08.html#pop-mktquality">&sect;4.10</a></td></tr>
-      <tr><td>D11</td><td>Adopt the <strong>tilt measure of record</strong>.</td>
-        <td>Adopted: the skew change over the first 5 minutes after the MM&rsquo;s own peak, exit side minus absorption side. Fast MMs lean 2.99 bps toward the exit, slow MMs 0.79 bps away. The two-hour average is kept as the older measure and labelled so.</td>
-        <td><a href="exp8-unwinders.html#tab-x9-fs-skew">Table 52</a></td></tr>
-      <tr><td>D13</td><td>The <strong>population of record for &sect;12.5</strong>.</td>
-        <td>The OR-rule accumulators, 35,612 rows, lead the tables; the own-sigma rule and the 6,236 shocked rows are reported beside them.</td>
-        <td><a href="exp8-unwinders.html#tab-x9-fs-pop">Table 51</a></td></tr>
-      <tr><td>D14</td><td>Rename the <strong>published page files</strong>, which still carry old dates.</td>
-        <td>Kept, so links already sent stay live. Each page prints its own build date at the top.</td>
-        <td><a href="overview.html">hub</a></td></tr>
-      <tr><td>D15</td><td>What to do with <strong>&sect;12.4</strong>, the older two-hour test.</td>
-        <td>Labelled as an older test, together with &sect;12.1 to &sect;12.3, so its 30 and 120-minute classes are not read as the current ones. Nothing was folded away.</td>
-        <td><a href="exp8-unwinders.html#x9-unwind-tests">Table 50</a></td></tr>
-      <tr><td>D16</td><td>Order of the next Exp8 build.</td>
-        <td>The order-day fix shipped first, then the caption fixes, the price-extreme paragraph, the removal of the 5-minute held count and the standalone pass over every other section. All of it is live.</td>
-        <td><a href="exp8-inventory-shock-09-08.html#pop-def">&sect;4.1</a></td></tr>
-    </tbody>
-  </table></div>
-
-<h2 id="r0902">The 2026-09-02 review</h2>
-  <p class="small">Written 2026-09-04 against the full Exp8 report of that date; points about the event definition are answered again, differently, on the redefinition page. Kept as it was.</p>
-  <details class="more"><summary>Olga's six points, Ruizhe's five points, where the Exp9 results were, and what was not yet in the 2026-09-04 report</summary>
-  <h3 id="olga">Olga</h3>
-  <div class="table-wrap"><table>
-    <thead><tr><th>#</th><th>Ask</th><th>State</th><th>Where in the report</th><th>What it says, and what is missing</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td>The exact equation for standardising inventory. Is it a z-score? What is the divisor?</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-report.html#table-1">The exact construction</a> (directly below Table 1) &middot; <a href="exp8-report.html#definitions">&sect;A Definitions</a></td>
-        <td>A robust z-score: dev = position &minus; trailing 6-hour median; z = dev / &sigma;<sub>t</sub>, with &sigma;<sub>t</sub> = max(7-day MAD of dev, 2% of the 30-day p95 |position|, $12,500 / mid). Candidate at |z| &ge; 6. Each of the ten rules is one bullet, in funnel order.</td></tr>
-      <tr><td>2</td><td>Why the window changed from 6 hours to 7 days; the equation.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-report.html#table-1">The exact construction</a> &middot; <a href="exp8-report.html#b-final">B2, &ldquo;Baseline&rdquo; row</a> &middot; <a href="exp8-report.html#j1">J1, the two floors</a></td>
-        <td>Both windows are used: the 6-hour median centres the position, the 7-day MAD scales it. The report states this; it does not yet say in one sentence <em>why</em> the scale is not also 6 hours (a 6-hour spread would contain the shock and shrink the yardstick while the shock forms).</td></tr>
-      <tr><td>3</td><td>Descriptive-statistics table (N, mean, std, p25, median, p75, min, max) for inventory, standardised inventory, shock size, taker imbalance, equity.</td>
-        <td><span class="st done">DONE</span></td>
-        <td><a href="exp8-report.html#table-2">Table 2</a> (panels A&ndash;E) &middot; <a href="exp8-report.html#table-3">Table 3</a> (shock size vs pre-shock level, own volume) &middot; <a href="exp8-report.html#table-4">Table 4</a> (in-shock vs all times) &middot; <a href="exp8-report.html#table-5">Table 5</a> (equity and leverage around shocks) &middot; <a href="exp8-report.html#a-stats">J2 per wallet</a></td>
-        <td>Complete. Inventory is reported as exposure |P| in kUSD so long and short bins do not cancel; the equity panel is cross-margin perp account value, ten roster MMs, one value per wallet-day, 2025-09-27 onward.</td></tr>
-      <tr><td>4</td><td>Do shocks move equity or margin? What share of shocks cause a large equity drop?</td>
-        <td><span class="st done">DONE</span> at hours resolution</td>
-        <td><a href="exp8-report.html#atlas">&sect;F Shock atlas</a> &middot; <a href="exp8-report.html#table-33">Table 33</a> &middot; <a href="exp8-report.html#around-shock">Table 5</a></td>
-        <td>Of 138 covered shocks, 20.3% are followed by an equity drop worse than &minus;1% and 7.2% worse than &minus;5% (17.4% / 4.5% without 2025-10-10). Maintenance over equity rises by more than 2 pp in 13.1% and stays below 0.20 in 137 of 140. Snapshots are ~2 h apart, so this is an hours claim, never a 5-minute one. <strong>Missing:</strong> the link to Miao&rsquo;s equity and portfolio shocks; no shared event grain exists yet.</td></tr>
-      <tr><td>5</td><td>The observed chain: price drops, takers sell, MM inventory rises, MMs unwind with limit orders.</td>
-        <td><span class="st done">DONE</span> (confirmed on 181)</td>
-        <td><a href="exp8-report.html#cause">&sect;C</a>, <a href="exp8-report.html#table-10">Table 10</a> and <a href="exp8-report.html#table-11">Table 11</a> (flow, all 181) &middot; <a href="exp8-report.html#d-cp181">D2, who is on the other side</a> &middot; <a href="exp8-report.html#atlas">&sect;F</a> (price against the inventory) &middot; <a href="exp8-report.html#e-price">&sect;E2</a> and <a href="exp8-report.html#table-27">Table 27</a> (post-only unwind)</td>
-        <td>Hit-side taker volume 5.3&times; its 24-hour rate, imbalance +0.44; the mid fell in 115 of 125 up shocks, median formation move &minus;85 bps; unwinding is 98% post-only at the median for the roster ten. Post-only unwinding is a property of these ten, not of shocked MMs generally (&sect;E2). <strong>Extended 2026-09-04 to all 1,964 shocked-MM rows</strong> (<a href="exp8-report.html#d-take">&sect;D4</a>, <a href="exp8-unwind-activity.html">full page</a>): the typical shocked MM of any role does not take more than its own normal after the peak; what the roster takes is two thirds on the unwind side; order counts tilt only one point; the unwind is carried by reducing-side filled orders (unwind-side share 0.51 &rarr; 0.61, above one half in 91% of catalogue rows).</td></tr>
-      <tr><td>6</td><td>After a shock, measure quoting, not fills: net posted and net withdrawn liquidity at and away from the touch, 5-minute steps for 2 hours, against four predicted signs.</td>
-        <td><span class="st done">DONE</span> on all 181 shocks (published 2026-09-04)</td>
-        <td><a href="exp8-report.html#quoting">&sect;G Book response</a> &middot; <a href="exp8-report.html#table-34">Table 34</a> (before / during / after) &middot; <a href="exp8-report.html#table-35">Table 35</a> (the four predicted signs) &middot; Figures 14&ndash;17</td>
-        <td>The shocked MM moves <em>where</em> it quotes, not <em>how much</em>: the accumulating-side best quote backs off by 1.36 bps in 81% of shocks, depth stays balanced. Sign 1 (post more at the unwind touch) confirms, 70% of 180. Sign 2 (withdraw more from the accumulating touch) comes out opposite because these MMs re-quote every ~1.3 s, so cancels travel with posts. Sign 3 (post less away) fails at 25, 50 and 100 bps. Sign 4 (withdrawal away &ge; 0) confirms. Grain is 1 minute, not 5, because the median formation is 20 minutes. Two design choices remain open: the touch band and where &ldquo;away&rdquo; starts.</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3 id="ruizhe">Ruizhe</h3>
-  <div class="table-wrap"><table>
-    <thead><tr><th>#</th><th>Ask</th><th>State</th><th>Where in the report</th><th>What it says, and what is missing</th></tr></thead>
-    <tbody>
-      <tr><td>1</td><td>Presentation: a standing template so the weekly is readable at a sitting and complete; a long md/html is impossible to understand.</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-report.html#whats-new">What is new</a> callout &middot; <a href="exp8-report.html#appendix">Appendix J</a> (sources and method detail moved out of the body) &middot; weekly template in the repo: <code>docs/weekly_report_spec.md</code>, draft <code>reports/weekly/2026-09-05-DRAFT.md</code></td>
-        <td>The report gained a what-is-new list, numbered tables with captions, and an appendix. It is still ordered by history (sections A&ndash;J) and still mixes six samples: 181 shocks, three one-minute episodes, 57 wallet-episodes at 3&sigma;, 10 pilot shocks, 99&ndash;151 equity-covered subsets, and the 245-shock v3 catalogue. The rewrite into a reader document around five threads has not started.</td></tr>
-      <tr><td>2(i)</td><td>One shock taxonomy: inventory, price, equity and portfolio shocks and how they connect (inventory shock + adverse price = equity stress?); idiosyncratic against systemic shocks.</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-report.html#atlas">&sect;F</a> (inventory, price and equity z on one grid, Figures 15&ndash;16) &middot; <a href="exp8-report.html#d-axis">&sect;D3</a> and <a href="exp8-report.html#table-19">Table 19</a> (alone / few / broad), Figure 8 &middot; <a href="exp8-report.html#d-pop181">D3, against all active MMs</a> with <a href="exp8-report.html#table-21">Table 21</a> (six candidate rules) and <a href="exp8-report.html#table-22">Table 22</a> (the two-axis grid), Figure 9</td>
-        <td>In the report: inventory and price shock sizes are uncorrelated (Spearman 0.00) yet 54% of formations hold a &ge;3&sigma; price move; BROAD shocks are price events (75% vs 32% for ALONE). <strong>Added 2026-09-04:</strong> the same concentration measured against all active MMs (median 78, not the roster 7) kills the roster cutoffs (focal share median 0.073; <code>C</code> &ge; 0.60 in 3 of 181) and gives a <em>monotone</em> equity gradient (34.8 / 21.4 / 6.0% lose &gt; 1%), which removes the report&rsquo;s &ldquo;FEW carries the equity tail&rdquo;. The replacement is two axes rather than one class, and the worst cell is the eight shocks where the move concentrated on a few MMs and the shocked wallet was not one of them. <strong>Still missing:</strong> the published ALONE / FEW / BROAD labels are unchanged &mdash; adopting a population rule relabels 40&ndash;45% of the catalogue and has to be propagated deliberately &mdash; and there is no shared grain with Miao&rsquo;s equity shocks yet.</td></tr>
-      <tr><td>2(ii)</td><td>MM archetypes by initial inventory and mean-reversion speed.</td>
-        <td><span class="st done">DONE</span> as a proposal</td>
-        <td><a href="exp8-report.html#e-chain">&sect;E3</a> &middot; <a href="exp8-report.html#table-29">Table 29</a> &middot; Figure 13</td>
-        <td>Nine wallets. Book size and deviation half-life (3 min to 1,162 min) move together and predict reversion (&rho; &minus;0.93 with half-back-by-60-min); post-only against crossing is a second, nearly independent axis. Naming the axes is left to the author.</td></tr>
-      <tr><td>2(iii)</td><td>Archetype &rarr; actions (limit vs market, refill speed, size) &rarr; outcomes (reversion, loss, PnL, time back to normal liquidity).</td>
-        <td><span class="st partial">PARTIAL</span></td>
-        <td><a href="exp8-report.html#e-chain">&sect;E3</a> (order type, taker share, half-back rates, execution percentile, markouts, equity) &middot; <a href="exp8-report.html#e-drivers">&sect;E4</a> (what decides recovery speed) &middot; <a href="exp8-report.html#quoting">&sect;G</a> (reaction latency and refill, per wallet)</td>
-        <td>Actions now measured on the order stream: latency from surge onset to book response median 9 min (per-wallet medians 2.5 to 11 min), same-side depth refilled to 80% within 30 min in 87% of shocks. <strong>Added 2026-09-04 (&sect;E4):</strong> recovery speed is set by shock size and market volatility, and more by wallet identity than by either; the absorption share adds nothing once size is controlled (R&sup2; +0.006 on <code>rec60</code>, +0.000 on time-to-back), so it must not be described as predicting recovery. <strong>Missing:</strong> the quoting columns are not yet joined into the E3 table, and there is still no test of whether the quote tilt speeds the unwind.</td></tr>
-      <tr><td>3</td><td>How the whole market reacts; fill quality afterwards.</td>
-        <td><span class="st todo">NOT DONE</span></td>
-        <td>Planned as Phase 4 in <code>plans/plan-2026-09-03-exp8-order-behavior-followup.md</code> &sect;6</td>
-        <td>Nothing built. Design: 5-minute event study of quoted spread, top-5 depth and taker realised cost for 2 h after the 181 peaks, split idiosyncratic against systemic.</td></tr>
-    </tbody>
-  </table></div>
-
-  <h3 id="exp9">Where the new Exp9 quoting results are</h3>
-  <ul>
-    <li><strong>In this site:</strong> report <a href="exp8-report.html#quoting">&sect;G</a>, with <a href="exp8-report.html#table-34">Table 34</a>, <a href="exp8-report.html#table-35">Table 35</a>, the away-cutoff sweep at 25 / 50 / 100 bps, the subset splits (up / down, revert / step / partial, alone / few / broad), reaction latency and refill, Figures 14&ndash;17, and the validation gates in a toggle.</li>
-    <li><strong>In the repository</strong> (not published here): <code>experiments/Exp9_post_shock_quoting/analysis.md</code> &sect;2&ndash;&sect;9 is the full record, Appendix A the superseded 10-shock pilot; tables in <code>Exp9/tables/</code> (<code>pre_vs_post_windows.csv</code>, <code>pre_vs_post_windows_by_subset.csv</code>, <code>olga_four_cells.csv</code>, <code>far_cutoff_sensitivity.csv</code>, <code>reaction_latency.csv</code>, <code>reaction_by_wallet.csv</code>, <code>validation.csv</code>); figures in <code>Exp9/figures/</code>; setup, run ledger and validation ledger in <code>Exp9/README.md</code>. Build: Slurm 17261556 (56 min, 181 of 181 shocks); tables and figures: 17262226.</li>
-    <li><strong>Two pilot readings did not survive the full run</strong> and are superseded in &sect;G: the unwind side and the accumulating side no longer move by similar amounts (the accumulating-side move is seven times larger), and the third predicted sign is absent at every cutoff rather than weakly present at 25 bps.</li>
-  </ul>
-
-  <h3 id="notyet">Not in the deployed report yet</h3>
-  <ul>
-    <li>The <strong>equity attribution</strong> that ties an inventory shock to Miao&rsquo;s equity shocks, and the <strong>market-quality event study</strong> (quoted spread, top-5 depth and taker realised cost for 2 h after the 181 peaks, split idiosyncratic against systemic), are planned and not built.</li>
-    <li>The <strong>published ALONE / FEW / BROAD labels have not been changed</strong> to the population rule of <a href="exp8-report.html#d-pop181">&sect;D3</a>. Doing so relabels 40&ndash;45% of the catalogue and has to be propagated through &sect;D3, &sect;F and &sect;G at once; <code>tables/population_reclass.csv</code> carries both labels per shock so any table can be re-cut without a rebuild. It is a decision, not a build.</li>
-    <li>The <strong>quoting columns of &sect;G are not joined into the &sect;E3 archetype table</strong>, and there is no test of whether the post-shock quote tilt actually speeds the unwind.</li>
-  </ul>
-
-  <div class="note"><strong>Cleared 2026-09-04 (part 7).</strong> Four items that were on this list are
-  now in the deployed report: <a href="exp8-report.html#d-pop181">&sect;D3 against all active MMs</a>
-  with the two-axis grid; <a href="exp8-report.html#e-drivers">&sect;E4</a> on what decides recovery
-  speed; the 181-shock flow rollout in <a href="exp8-report.html#c-flow181">&sect;C</a> and
-  <a href="exp8-report.html#d-absorb181">&sect;D</a>; and the extended taker&ndash;maker pairing put to
-  work in <a href="exp8-report.html#d-cp181">&sect;D2</a>.</div>
-  </details>
-
-  <footer>Working research output, not a paper. Wallet identities are never published; MMs are
-  named by volume rank. Authored in <code>code/site_status.html</code>, published by
-  <code>make_public_site.py</code>.</footer>
+<main id="main" class="viewer">
+  <h1>The flow-shock chart</h1>
+  <p class="vsub">One one-sided taker surge on HYPE, followed through every player it touches. It sits on the <a href="storyline.html#story-flowshock">Storyline</a> page with its caption.</p>
+  <div class="vbar" role="toolbar" aria-label="Zoom"><button type="button" id="vout" title="Zoom out (-)" aria-label="Zoom out">&minus;</button><span class="vzoom" id="vzoom" aria-live="polite">100%</span><button type="button" id="vin" title="Zoom in (+)" aria-label="Zoom in">+</button><button type="button" id="vfit" title="Fit the window (0)">Fit</button><button type="button" id="vfull" title="Full size: one chart pixel per screen pixel">Full size</button><span class="vhint">Scroll or pinch to zoom, drag to move, double-click to zoom in.</span></div>
+  <div class="vstage" id="vstage"><img id="vimg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNjAwIiBoZWlnaHQ9IjE0NTAiIHZpZXdCb3g9IjAgMCAyNjAwIDE0NTAiIHJvbGU9ImltZyIgYXJpYS1sYWJlbGxlZGJ5PSJ0aXRsZSBkZXNjIj4KPHRpdGxlIGlkPSJ0aXRsZSI+QW5hdG9teSBvZiBhIEZsb3cgU2hvY2s6IEZyb20gVGFrZXIgU3VyZ2UgdG8gUHJpY2UgT3V0Y29tZTwvdGl0bGU+CjxkZXNjIGlkPSJkZXNjIj5TZXZlbi1zdGFnZSBmbG93IGNoYXJ0IG9mIGEgb25lLXNpZGVkIHRha2VyIHN1cmdlIG9uIEhZUEU6IGZsb3cgc2hvY2ssIHRyYWRlICh3aG8gYWJzb3JicyksIGludmVudG9yeSBzaG9jayAod2hvIGlzIHNob2NrZWQpLCBNTSBhY3Rpb24sIE1NIG91dGNvbWUsIG1hcmtldCBvdXRjb21lIGFuZCBwcmljZSBvdXRjb21lLCB3aXRoIHRocmVlIGxhbmVzIGZvciB0aGUgbWFya2V0IGFuZCBpdHMgdGFrZXJzLCB0aGUgbWFya2V0IG1ha2VycywgYW5kIG90aGVyIHBhcnRpY2lwYW50cy48L2Rlc2M+CjxkZWZzPgo8ZmlsdGVyIGlkPSJzaGFkb3ciIHg9Ii0xNSUiIHk9Ii0xNSUiIHdpZHRoPSIxMzAlIiBoZWlnaHQ9IjE0MCUiPgogIDxmZURyb3BTaGFkb3cgZHg9IjAiIGR5PSIzIiBzdGREZXZpYXRpb249IjQiIGZsb29kLWNvbG9yPSIjMTcyMDMzIiBmbG9vZC1vcGFjaXR5PSIwLjEwIi8+CjwvZmlsdGVyPgo8c3R5bGU+CiAgLnRpdGxlIHsgZm9udDogNzAwIDQycHggSW50ZXIsICJIZWx2ZXRpY2EgTmV1ZSIsIEFyaWFsLCBzYW5zLXNlcmlmOyBmaWxsOiAjMTcyMDMzOyB9CiAgLnN1YnRpdGxlIHsgZm9udDogNTAwIDE5cHggSW50ZXIsICJIZWx2ZXRpY2EgTmV1ZSIsIEFyaWFsLCBzYW5zLXNlcmlmOyBmaWxsOiAjNTU2MjczOyB9CiAgLnN0YWdlIHsgZm9udDogNzAwIDE4cHggSW50ZXIsICJIZWx2ZXRpY2EgTmV1ZSIsIEFyaWFsLCBzYW5zLXNlcmlmOyBmaWxsOiAjMTcyMDMzOyB9CiAgLnN0YWdlLXN1YiB7IGZvbnQ6IDUwMCAxNXB4IEludGVyLCAiSGVsdmV0aWNhIE5ldWUiLCBBcmlhbCwgc2Fucy1zZXJpZjsgZmlsbDogIzU1NjI3MzsgfQogIC5jbG9jayB7IGZvbnQ6IDUwMCAxNHB4IEludGVyLCAiSGVsdmV0aWNhIE5ldWUiLCBBcmlhbCwgc2Fucy1zZXJpZjsgZmlsbDogIzM1NDQ1ODsgfQogIC50YWcgeyBmb250OiA3MDAgMTRweCBJbnRlciwgIkhlbHZldGljYSBOZXVlIiwgQXJpYWwsIHNhbnMtc2VyaWY7IGZpbGw6ICNmZmZmZmY7IH0KICAubGFuZS1sYWJlbCB7IGZvbnQ6IDcwMCAxNnB4IEludGVyLCAiSGVsdmV0aWNhIE5ldWUiLCBBcmlhbCwgc2Fucy1zZXJpZjsgbGV0dGVyLXNwYWNpbmc6IDFweDsgfQogIC5ub2RlLXRpdGxlIHsgZm9udDogNzAwIDE4cHggSW50ZXIsICJIZWx2ZXRpY2EgTmV1ZSIsIEFyaWFsLCBzYW5zLXNlcmlmOyBmaWxsOiAjMTcyMDMzOyB9CiAgLm5vZGUtc3ViIHsgZm9udDogNTAwIDE1cHggSW50ZXIsICJIZWx2ZXRpY2EgTmV1ZSIsIEFyaWFsLCBzYW5zLXNlcmlmOyBmaWxsOiAjNDg1ODZiOyB9CiAgLnNtYWxsLXRpdGxlIHsgZm9udDogNzAwIDE1cHggSW50ZXIsICJIZWx2ZXRpY2EgTmV1ZSIsIEFyaWFsLCBzYW5zLXNlcmlmOyBmaWxsOiAjMTcyMDMzOyB9CiAgLnNtYWxsIHsgZm9udDogNTAwIDE0cHggSW50ZXIsICJIZWx2ZXRpY2EgTmV1ZSIsIEFyaWFsLCBzYW5zLXNlcmlmOyBmaWxsOiAjNDY1NjZhOyB9CiAgLmVkZ2UtbGFiZWwgeyBmb250OiBpdGFsaWMgNjAwIDE1cHggSW50ZXIsICJIZWx2ZXRpY2EgTmV1ZSIsIEFyaWFsLCBzYW5zLXNlcmlmOyBmaWxsOiAjNDY1NjZhOyB9CiAgLmJhZGdlIHsgZm9udDogNzAwIDE2cHggSW50ZXIsICJIZWx2ZXRpY2EgTmV1ZSIsIEFyaWFsLCBzYW5zLXNlcmlmOyBmaWxsOiAjNmQyNjMyOyB9CiAgLmxlZ2VuZCB7IGZvbnQ6IDYwMCAxNXB4IEludGVyLCAiSGVsdmV0aWNhIE5ldWUiLCBBcmlhbCwgc2Fucy1zZXJpZjsgZmlsbDogIzM1NDQ1ODsgfQogIC5mb290IHsgZm9udDogNTAwIDE0cHggSW50ZXIsICJIZWx2ZXRpY2EgTmV1ZSIsIEFyaWFsLCBzYW5zLXNlcmlmOyBmaWxsOiAjNTU2MjczOyB9CiAgLnNvbGlkIHsgZmlsbDogbm9uZTsgc3Ryb2tlOiAjMjYzNTQ4OyBzdHJva2Utd2lkdGg6IDM7IH0KICAuc29saWQtaGVhZCB7IGZpbGw6ICMyNjM1NDg7IH0KICAubWFpbiB7IGZpbGw6IG5vbmU7IHN0cm9rZTogI2Q5NmIxNzsgc3Ryb2tlLXdpZHRoOiA1OyB9CiAgLm1haW4taGVhZCB7IGZpbGw6ICNkOTZiMTc7IH0KICAudGVzdCB7IGZpbGw6IG5vbmU7IHN0cm9rZTogIzI2MzU0ODsgc3Ryb2tlLXdpZHRoOiAyLjc7IHN0cm9rZS1kYXNoYXJyYXk6IDEwIDg7IH0KPC9zdHlsZT4KPC9kZWZzPgo8cmVjdCB3aWR0aD0iMjYwMCIgaGVpZ2h0PSIxNDUwIiBmaWxsPSIjZmJmYWY3Ii8+Cjx0ZXh0IHg9IjEzMDAuMCIgeT0iNjAuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InRpdGxlIiA+QW5hdG9teSBvZiBhIEZsb3cgU2hvY2s6IEZyb20gVGFrZXIgU3VyZ2UgdG8gUHJpY2UgT3V0Y29tZTwvdGV4dD4KPHRleHQgeD0iMTMwMC4wIiB5PSI5NC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic3VidGl0bGUiID5PbmUgb25lLXNpZGVkIHRha2VyIHN1cmdlIG9uIEhZUEUgcGVycHMsIGZvbGxvd2VkIHRocm91Z2ggdGhlIHBsYXllcnMgaXQgdG91Y2hlcyAoRXhwOCwgOTIyIHN1cmdlcyk8L3RleHQ+CjxwYXRoIGQ9Ik0xMTAgMTE4IEg0MzAgTDQ0OCAxNTEuMCBMNDMwIDE4NCBIMTEwIFoiIGZpbGw9IiNlN2ViZjAiLz4KPHRleHQgeD0iMjc5LjAiIHk9IjE0Ni4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic3RhZ2UiID4xLiBGTE9XIFNIT0NLPC90ZXh0Pgo8dGV4dCB4PSIyNzkuMCIgeT0iMTcwLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzdGFnZS1zdWIiID5vbmUtc2lkZWQgdGFrZXIgc3VyZ2U8L3RleHQ+CjxwYXRoIGQ9Ik00NjAgMTE4IEg3ODAgTDc5OCAxNTEuMCBMNzgwIDE4NCBINDYwIEw0NzggMTUxLjAgWiIgZmlsbD0iI2U3ZWJmMCIvPgo8dGV4dCB4PSI2MjkuMCIgeT0iMTQ2LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzdGFnZSIgPjIuIFRSQURFPC90ZXh0Pgo8dGV4dCB4PSI2MjkuMCIgeT0iMTcwLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzdGFnZS1zdWIiID53aG8gYWJzb3JicyB0aGUgZmxvdzwvdGV4dD4KPHBhdGggZD0iTTgxMCAxMTggSDExMzAgTDExNDggMTUxLjAgTDExMzAgMTg0IEg4MTAgTDgyOCAxNTEuMCBaIiBmaWxsPSIjZTdlYmYwIi8+Cjx0ZXh0IHg9Ijk3OS4wIiB5PSIxNDYuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InN0YWdlIiA+My4gSU5WRU5UT1JZIFNIT0NLPC90ZXh0Pgo8dGV4dCB4PSI5NzkuMCIgeT0iMTcwLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzdGFnZS1zdWIiID53aG8gaXMgc2hvY2tlZDwvdGV4dD4KPHBhdGggZD0iTTExNjAgMTE4IEgxNDgwIEwxNDk4IDE1MS4wIEwxNDgwIDE4NCBIMTE2MCBMMTE3OCAxNTEuMCBaIiBmaWxsPSIjZTdlYmYwIi8+Cjx0ZXh0IHg9IjEzMjkuMCIgeT0iMTQ2LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzdGFnZSIgPjQuIE1NIEFDVElPTjwvdGV4dD4KPHRleHQgeD0iMTMyOS4wIiB5PSIxNzAuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InN0YWdlLXN1YiIgPnF1b3RlLCBjYW5jZWwsIGNyb3NzPC90ZXh0Pgo8cGF0aCBkPSJNMTUxMCAxMTggSDE4MzAgTDE4NDggMTUxLjAgTDE4MzAgMTg0IEgxNTEwIEwxNTI4IDE1MS4wIFoiIGZpbGw9IiNlN2ViZjAiLz4KPHRleHQgeD0iMTY3OS4wIiB5PSIxNDYuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InN0YWdlIiA+NS4gTU0gT1VUQ09NRTwvdGV4dD4KPHRleHQgeD0iMTY3OS4wIiB5PSIxNzAuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InN0YWdlLXN1YiIgPnBlYWssIHVud2luZCwgY29zdDwvdGV4dD4KPHBhdGggZD0iTTE4NjAgMTE4IEgyMTgwIEwyMTk4IDE1MS4wIEwyMTgwIDE4NCBIMTg2MCBMMTg3OCAxNTEuMCBaIiBmaWxsPSIjZTdlYmYwIi8+Cjx0ZXh0IHg9IjIwMjkuMCIgeT0iMTQ2LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzdGFnZSIgPjYuIE1BUktFVCBPVVRDT01FPC90ZXh0Pgo8dGV4dCB4PSIyMDI5LjAiIHk9IjE3MC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic3RhZ2Utc3ViIiA+Y29zdCwgZGVwdGgsIHJlY292ZXJ5PC90ZXh0Pgo8cGF0aCBkPSJNMjIxMCAxMTggSDI1MzAgTDI1NDggMTUxLjAgTDI1MzAgMTg0IEgyMjEwIEwyMjI4IDE1MS4wIFoiIGZpbGw9IiNlN2ViZjAiLz4KPHRleHQgeD0iMjM3OS4wIiB5PSIxNDYuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InN0YWdlIiA+Ny4gUFJJQ0UgT1VUQ09NRTwvdGV4dD4KPHRleHQgeD0iMjM3OS4wIiB5PSIxNzAuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InN0YWdlLXN1YiIgPmRvZXMgdGhlIG1vdmUgcmV2ZXJ0PC90ZXh0Pgo8cmVjdCB4PSIxMTAuMCIgeT0iMTk2LjAiIHdpZHRoPSIzMjAuMCIgaGVpZ2h0PSIzNC4wIiByeD0iMTciIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iI2M5ZDBkOCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPGNpcmNsZSBjeD0iMTI4IiBjeT0iMjEzIiByPSIxMiIgZmlsbD0iIzM5NzlhNiIvPgo8dGV4dCB4PSIxMjguMCIgeT0iMjE4LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJ0YWciID5TPC90ZXh0Pgo8dGV4dCB4PSIxNTAuMCIgeT0iMjE4LjAiIHRleHQtYW5jaG9yPSJzdGFydCIgY2xhc3M9ImNsb2NrIiA+dDA6IHN1cmdlIHN0YXJ0czsgUFJFMkggYmVmb3JlIGl0PC90ZXh0Pgo8cmVjdCB4PSI0NjAuMCIgeT0iMTk2LjAiIHdpZHRoPSIzMjAuMCIgaGVpZ2h0PSIzNC4wIiByeD0iMTciIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iI2M5ZDBkOCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPGNpcmNsZSBjeD0iNDc4IiBjeT0iMjEzIiByPSIxMiIgZmlsbD0iI2E5NDc1NCIvPgo8dGV4dCB4PSI0NzguMCIgeT0iMjE4LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJ0YWciID5PPC90ZXh0Pgo8dGV4dCB4PSI1MDAuMCIgeT0iMjE4LjAiIHRleHQtYW5jaG9yPSJzdGFydCIgY2xhc3M9ImNsb2NrIiA+W3QwLCB0X2MpOiB0aGUgcnVuOyB0X3B2IGluc2lkZTwvdGV4dD4KPHJlY3QgeD0iODEwLjAiIHk9IjE5Ni4wIiB3aWR0aD0iMzIwLjAiIGhlaWdodD0iMzQuMCIgcng9IjE3IiBmaWxsPSIjZmZmZmZmIiBzdHJva2U9IiNjOWQwZDgiIHN0cm9rZS13aWR0aD0iMS4yIi8+CjxjaXJjbGUgY3g9IjgyOCIgY3k9IjIxMyIgcj0iMTIiIGZpbGw9IiNhOTQ3NTQiLz4KPHRleHQgeD0iODI4LjAiIHk9IjIxOC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0idGFnIiA+TzwvdGV4dD4KPHRleHQgeD0iODUwLjAiIHk9IjIxOC4wIiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJjbG9jayIgPnQqOiB0aGUgTU0ncyBvd24gaW52ZW50b3J5IHBlYWs8L3RleHQ+CjxyZWN0IHg9IjExNjAuMCIgeT0iMTk2LjAiIHdpZHRoPSIzMjAuMCIgaGVpZ2h0PSIzNC4wIiByeD0iMTciIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iI2M5ZDBkOCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPGNpcmNsZSBjeD0iMTE3OCIgY3k9IjIxMyIgcj0iMTIiIGZpbGw9IiNkOTZiMTciLz4KPHRleHQgeD0iMTE3OC4wIiB5PSIyMTguMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InRhZyIgPkE8L3RleHQ+Cjx0ZXh0IHg9IjEyMDAuMCIgeT0iMjE4LjAiIHRleHQtYW5jaG9yPSJzdGFydCIgY2xhc3M9ImNsb2NrIiA+YXJvdW5kIHQqLCBvbiBib3RoIGNsb2NrczwvdGV4dD4KPHJlY3QgeD0iMTUxMC4wIiB5PSIxOTYuMCIgd2lkdGg9IjMyMC4wIiBoZWlnaHQ9IjM0LjAiIHJ4PSIxNyIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjYzlkMGQ4IiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8Y2lyY2xlIGN4PSIxNTI4IiBjeT0iMjEzIiByPSIxMiIgZmlsbD0iI2E5NDc1NCIvPgo8dGV4dCB4PSIxNTI4LjAiIHk9IjIxOC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0idGFnIiA+TzwvdGV4dD4KPHRleHQgeD0iMTU1MC4wIiB5PSIyMTguMCIgdGV4dC1hbmNob3I9InN0YXJ0IiBjbGFzcz0iY2xvY2siID5bdCosIHQqICsgVDYwKTogdGhlIHVud2luZDwvdGV4dD4KPHJlY3QgeD0iMTg2MC4wIiB5PSIxOTYuMCIgd2lkdGg9IjMyMC4wIiBoZWlnaHQ9IjM0LjAiIHJ4PSIxNyIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjYzlkMGQ4IiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8Y2lyY2xlIGN4PSIxODc4IiBjeT0iMjEzIiByPSIxMiIgZmlsbD0iIzVjNDM4OSIvPgo8dGV4dCB4PSIxODc4LjAiIHk9IjIxOC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0idGFnIiA+QzwvdGV4dD4KPHRleHQgeD0iMTkwMC4wIiB5PSIyMTguMCIgdGV4dC1hbmNob3I9InN0YXJ0IiBjbGFzcz0iY2xvY2siID5QT1NUMkggPSBbdF9jLCB0X2MgKyAxMjAgbWluKTwvdGV4dD4KPHJlY3QgeD0iMjIxMC4wIiB5PSIxOTYuMCIgd2lkdGg9IjMyMC4wIiBoZWlnaHQ9IjM0LjAiIHJ4PSIxNyIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjYzlkMGQ4IiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8Y2lyY2xlIGN4PSIyMjI4IiBjeT0iMjEzIiByPSIxMiIgZmlsbD0iIzVjNDM4OSIvPgo8dGV4dCB4PSIyMjI4LjAiIHk9IjIxOC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0idGFnIiA+QzwvdGV4dD4KPHRleHQgeD0iMjI1MC4wIiB5PSIyMTguMCIgdGV4dC1hbmNob3I9InN0YXJ0IiBjbGFzcz0iY2xvY2siID5SKDEyMCk6IG1vdmUgYmFjaywgdDEgdG8gdDEgKyAxMjA8L3RleHQ+CjxyZWN0IHg9IjIwIiB5PSIyNDYiIHdpZHRoPSIyNTYwIiBoZWlnaHQ9IjI5MCIgcng9IjE1IiBmaWxsPSIjZWRmNWZhIi8+Cjx0ZXh0IHRyYW5zZm9ybT0idHJhbnNsYXRlKDUyLDM5MS4wKSByb3RhdGUoLTkwKSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9ImxhbmUtbGFiZWwiIGZpbGw9IiMyYjY3OTAiPk1BUktFVDwvdGV4dD4KPHRleHQgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzIsMzkxLjApIHJvdGF0ZSgtOTApIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibGFuZS1sYWJlbCIgZmlsbD0iIzJiNjc5MCI+QU5EIFRBS0VSUzwvdGV4dD4KPHJlY3QgeD0iMjAiIHk9IjU0OCIgd2lkdGg9IjI1NjAiIGhlaWdodD0iNDgyIiByeD0iMTUiIGZpbGw9IiNmZmYzZTgiLz4KPHRleHQgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTIsNzg5LjApIHJvdGF0ZSgtOTApIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibGFuZS1sYWJlbCIgZmlsbD0iI2I2NTIxMiI+TUFSS0VUPC90ZXh0Pgo8dGV4dCB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3Miw3ODkuMCkgcm90YXRlKC05MCkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJsYW5lLWxhYmVsIiBmaWxsPSIjYjY1MjEyIj5NQUtFUlM8L3RleHQ+CjxyZWN0IHg9IjIwIiB5PSIxMDQyIiB3aWR0aD0iMjU2MCIgaGVpZ2h0PSIxOTQiIHJ4PSIxNSIgZmlsbD0iI2YyZjBmOCIvPgo8dGV4dCB0cmFuc2Zvcm09InRyYW5zbGF0ZSg1MiwxMTM5LjApIHJvdGF0ZSgtOTApIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibGFuZS1sYWJlbCIgZmlsbD0iIzVjNDM4OSI+T1RIRVI8L3RleHQ+Cjx0ZXh0IHRyYW5zZm9ybT0idHJhbnNsYXRlKDcyLDExMzkuMCkgcm90YXRlKC05MCkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJsYW5lLWxhYmVsIiBmaWxsPSIjNWM0Mzg5Ij5QQVJUSUNJUEFOVFM8L3RleHQ+CjxnIGZpbHRlcj0idXJsKCNzaGFkb3cpIj4KPHJlY3QgeD0iMTEwLjAiIHk9IjI2Mi4wIiB3aWR0aD0iMzIwLjAiIGhlaWdodD0iMjU4LjAiIHJ4PSIxMyIgZmlsbD0iI2U0ZjBmOCIgc3Ryb2tlPSIjMzk3OWE2IiBzdHJva2Utd2lkdGg9IjMiLz4KPHRleHQgeD0iMjcwLjAiIHk9IjI5Ni4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgPk9uZS1zaWRlZCB0YWtlciBzdXJnZTwvdGV4dD4KPHRleHQgeD0iMjcwLjAiIHk9IjMyNy4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS1zdWIiID5zdXJnZS1zaWRlIHRha2VyIGZsb3cg4omlIM60PC90ZXh0Pgo8cmVjdCB4PSIxMjIuMCIgeT0iMzQzLjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI0OS43IiByeD0iOCIgZmlsbD0iI2VhZjNmOSIgc3Ryb2tlPSIjOGRiNmQzIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIyNzAuMCIgeT0iMzYzLjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPlNpemU6IHZlcnkgYmlnIC8gYmlnIC8gc21hbGw8L3RleHQ+Cjx0ZXh0IHg9IjI3MC4wIiB5PSIzODQuOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsIiA+c3VyZ2Utc2lkZSBVU0QsIGRyYXdkb3duIERENTwvdGV4dD4KPHJlY3QgeD0iMTIyLjAiIHk9IjQwMC43IiB3aWR0aD0iMjk2LjAiIGhlaWdodD0iNDkuNyIgcng9IjgiIGZpbGw9IiNlYWYzZjkiIHN0cm9rZT0iIzhkYjZkMyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjcwLjAiIHk9IjQyMS41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwtdGl0bGUiID4xLXNpZGVkIG9yIDItc2lkZWQ/PC90ZXh0Pgo8dGV4dCB4PSIyNzAuMCIgeT0iNDQyLjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPjkyMiBvbmUtc2lkZWQgc3VyZ2VzOyB0d28tc2lkZWQgYXBhcnQ8L3RleHQ+CjxyZWN0IHg9IjEyMi4wIiB5PSI0NTguMyIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjQ5LjciIHJ4PSI4IiBmaWxsPSIjZWFmM2Y5IiBzdHJva2U9IiM4ZGI2ZDMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjI3MC4wIiB5PSI0NzkuMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsLXRpdGxlIiA+VGFrZXJzOiBmcm9udGVuZCwgYWxnbywgZm9yY2VkPC90ZXh0Pgo8dGV4dCB4PSIyNzAuMCIgeT0iNTAwLjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPmxpcXVpZGF0aW9ucyBhbmQgQURMLCBjYXNjYWRlczwvdGV4dD4KPHJlY3QgeD0iNDYwLjAiIHk9IjI2Mi4wIiB3aWR0aD0iMzIwLjAiIGhlaWdodD0iMjU4LjAiIHJ4PSIxMyIgZmlsbD0iI2Y4ZmNmZiIgc3Ryb2tlPSIjMzk3OWE2IiBzdHJva2Utd2lkdGg9IjIiLz4KPHRleHQgeD0iNjIwLjAiIHk9IjI5Ni4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgPk1ha2VyIGZpbGxzIGFnYWluc3QgdGhlIHN1cmdlPC90ZXh0Pgo8dGV4dCB4PSI2MjAuMCIgeT0iMzI3LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPnRha2VycyBoaXQgcmVzdGluZyBvcmRlcnM8L3RleHQ+Cjx0ZXh0IHg9IjYyMC4wIiB5PSIzNTAuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+b24gb25lIHNpZGUgb2YgdGhlIGJvb2s8L3RleHQ+CjxyZWN0IHg9IjQ3Mi4wIiB5PSIzNjYuMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjY3LjAiIHJ4PSI4IiBmaWxsPSIjZWFmM2Y5IiBzdHJva2U9IiM4ZGI2ZDMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjYyMC4wIiB5PSIzOTUuNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsLXRpdGxlIiA+TU1zIGFic29yYiBtb3N0IG9mIGl0PC90ZXh0Pgo8dGV4dCB4PSI2MjAuMCIgeT0iNDE2LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPm1lZGlhbiA2MiUgb2YgdGhlIHN1cmdlPC90ZXh0Pgo8cmVjdCB4PSI0NzIuMCIgeT0iNDQxLjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI2Ny4wIiByeD0iOCIgZmlsbD0iI2VhZjNmOSIgc3Ryb2tlPSIjOGRiNmQzIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2MjAuMCIgeT0iNDcwLjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPk5vbi1NTSByZXN0aW5nIG9yZGVyczwvdGV4dD4KPHRleHQgeD0iNjIwLjAiIHk9IjQ5MS41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID5tZWRpYW4gMzUlLCBtb3N0bHkgbm90IHBvc3Qtb25seTwvdGV4dD4KPHJlY3QgeD0iODEwLjAiIHk9IjI2Mi4wIiB3aWR0aD0iMzIwLjAiIGhlaWdodD0iMjU4LjAiIHJ4PSIxMyIgZmlsbD0iI2Y4ZmNmZiIgc3Ryb2tlPSIjMzk3OWE2IiBzdHJva2Utd2lkdGg9IjIiLz4KPHRleHQgeD0iOTcwLjAiIHk9IjI5Ni4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgPkJvb2sgc3dlcHQsIHByaWNlIG1vdmVzPC90ZXh0Pgo8dGV4dCB4PSI5NzAuMCIgeT0iMzI3LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPmRlcHRoIHRha2VuIG9uIHRoZSBoaXQgc2lkZTwvdGV4dD4KPHJlY3QgeD0iODIyLjAiIHk9IjM0My4wIiB3aWR0aD0iMjk2LjAiIGhlaWdodD0iNzguNSIgcng9IjgiIGZpbGw9IiNlYWYzZjkiIHN0cm9rZT0iIzhkYjZkMyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iOTcwLjAiIHk9IjM3OC4yIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwtdGl0bGUiID50X3B2OiB0aGUgYmlnZ2VzdCBtaW51dGU8L3RleHQ+Cjx0ZXh0IHg9Ijk3MC4wIiB5PSIzOTkuMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsIiA+bW9zdCBzdXJnZS1zaWRlIHRha2VyIFVTRDwvdGV4dD4KPHJlY3QgeD0iODIyLjAiIHk9IjQyOS41IiB3aWR0aD0iMjk2LjAiIGhlaWdodD0iNzguNSIgcng9IjgiIGZpbGw9IiNlYWYzZjkiIHN0cm9rZT0iIzhkYjZkMyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iOTcwLjAiIHk9IjQ2NC44IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwtdGl0bGUiID5Ccm9hZCBvciBIWVBFIG9ubHk/PC90ZXh0Pgo8dGV4dCB4PSI5NzAuMCIgeT0iNDg1LjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPkJUQywgRVRILCBTT0wgbW92ZSB0aGUgc2FtZSB3YXk/PC90ZXh0Pgo8cmVjdCB4PSIxMTYwLjAiIHk9IjI2Mi4wIiB3aWR0aD0iNjcwLjAiIGhlaWdodD0iMjU4LjAiIHJ4PSIxMyIgZmlsbD0iI2Y4ZmNmZiIgc3Ryb2tlPSIjMzk3OWE2IiBzdHJva2Utd2lkdGg9IjIiLz4KPHRleHQgeD0iMTQ5NS4wIiB5PSIyOTYuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtdGl0bGUiID5UYWtlciBmbG93IGFmdGVyIHRoZSBydW48L3RleHQ+Cjx0ZXh0IHg9IjE0OTUuMCIgeT0iMzI3LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPmFmdGVyIHRfYyB0aGUgdGFrZXJzIGtlZXAgaGl0dGluZyw8L3RleHQ+Cjx0ZXh0IHg9IjE0OTUuMCIgeT0iMzUwLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPnN0b3AsIG9yIHR1cm4gYXJvdW5kPC90ZXh0Pgo8cmVjdCB4PSIxMTcyLjAiIHk9IjM2Ni4wIiB3aWR0aD0iNjQ2LjAiIGhlaWdodD0iNjcuMCIgcng9IjgiIGZpbGw9IiNlYWYzZjkiIHN0cm9rZT0iIzhkYjZkMyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTQ5NS4wIiB5PSIzOTUuNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsLXRpdGxlIiA+VGhlIGZsb3cgTU1zIGV4aXQgaW50bzwvdGV4dD4KPHRleHQgeD0iMTQ5NS4wIiB5PSI0MTYuNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsIiA+ZXhpdC1zaWRlIGZpbGxzIGNvbWUgZnJvbSBpdDwvdGV4dD4KPHJlY3QgeD0iMTE3Mi4wIiB5PSI0NDEuMCIgd2lkdGg9IjY0Ni4wIiBoZWlnaHQ9IjY3LjAiIHJ4PSI4IiBmaWxsPSIjZWFmM2Y5IiBzdHJva2U9IiM4ZGI2ZDMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjE0OTUuMCIgeT0iNDcwLjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPk5ldCB0YWtlciBmbG93LCAxNSBtaW4gYWZ0ZXIgdF9jPC90ZXh0Pgo8dGV4dCB4PSIxNDk1LjAiIHk9IjQ5MS41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID50aGUgc3Ryb25nZXN0IHByZWRpY3RvciBvZiBSKDEyMCk8L3RleHQ+CjxyZWN0IHg9IjE4NjAuMCIgeT0iMjYyLjAiIHdpZHRoPSIzMjAuMCIgaGVpZ2h0PSIyNTguMCIgcng9IjEzIiBmaWxsPSIjZTRmMGY4IiBzdHJva2U9IiMzOTc5YTYiIHN0cm9rZS13aWR0aD0iMyIvPgo8dGV4dCB4PSIyMDIwLjAiIHk9IjI5Ni4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgPk1hcmtldCBsaXF1aWRpdHkgb3V0Y29tZTwvdGV4dD4KPHRleHQgeD0iMjAyMC4wIiB5PSIzMjcuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+dG90YWwgdGFrZXIgZXhlY3V0aW9uIGNvc3QgKGJwcyk8L3RleHQ+Cjx0ZXh0IHg9IjIwMjAuMCIgeT0iMzUwLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPnNwcmVhZCBhbmQgdm9sYXRpbGl0eTwvdGV4dD4KPHRleHQgeD0iMjAyMC4wIiB5PSIzNzMuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+ZGVwdGg6IHRvcC1sZXZlbCBkaXN0YW5jZSB0byB0aGUgbWlkLDwvdGV4dD4KPHRleHQgeD0iMjAyMC4wIiB5PSIzOTYuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+c2l6ZSB3aXRoaW4gMTAgLyAyMCBicHMsPC90ZXh0Pgo8dGV4dCB4PSIyMDIwLjAiIHk9IjQxOS4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS1zdWIiID5zbGlwcGFnZSBvZiBhICQxLDAwMCBvcmRlcjwvdGV4dD4KPHRleHQgeD0iMjAyMC4wIiB5PSI0NDIuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+dGltZSBmb3IgbGlxdWlkaXR5IHRvIHJlY292ZXI8L3RleHQ+CjxyZWN0IHg9IjIyMTAuMCIgeT0iMjYyLjAiIHdpZHRoPSIzMjAuMCIgaGVpZ2h0PSIyNTguMCIgcng9IjEzIiBmaWxsPSIjZTRmMGY4IiBzdHJva2U9IiMzOTc5YTYiIHN0cm9rZS13aWR0aD0iMyIvPgo8dGV4dCB4PSIyMzcwLjAiIHk9IjI5Ni4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgPlByaWNlIG91dGNvbWU8L3RleHQ+Cjx0ZXh0IHg9IjIzNzAuMCIgeT0iMzI3LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPmRvZXMgdGhlIG1vdmUgcmV2ZXJ0PyBSKDEyMCk8L3RleHQ+Cjx0ZXh0IHg9IjIzNzAuMCIgeT0iMzUwLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPnJlbGF0ZWQgdG8gc2hvY2sgc2l6ZSw8L3RleHQ+Cjx0ZXh0IHg9IjIzNzAuMCIgeT0iMzczLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPnN1YnNlcXVlbnQgdGFrZXIgZmxvdyw8L3RleHQ+Cjx0ZXh0IHg9IjIzNzAuMCIgeT0iMzk2LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPmhvdyBmYXN0IE1NcyB1bndpbmQsIGFuZCBob3c8L3RleHQ+Cjx0ZXh0IHg9IjIzNzAuMCIgeT0iNDE5LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPm1hbnkgTU1zIGFyZSBzaG9ja2VkIGFuZDwvdGV4dD4KPHRleHQgeD0iMjM3MC4wIiB5PSI0NDIuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+bXVzdCB1bndpbmQ/PC90ZXh0Pgo8cmVjdCB4PSIxMTAuMCIgeT0iNTY0LjAiIHdpZHRoPSIzMjAuMCIgaGVpZ2h0PSI0NTIuMCIgcng9IjEzIiBmaWxsPSIjZmZmYWY1IiBzdHJva2U9IiNkZjg1M2YiIHN0cm9rZS13aWR0aD0iMiIvPgo8dGV4dCB4PSIyNzAuMCIgeT0iNTk4LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXRpdGxlIiA+UHJlLXNob2NrIE1NIHN0YXRlPC90ZXh0Pgo8cmVjdCB4PSIxMjIuMCIgeT0iNjIyLjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI1Ny4wIiByeD0iOCIgZmlsbD0iI2ZmZjBkZiIgc3Ryb2tlPSIjZTJhMDZhIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIyNzAuMCIgeT0iNjQ2LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPkludmVudG9yeSBiZWZvcmUgdGhlIHN1cmdlPC90ZXh0Pgo8dGV4dCB4PSIyNzAuMCIgeT0iNjY3LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPnNpZ25lZCB0byB0aGUgc3VyZ2UgZGlyZWN0aW9uPC90ZXh0Pgo8cmVjdCB4PSIxMjIuMCIgeT0iNjg3LjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI1Ny4wIiByeD0iOCIgZmlsbD0iI2ZmZjBkZiIgc3Ryb2tlPSIjZTJhMDZhIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIyNzAuMCIgeT0iNzExLjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPs+DMjQ6IGludmVudG9yeSB2b2xhdGlsaXR5PC90ZXh0Pgo8dGV4dCB4PSIyNzAuMCIgeT0iNzMyLjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPml0cyBub3JtYWwgc3dpbmc7IHJpc2sgYmVhcmluZzwvdGV4dD4KPHJlY3QgeD0iMTIyLjAiIHk9Ijc1Mi4wIiB3aWR0aD0iMjk2LjAiIGhlaWdodD0iNTcuMCIgcng9IjgiIGZpbGw9IiNmZmYwZGYiIHN0cm9rZT0iI2UyYTA2YSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjcwLjAiIHk9Ijc3Ni41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwtdGl0bGUiID5MZXZlcmFnZSBhbmQgZXF1aXR5PC90ZXh0Pgo8dGV4dCB4PSIyNzAuMCIgeT0iNzk3LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPmFjY291bnQgdmFsdWUsIG1hcmdpbiB1c2U8L3RleHQ+CjxyZWN0IHg9IjEyMi4wIiB5PSI4MTcuMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjU3LjAiIHJ4PSI4IiBmaWxsPSIjZmZmMGRmIiBzdHJva2U9IiNlMmEwNmEiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjI3MC4wIiB5PSI4NDEuNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsLXRpdGxlIiA+Vm9sdW1lLCBvcmRlciByYXRlLCBkaXN0YW5jZTwvdGV4dD4KPHRleHQgeD0iMjcwLjAiIHk9Ijg2Mi41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID5ob3cgaXQgbm9ybWFsbHkgdHJhZGVzPC90ZXh0Pgo8cmVjdCB4PSIxMjIuMCIgeT0iODgyLjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI1Ny4wIiByeD0iOCIgZmlsbD0iI2ZmZjBkZiIgc3Ryb2tlPSIjZTJhMDZhIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIyNzAuMCIgeT0iOTA2LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPlR3by1zaWRlZCBxdW90aW5nPC90ZXh0Pgo8dGV4dCB4PSIyNzAuMCIgeT0iOTI3LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPmJvdGggc2lkZXMgcmVzdGluZz8gc2l6ZSByYXRpbzwvdGV4dD4KPHJlY3QgeD0iMTIyLjAiIHk9Ijk0Ny4wIiB3aWR0aD0iMjk2LjAiIGhlaWdodD0iNTcuMCIgcng9IjgiIGZpbGw9IiNmZmYwZGYiIHN0cm9rZT0iI2UyYTA2YSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjcwLjAiIHk9Ijk3MS41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwtdGl0bGUiID5PdGhlciBjb2lucyB0cmFkZWQ8L3RleHQ+Cjx0ZXh0IHg9IjI3MC4wIiB5PSI5OTIuNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsIiA+c2FtZS1kaXJlY3Rpb24gc2hvY2sgZWxzZXdoZXJlPzwvdGV4dD4KPHJlY3QgeD0iNDYwLjAiIHk9IjU2NC4wIiB3aWR0aD0iMzIwLjAiIGhlaWdodD0iNDUyLjAiIHJ4PSIxMyIgZmlsbD0iI2ZmZmFmNSIgc3Ryb2tlPSIjZGY4NTNmIiBzdHJva2Utd2lkdGg9IjIiLz4KPHRleHQgeD0iNjIwLjAiIHk9IjU5OC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgPldobyBhYnNvcmJzPC90ZXh0Pgo8cmVjdCB4PSI0NzIuMCIgeT0iNjIyLjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI1Ny4wIiByeD0iOCIgZmlsbD0iI2ZmZjBkZiIgc3Ryb2tlPSIjZTJhMDZhIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2MjAuMCIgeT0iNjQ2LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPkFjdGl2ZSBNTTwvdGV4dD4KPHRleHQgeD0iNjIwLjAiIHk9IjY2Ny41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID7iiaUgMSBsaW1pdCBvcmRlciBhIG1pbnV0ZSAoRDNmKTwvdGV4dD4KPHJlY3QgeD0iNDcyLjAiIHk9IjY4Ny4wIiB3aWR0aD0iMjk2LjAiIGhlaWdodD0iNTcuMCIgcng9IjgiIGZpbGw9IiNmZmYwZGYiIHN0cm9rZT0iI2UyYTA2YSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNjIwLjAiIHk9IjcxMS41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwtdGl0bGUiID5JbmFjdGl2ZSBNTTwvdGV4dD4KPHRleHQgeD0iNjIwLjAiIHk9IjczMi41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID5ub3QgcXVvdGluZyBpbiB0aGUgd2luZG93PC90ZXh0Pgo8cmVjdCB4PSI0NzIuMCIgeT0iNzUyLjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI1Ny4wIiByeD0iOCIgZmlsbD0iI2ZmZjBkZiIgc3Ryb2tlPSIjZTJhMDZhIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2MjAuMCIgeT0iNzc2LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPlN0b3BwZWQgcmlnaHQgYmVmb3JlPzwvdGV4dD4KPHRleHQgeD0iNjIwLjAiIHk9Ijc5Ny41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID5xdW90ZWQgaW4gUFJFMkgsIHF1aWV0IGluIHRoZSBydW48L3RleHQ+CjxyZWN0IHg9IjQ3Mi4wIiB5PSI4MTcuMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjU3LjAiIHJ4PSI4IiBmaWxsPSIjZmZmMGRmIiBzdHJva2U9IiNlMmEwNmEiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjYyMC4wIiB5PSI4NDEuNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsLXRpdGxlIiA+QWJzb3JiZXJzOiBrOTA8L3RleHQ+Cjx0ZXh0IHg9IjYyMC4wIiB5PSI4NjIuNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsIiA+fjI3IE1NcyB0YWtlIDkwJSBvZiBNTSBhYnNvcnB0aW9uPC90ZXh0Pgo8cmVjdCB4PSI0NzIuMCIgeT0iODgyLjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI1Ny4wIiByeD0iOCIgZmlsbD0iI2ZmZjBkZiIgc3Ryb2tlPSIjZTJhMDZhIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2MjAuMCIgeT0iOTA2LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPkJpZyAodG9wIDUpIHZzIHNtYWxsPC90ZXh0Pgo8dGV4dCB4PSI2MjAuMCIgeT0iOTI3LjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPmJ5IGFic29ycHRpb24tc2lkZSBtYWtlciB2b2x1bWU8L3RleHQ+CjxyZWN0IHg9IjQ3Mi4wIiB5PSI5NDcuMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjU3LjAiIHJ4PSI4IiBmaWxsPSIjZmZmMGRmIiBzdHJva2U9IiNlMmEwNmEiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjYyMC4wIiB5PSI5NzEuNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsLXRpdGxlIiA+QWJzb3JwdGlvbiDiiJ0gdm9sdW1lPzwvdGV4dD4KPHRleHQgeD0iNjIwLjAiIHk9Ijk5Mi41IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID5vcmRlciByYXRlPyBkaXN0YW5jZSB0byB0b3VjaD88L3RleHQ+CjxyZWN0IHg9IjgxMC4wIiB5PSI1NzQuMCIgd2lkdGg9IjMyMC4wIiBoZWlnaHQ9IjQzMi4wIiByeD0iMTUiIGZpbGw9IiNmZGU0YzkiIHN0cm9rZT0iI2Q5NmIxNyIgc3Ryb2tlLXdpZHRoPSIzLjUiLz4KPHRleHQgeD0iOTcwLjAiIHk9IjYxMi4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgc3R5bGU9ImZvbnQtc2l6ZToyMnB4Ij5JTlZFTlRPUlkgU0hPQ0s8L3RleHQ+Cjx0ZXh0IHg9Ijk3MC4wIiB5PSI2MzguMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+bWFrZXIgZmlsbHMgbW92ZSB0aGUgcG9zaXRpb248L3RleHQ+CjxyZWN0IHg9IjgyMi4wIiB5PSI2NTYuMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjU4LjAiIHJ4PSI4IiBmaWxsPSIjZmZmNmVjIiBzdHJva2U9IiNkOTZiMTciIHN0cm9rZS13aWR0aD0iMS42Ii8+Cjx0ZXh0IHg9Ijk3MC4wIiB5PSI2ODEuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsLXRpdGxlIiA+U2hvY2tlZD88L3RleHQ+Cjx0ZXh0IHg9Ijk3MC4wIiB5PSI3MDIuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsIiA+aW52ZW50b3J5IG1vdmUg4omlIDMgb3duIM+DMjQ8L3RleHQ+CjxyZWN0IHg9IjgyMi4wIiB5PSI3MjIuMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjU4LjAiIHJ4PSI4IiBmaWxsPSIjZmZmNmVjIiBzdHJva2U9IiNkOTZiMTciIHN0cm9rZS13aWR0aD0iMS42Ii8+Cjx0ZXh0IHg9Ijk3MC4wIiB5PSI3NDcuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsLXRpdGxlIiA+U2hvY2sgc2l6ZSBBKjwvdGV4dD4KPHRleHQgeD0iOTcwLjAiIHk9Ijc2OC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID5wZWFrIGJ1aWxkLCBpbiBIWVBFIGFuZCBpbiDPgzI0PC90ZXh0Pgo8cmVjdCB4PSI4MjIuMCIgeT0iNzg4LjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI1OC4wIiByeD0iOCIgZmlsbD0iI2ZmZjZlYyIgc3Ryb2tlPSIjZDk2YjE3IiBzdHJva2Utd2lkdGg9IjEuNiIvPgo8dGV4dCB4PSI5NzAuMCIgeT0iODEzLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPkJpZ2dlc3QgYWJzb3JiZXIgc2hvY2tlZD88L3RleHQ+Cjx0ZXh0IHg9Ijk3MC4wIiB5PSI4MzQuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsIiA+YmlnIE1NcyBoYXZlIHRoZSBsYXJnZXN0IHN3aW5nczwvdGV4dD4KPHJlY3QgeD0iODIyLjAiIHk9Ijg1NC4wIiB3aWR0aD0iMjk2LjAiIGhlaWdodD0iMTQwLjAiIHJ4PSI4IiBmaWxsPSIjZmZmNmVjIiBzdHJva2U9IiNkOTZiMTciIHN0cm9rZS13aWR0aD0iMS42Ii8+Cjx0ZXh0IHg9Ijk0MC4wIiB5PSI4NzYuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsLXRpdGxlIiA+c2hvY2tlZDwvdGV4dD4KPHRleHQgeD0iMTA1Mi4wIiB5PSI4NzYuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsLXRpdGxlIiA+bm90IHNob2NrZWQ8L3RleHQ+Cjx0ZXh0IHg9IjgzNC4wIiB5PSI5MDcuNSIgdGV4dC1hbmNob3I9InN0YXJ0IiBjbGFzcz0ic21hbGwtdGl0bGUiID5iaWc8L3RleHQ+CjxyZWN0IHg9Ijg4Ny4wIiB5PSI4ODYuMCIgd2lkdGg9IjEwNi4wIiBoZWlnaHQ9IjM2LjAiIHJ4PSI2IiBmaWxsPSIjZmRlNGM5IiBzdHJva2U9IiNlMmEwNmEiIHN0cm9rZS13aWR0aD0iMSIvPgo8cmVjdCB4PSI5OTkuMCIgeT0iODg2LjAiIHdpZHRoPSIxMDYuMCIgaGVpZ2h0PSIzNi4wIiByeD0iNiIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjZTJhMDZhIiBzdHJva2Utd2lkdGg9IjEiLz4KPHRleHQgeD0iODM0LjAiIHk9Ijk0OC41IiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJzbWFsbC10aXRsZSIgPnNtYWxsPC90ZXh0Pgo8cmVjdCB4PSI4ODcuMCIgeT0iOTI3LjAiIHdpZHRoPSIxMDYuMCIgaGVpZ2h0PSIzNi4wIiByeD0iNiIgZmlsbD0iI2ZkZTRjOSIgc3Ryb2tlPSIjZTJhMDZhIiBzdHJva2Utd2lkdGg9IjEiLz4KPHJlY3QgeD0iOTk5LjAiIHk9IjkyNy4wIiB3aWR0aD0iMTA2LjAiIGhlaWdodD0iMzYuMCIgcng9IjYiIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iI2UyYTA2YSIgc3Ryb2tlLXdpZHRoPSIxIi8+Cjx0ZXh0IHg9Ijk3MC4wIiB5PSI5ODQuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsIiA+ZWFjaCBjZWxsOiB1bndpbmQgc3BlZWQsIHRha2VyIHJhdGlvPC90ZXh0Pgo8cmVjdCB4PSIxMTYwLjAiIHk9IjU2NC4wIiB3aWR0aD0iMzIwLjAiIGhlaWdodD0iNDUyLjAiIHJ4PSIxMyIgZmlsbD0iI2ZmZmFmNSIgc3Ryb2tlPSIjZGY4NTNmIiBzdHJva2Utd2lkdGg9IjIiLz4KPHRleHQgeD0iMTMyMC4wIiB5PSI1OTguMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtdGl0bGUiID5NTSBhY3Rpb248L3RleHQ+CjxyZWN0IHg9IjExNzIuMCIgeT0iNjIyLjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI3MC4wIiByeD0iOCIgZmlsbD0iI2ZmZjBkZiIgc3Ryb2tlPSIjZTJhMDZhIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMzIwLjAiIHk9IjY1My4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwtdGl0bGUiID5RdW90ZSBza2V3PC90ZXh0Pgo8dGV4dCB4PSIxMzIwLjAiIHk9IjY3NC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID5wcmljZSBhbmQgc2l6ZSB0aWx0IHRvIHRoZSBleGl0IHNpZGU8L3RleHQ+CjxyZWN0IHg9IjExNzIuMCIgeT0iNzAwLjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI3MC4wIiByeD0iOCIgZmlsbD0iI2ZmZjBkZiIgc3Ryb2tlPSIjZTJhMDZhIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMzIwLjAiIHk9IjczMS4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwtdGl0bGUiID5XaGVuIHRoZSBza2V3IHN0YXJ0czwvdGV4dD4KPHRleHQgeD0iMTMyMC4wIiB5PSI3NTIuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsIiA+YmVmb3JlIG9yIGFmdGVyIGl0cyBvd24gcGVhayB0KjwvdGV4dD4KPHJlY3QgeD0iMTE3Mi4wIiB5PSI3NzguMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjcwLjAiIHJ4PSI4IiBmaWxsPSIjZmZmMGRmIiBzdHJva2U9IiNlMmEwNmEiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzMjAuMCIgeT0iODA5LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPlNpemUsIHJlZmlsbCwgY2FuY2VsPC90ZXh0Pgo8dGV4dCB4PSIxMzIwLjAiIHk9IjgzMC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID5yZXN0aW5nIHNpemUsIHJlLXF1b3RlcywgY2FuY2VsczwvdGV4dD4KPHJlY3QgeD0iMTE3Mi4wIiB5PSI4NTYuMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjcwLjAiIHJ4PSI4IiBmaWxsPSIjZmZmMGRmIiBzdHJva2U9IiNlMmEwNmEiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzMjAuMCIgeT0iODg3LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPlRha2VyIHJhdGlvPC90ZXh0Pgo8dGV4dCB4PSIxMzIwLjAiIHk9IjkwOC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID5vd24gY3Jvc3NpbmcgdHJhZGVzIHRvIHVud2luZDwvdGV4dD4KPHJlY3QgeD0iMTE3Mi4wIiB5PSI5MzQuMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjcwLjAiIHJ4PSI4IiBmaWxsPSIjZmZmMGRmIiBzdHJva2U9IiNlMmEwNmEiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzMjAuMCIgeT0iOTY1LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPlN0b3AgcXVvdGluZz88L3RleHQ+Cjx0ZXh0IHg9IjEzMjAuMCIgeT0iOTg2LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPm5vIHJlc3Rpbmcgb3JkZXIgZm9yIDEwIG1pbnV0ZXM8L3RleHQ+CjxyZWN0IHg9IjE1MTAuMCIgeT0iNTY0LjAiIHdpZHRoPSIzMjAuMCIgaGVpZ2h0PSI0NTIuMCIgcng9IjEzIiBmaWxsPSIjZmJlY2VlIiBzdHJva2U9IiNhOTQ3NTQiIHN0cm9rZS13aWR0aD0iMiIvPgo8dGV4dCB4PSIxNjcwLjAiIHk9IjU5OC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgPk1NIG91dGNvbWU8L3RleHQ+CjxyZWN0IHg9IjE1MjIuMCIgeT0iNjIyLjAiIHdpZHRoPSIyOTYuMCIgaGVpZ2h0PSI3MC4wIiByeD0iOCIgZmlsbD0iI2ZmZjdmOCIgc3Ryb2tlPSIjYzg2YTc2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxNjcwLjAiIHk9IjY1My4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwtdGl0bGUiID5Pd24gcGVhayB0KjogZWFybHkgLyBtaWQgLyBsYXRlPC90ZXh0Pgo8dGV4dCB4PSIxNjcwLjAiIHk9IjY3NC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID5hZ2FpbnN0IHRfcHYgYW5kIHRfYzwvdGV4dD4KPHJlY3QgeD0iMTUyMi4wIiB5PSI3MDAuMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjcwLjAiIHJ4PSI4IiBmaWxsPSIjZmZmN2Y4IiBzdHJva2U9IiNjODZhNzYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjE2NzAuMCIgeT0iNzMxLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPlVud2luZCBzcGVlZDogZmFzdCAvIG1pZCAvIHNsb3c8L3RleHQ+Cjx0ZXh0IHg9IjE2NzAuMCIgeT0iNzUyLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPlQ2MDogbWludXRlcyB0byBnaXZlIGJhY2sgNjAlPC90ZXh0Pgo8cmVjdCB4PSIxNTIyLjAiIHk9Ijc3OC4wIiB3aWR0aD0iMjk2LjAiIGhlaWdodD0iNzAuMCIgcng9IjgiIGZpbGw9IiNmZmY3ZjgiIHN0cm9rZT0iI2M4NmE3NiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTY3MC4wIiB5PSI4MDkuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsLXRpdGxlIiA+SG93IGl0IGdldHMgb3V0PC90ZXh0Pgo8dGV4dCB4PSIxNjcwLjAiIHk9IjgzMC4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ic21hbGwiID5leGl0LXNpZGUgbWFrZXIsIG93biB0YWtlciwgZmxvdyBzdG9wczwvdGV4dD4KPHJlY3QgeD0iMTUyMi4wIiB5PSI4NTYuMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjcwLjAiIHJ4PSI4IiBmaWxsPSIjZmZmN2Y4IiBzdHJva2U9IiNjODZhNzYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjE2NzAuMCIgeT0iODg3LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPk1hcmtvdXRzLCBQbkwsIGVxdWl0eTwvdGV4dD4KPHRleHQgeD0iMTY3MC4wIiB5PSI5MDguMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InNtYWxsIiA+Ynkgc2lkZSBhbmQgcGhhc2UsIGluIGJwcyBhbmQgJDwvdGV4dD4KPHJlY3QgeD0iMTUyMi4wIiB5PSI5MzQuMCIgd2lkdGg9IjI5Ni4wIiBoZWlnaHQ9IjcwLjAiIHJ4PSI4IiBmaWxsPSIjZmZmN2Y4IiBzdHJva2U9IiNjODZhNzYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjE2NzAuMCIgeT0iOTY1LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbC10aXRsZSIgPktlZXBzIHF1b3RpbmcgYWZ0ZXJ3YXJkcz88L3RleHQ+Cjx0ZXh0IHg9IjE2NzAuMCIgeT0iOTg2LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJzbWFsbCIgPnZvbHVtZSBhbmQgcmFuayBpbiBQT1NUMkg8L3RleHQ+CjxyZWN0IHg9IjExMC4wIiB5PSIxMDU4LjAiIHdpZHRoPSIzMjAuMCIgaGVpZ2h0PSIxNjIuMCIgcng9IjEzIiBmaWxsPSIjZmJmYWZmIiBzdHJva2U9IiM3NjYwYTMiIHN0cm9rZS13aWR0aD0iMiIvPgo8dGV4dCB4PSIyNzAuMCIgeT0iMTA5Mi4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgPk90aGVyIGNvaW5zPC90ZXh0Pgo8dGV4dCB4PSIyNzAuMCIgeT0iMTEyMy4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS1zdWIiID5CVEMsIEVUSCwgU09MIHBvc2l0aW9uczo8L3RleHQ+Cjx0ZXh0IHg9IjI3MC4wIiB5PSIxMTQ2LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPmEgc2ltdWx0YW5lb3VzIHNob2NrPzwvdGV4dD4KPHJlY3QgeD0iNDYwLjAiIHk9IjEwNTguMCIgd2lkdGg9IjMyMC4wIiBoZWlnaHQ9IjE2Mi4wIiByeD0iMTMiIGZpbGw9IiNmYmZhZmYiIHN0cm9rZT0iIzc2NjBhMyIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjx0ZXh0IHg9IjYyMC4wIiB5PSIxMDkyLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXRpdGxlIiA+Tm9uLU1NIHJlc3Rpbmcgb3JkZXJzPC90ZXh0Pgo8dGV4dCB4PSI2MjAuMCIgeT0iMTEyMy4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS1zdWIiID50aGUgb3RoZXIgfjM1JSBvZiBhYnNvcnB0aW9uOzwvdGV4dD4KPHRleHQgeD0iNjIwLjAiIHk9IjExNDYuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+d2hvIHRoZXkgYXJlIGlzIG5vdCBjaGVja2VkPC90ZXh0Pgo8cmVjdCB4PSIxMTYwLjAiIHk9IjEwNTguMCIgd2lkdGg9IjMyMC4wIiBoZWlnaHQ9IjE2Mi4wIiByeD0iMTMiIGZpbGw9IiNmYmZhZmYiIHN0cm9rZT0iIzc2NjBhMyIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjx0ZXh0IHg9IjEzMjAuMCIgeT0iMTA5Mi4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgPlBlZXIgTU1zPC90ZXh0Pgo8dGV4dCB4PSIxMzIwLjAiIHk9IjExMjMuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+ZmlsbCB0aGUgZXhpdCwgY3Jvd2QgaW4sPC90ZXh0Pgo8dGV4dCB4PSIxMzIwLjAiIHk9IjExNDYuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+b3Igd2l0aGRyYXc/PC90ZXh0Pgo8cmVjdCB4PSIxNTEwLjAiIHk9IjEwNTguMCIgd2lkdGg9IjMyMC4wIiBoZWlnaHQ9IjE2Mi4wIiByeD0iMTMiIGZpbGw9IiNmYmZhZmYiIHN0cm9rZT0iIzc2NjBhMyIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjx0ZXh0IHg9IjE2NzAuMCIgeT0iMTA5Mi4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgPlByb3RvY29sIC8gYmFja3N0b3A8L3RleHQ+Cjx0ZXh0IHg9IjE2NzAuMCIgeT0iMTEyMy4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS1zdWIiID5mb3JjZWQgbGlxdWlkYXRpb24gYW5kIEFETDwvdGV4dD4KPHRleHQgeD0iMTY3MC4wIiB5PSIxMTQ2LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPm9mIGFuIG92ZXItbGV2ZXJlZCBNTTwvdGV4dD4KPC9nPgo8cmVjdCB4PSIxODYwLjAiIHk9Ijg0Mi4wIiB3aWR0aD0iNjcwLjAiIGhlaWdodD0iMTcwLjAiIHJ4PSIxMiIgZmlsbD0iI2ZmZmZmZiIgc3Ryb2tlPSIjOWFhNGIwIiBzdHJva2Utd2lkdGg9IjEuNSIvPgo8dGV4dCB4PSIyMTk1LjAiIHk9Ijg3Ni4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0ibm9kZS10aXRsZSIgPlRoZSBydWxlIHRoYXQga2VlcHMgdGhlIGNoYWluIGhvbmVzdDwvdGV4dD4KPHRleHQgeD0iMjE5NS4wIiB5PSI5MDguMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+RXhwbGFpbiBhbiBvdXRjb21lIGJ5IGFuIGFjdGlvbiwgbmV2ZXIgYnkgYW5vdGhlciBvdXRjb21lLjwvdGV4dD4KPHRleHQgeD0iMjE5NS4wIiB5PSI5MzIuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+U2hvY2sgc2l6ZSBhbmQgdW53aW5kIHNwZWVkIGFyZSBvdXRjb21lcyBvZiB0aGUgcXVvdGUgc2tldzwvdGV4dD4KPHRleHQgeD0iMjE5NS4wIiB5PSI5NTYuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9Im5vZGUtc3ViIiA+YW5kIG9mIHdoZW4gdGhlIE1NIHN0YXJ0cyB0byBza2V3LiAiRWFybHkgdW53aW5kZXJzIHRpbHQgbW9yZSI8L3RleHQ+Cjx0ZXh0IHg9IjIxOTUuMCIgeT0iOTgwLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJub2RlLXN1YiIgPmlzIGV4cGVjdGVkOyBob3cgdGhleSBnZXQgb3V0LCBhbmQgd2hhdCBpdCBjb3N0cywgaXMgdGhlIGZpbmRpbmcuPC90ZXh0Pgo8cGF0aCBkPSJNNDMwLjAgMzkxLjAgTDQ0OC4wIDM5MS4wIiBjbGFzcz0ic29saWQiLz4KPHBvbHlnb24gcG9pbnRzPSI0NjAuMCwzOTEuMCA0NDguMCwzOTcuMCA0NDguMCwzODUuMCIgY2xhc3M9InNvbGlkLWhlYWQiLz4KPHBhdGggZD0iTTc4MC4wIDM5MS4wIEw3OTguMCAzOTEuMCIgY2xhc3M9InNvbGlkIi8+Cjxwb2x5Z29uIHBvaW50cz0iODEwLjAsMzkxLjAgNzk4LjAsMzk3LjAgNzk4LjAsMzg1LjAiIGNsYXNzPSJzb2xpZC1oZWFkIi8+CjxwYXRoIGQ9Ik0xMTMwLjAgMzkxLjAgTDExNDguMCAzOTEuMCIgY2xhc3M9InNvbGlkIi8+Cjxwb2x5Z29uIHBvaW50cz0iMTE2MC4wLDM5MS4wIDExNDguMCwzOTcuMCAxMTQ4LjAsMzg1LjAiIGNsYXNzPSJzb2xpZC1oZWFkIi8+CjxwYXRoIGQ9Ik0xODMwLjAgMzkxLjAgTDE4NDguMCAzOTEuMCIgY2xhc3M9InNvbGlkIi8+Cjxwb2x5Z29uIHBvaW50cz0iMTg2MC4wLDM5MS4wIDE4NDguMCwzOTcuMCAxODQ4LjAsMzg1LjAiIGNsYXNzPSJzb2xpZC1oZWFkIi8+CjxwYXRoIGQ9Ik0yMTgwLjAgMzkxLjAgTDIxOTguMCAzOTEuMCIgY2xhc3M9InNvbGlkIi8+Cjxwb2x5Z29uIHBvaW50cz0iMjIxMC4wLDM5MS4wIDIxOTguMCwzOTcuMCAyMTk4LjAsMzg1LjAiIGNsYXNzPSJzb2xpZC1oZWFkIi8+CjxwYXRoIGQ9Ik00MzAuMCA3MTQuMCBMNDQ0LjAgNzE0LjAiIGNsYXNzPSJtYWluIi8+Cjxwb2x5Z29uIHBvaW50cz0iNDYwLjAsNzE0LjAgNDQ0LjAsNzIyLjAgNDQ0LjAsNzA2LjAiIGNsYXNzPSJtYWluLWhlYWQiLz4KPHBhdGggZD0iTTc4MC4wIDcxNC4wIEw3OTQuMCA3MTQuMCIgY2xhc3M9Im1haW4iLz4KPHBvbHlnb24gcG9pbnRzPSI4MTAuMCw3MTQuMCA3OTQuMCw3MjIuMCA3OTQuMCw3MDYuMCIgY2xhc3M9Im1haW4taGVhZCIvPgo8cGF0aCBkPSJNMTEzMC4wIDcxNC4wIEwxMTQ0LjAgNzE0LjAiIGNsYXNzPSJtYWluIi8+Cjxwb2x5Z29uIHBvaW50cz0iMTE2MC4wLDcxNC4wIDExNDQuMCw3MjIuMCAxMTQ0LjAsNzA2LjAiIGNsYXNzPSJtYWluLWhlYWQiLz4KPHBhdGggZD0iTTE0ODAuMCA3MTQuMCBMMTQ5NC4wIDcxNC4wIiBjbGFzcz0ibWFpbiIvPgo8cG9seWdvbiBwb2ludHM9IjE1MTAuMCw3MTQuMCAxNDk0LjAsNzIyLjAgMTQ5NC4wLDcwNi4wIiBjbGFzcz0ibWFpbi1oZWFkIi8+CjxwYXRoIGQ9Ik02MjAuMCA1MjAuMCBMNjIwLjAgNTQ4LjAiIGNsYXNzPSJtYWluIi8+Cjxwb2x5Z29uIHBvaW50cz0iNjIwLjAsNTY0LjAgNjEyLjAsNTQ4LjAgNjI4LjAsNTQ4LjAiIGNsYXNzPSJtYWluLWhlYWQiLz4KPHRleHQgeD0iNjMyLjAiIHk9IjU0OC4wIiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJlZGdlLWxhYmVsIiA+bWFrZXIgZmlsbHM8L3RleHQ+CjxwYXRoIGQ9Ik05NzAuMCA1MjAuMCBMOTcwLjAgNTYyLjAiIGNsYXNzPSJzb2xpZCIvPgo8cG9seWdvbiBwb2ludHM9Ijk3MC4wLDU3NC4wIDk2NC4wLDU2Mi4wIDk3Ni4wLDU2Mi4wIiBjbGFzcz0ic29saWQtaGVhZCIvPgo8dGV4dCB4PSI5ODIuMCIgeT0iNTQ4LjAiIHRleHQtYW5jaG9yPSJzdGFydCIgY2xhc3M9ImVkZ2UtbGFiZWwiID5tYXJrLXRvLW1hcmtldCBsb3NzPC90ZXh0Pgo8cGF0aCBkPSJNMTY3MC4wIDUyMC4wIEwxNjcwLjAgNTUyLjAiIGNsYXNzPSJzb2xpZCIvPgo8cG9seWdvbiBwb2ludHM9IjE2NzAuMCw1NjQuMCAxNjY0LjAsNTUyLjAgMTY3Ni4wLDU1Mi4wIiBjbGFzcz0ic29saWQtaGVhZCIvPgo8dGV4dCB4PSIxNjgyLjAiIHk9IjU0OC4wIiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJlZGdlLWxhYmVsIiA+ZmxvdyBzdG9wcyBvciB0dXJuczwvdGV4dD4KPHBhdGggZD0iTTEzMjAuMCA1NjQuMCBMMTMyMC4wIDUzMi4wIiBjbGFzcz0idGVzdCIvPgo8cG9seWdvbiBwb2ludHM9IjEzMjAuMCw1MjAuMCAxMzI2LjAsNTMyLjAgMTMxNC4wLDUzMi4wIiBjbGFzcz0ic29saWQtaGVhZCIvPgo8dGV4dCB4PSIxMzMyLjAiIHk9IjU0OC4wIiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJlZGdlLWxhYmVsIiA+cmVxdW90ZXMgYW5kIGV4aXQgdHJhZGVzPC90ZXh0Pgo8cGF0aCBkPSJNMTgzMC4wIDcwMC4wIEwyMDIwLjAgNzAwLjAgTDIwMjAuMCA1MzIuMCIgY2xhc3M9InRlc3QiLz4KPHBvbHlnb24gcG9pbnRzPSIyMDIwLjAsNTIwLjAgMjAyNi4wLDUzMi4wIDIwMTQuMCw1MzIuMCIgY2xhc3M9InNvbGlkLWhlYWQiLz4KPHRleHQgeD0iMjAzMi4wIiB5PSI2NTAuMCIgdGV4dC1hbmNob3I9InN0YXJ0IiBjbGFzcz0iZWRnZS1sYWJlbCIgPmRlcHRoIGxlZnQgb24gdGhlIGJvb2s8L3RleHQ+CjxwYXRoIGQ9Ik0xODMwLjAgNzkwLjAgTDIzNzAuMCA3OTAuMCBMMjM3MC4wIDUzMi4wIiBjbGFzcz0idGVzdCIvPgo8cG9seWdvbiBwb2ludHM9IjIzNzAuMCw1MjAuMCAyMzc2LjAsNTMyLjAgMjM2NC4wLDUzMi4wIiBjbGFzcz0ic29saWQtaGVhZCIvPgo8dGV4dCB4PSIyMzgyLjAiIHk9IjY5NS4wIiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJlZGdlLWxhYmVsIiA+TU0gdW53aW5kaW5nPC90ZXh0Pgo8cGF0aCBkPSJNMjcwLjAgMTA1OC4wIEwyNzAuMCAxMDMwLjAiIGNsYXNzPSJzb2xpZCIvPgo8cG9seWdvbiBwb2ludHM9IjI3MC4wLDEwMTguMCAyNzYuMCwxMDMwLjAgMjY0LjAsMTAzMC4wIiBjbGFzcz0ic29saWQtaGVhZCIvPgo8dGV4dCB4PSIyODIuMCIgeT0iMTA0Ni4wIiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJlZGdlLWxhYmVsIiA+c2hhcmVkIG1hcmdpbjwvdGV4dD4KPHBhdGggZD0iTTYyMC4wIDEwNTguMCBMNjIwLjAgMTAzMC4wIiBjbGFzcz0ic29saWQiLz4KPHBvbHlnb24gcG9pbnRzPSI2MjAuMCwxMDE4LjAgNjI2LjAsMTAzMC4wIDYxNC4wLDEwMzAuMCIgY2xhc3M9InNvbGlkLWhlYWQiLz4KPHRleHQgeD0iNjMyLjAiIHk9IjEwNDYuMCIgdGV4dC1hbmNob3I9InN0YXJ0IiBjbGFzcz0iZWRnZS1sYWJlbCIgPnNoYXJlIHRoZSBhYnNvcnB0aW9uPC90ZXh0Pgo8cGF0aCBkPSJNMTMyMC4wIDEwNTguMCBMMTMyMC4wIDEwMzAuMCIgY2xhc3M9InNvbGlkIi8+Cjxwb2x5Z29uIHBvaW50cz0iMTMyMC4wLDEwMTguMCAxMzI2LjAsMTAzMC4wIDEzMTQuMCwxMDMwLjAiIGNsYXNzPSJzb2xpZC1oZWFkIi8+Cjx0ZXh0IHg9IjEzMzIuMCIgeT0iMTA0Ni4wIiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJlZGdlLWxhYmVsIiA+Y29tcGV0ZSBmb3IgdGhlIGV4aXQ8L3RleHQ+CjxwYXRoIGQ9Ik0xNjcwLjAgMTA1OC4wIEwxNjcwLjAgMTAzMC4wIiBjbGFzcz0ic29saWQiLz4KPHBvbHlnb24gcG9pbnRzPSIxNjcwLjAsMTAxOC4wIDE2NzYuMCwxMDMwLjAgMTY2NC4wLDEwMzAuMCIgY2xhc3M9InNvbGlkLWhlYWQiLz4KPHRleHQgeD0iMTY4Mi4wIiB5PSIxMDQ2LjAiIHRleHQtYW5jaG9yPSJzdGFydCIgY2xhc3M9ImVkZ2UtbGFiZWwiID5mb3JjZWQgdW53aW5kPC90ZXh0Pgo8cmVjdCB4PSIxODYwLjAiIHk9IjEwNTguMCIgd2lkdGg9IjY3MC4wIiBoZWlnaHQ9IjE2Mi4wIiByeD0iMTIiIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iIzlhYTRiMCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPHBhdGggZD0iTTE4ODQuMCAxMDkyLjAgTDE5MTguMCAxMDkyLjAiIGNsYXNzPSJtYWluIi8+Cjxwb2x5Z29uIHBvaW50cz0iMTkzNC4wLDEwOTIuMCAxOTE4LjAsMTEwMC4wIDE5MTguMCwxMDg0LjAiIGNsYXNzPSJtYWluLWhlYWQiLz4KPHRleHQgeD0iMTk0OC4wIiB5PSIxMDk3LjAiIHRleHQtYW5jaG9yPSJzdGFydCIgY2xhc3M9ImxlZ2VuZCIgPm1haW4gY2hhaW4gb2YgdGhlIGV2ZW50PC90ZXh0Pgo8cGF0aCBkPSJNMTg4NC4wIDExMjguMCBMMTkyMi4wIDExMjguMCIgY2xhc3M9InNvbGlkIi8+Cjxwb2x5Z29uIHBvaW50cz0iMTkzNC4wLDExMjguMCAxOTIyLjAsMTEzNC4wIDE5MjIuMCwxMTIyLjAiIGNsYXNzPSJzb2xpZC1oZWFkIi8+Cjx0ZXh0IHg9IjE5NDguMCIgeT0iMTEzMy4wIiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJsZWdlbmQiID5tZWFzdXJlZCBpbiB0aGUgY3VycmVudCBwcm9qZWN0PC90ZXh0Pgo8cGF0aCBkPSJNMTg4NC4wIDExNjQuMCBMMTkyMi4wIDExNjQuMCIgY2xhc3M9InRlc3QiLz4KPHBvbHlnb24gcG9pbnRzPSIxOTM0LjAsMTE2NC4wIDE5MjIuMCwxMTcwLjAgMTkyMi4wLDExNTguMCIgY2xhc3M9InNvbGlkLWhlYWQiLz4KPHRleHQgeD0iMTk0OC4wIiB5PSIxMTY5LjAiIHRleHQtYW5jaG9yPSJzdGFydCIgY2xhc3M9ImxlZ2VuZCIgPmxpbmsgdG8gdGVzdCAocGxhbiBzZWN0aW9ucyBJLCBKKTwvdGV4dD4KPGNpcmNsZSBjeD0iMjI0MCIgY3k9IjEwODgiIHI9IjEyIiBmaWxsPSIjMzk3OWE2Ii8+Cjx0ZXh0IHg9IjIyNDAuMCIgeT0iMTA5My4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0idGFnIiA+UzwvdGV4dD4KPHRleHQgeD0iMjI2Mi4wIiB5PSIxMDkzLjAiIHRleHQtYW5jaG9yPSJzdGFydCIgY2xhc3M9ImxlZ2VuZCIgPnN0YXRlIGJlZm9yZSB0aGUgc2hvY2s8L3RleHQ+CjxjaXJjbGUgY3g9IjIyNDAiIGN5PSIxMTIwIiByPSIxMiIgZmlsbD0iI2Q5NmIxNyIvPgo8dGV4dCB4PSIyMjQwLjAiIHk9IjExMjUuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InRhZyIgPkE8L3RleHQ+Cjx0ZXh0IHg9IjIyNjIuMCIgeT0iMTEyNS4wIiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJsZWdlbmQiID5NTSBhY3Rpb248L3RleHQ+CjxjaXJjbGUgY3g9IjIyNDAiIGN5PSIxMTUyIiByPSIxMiIgZmlsbD0iI2E5NDc1NCIvPgo8dGV4dCB4PSIyMjQwLjAiIHk9IjExNTcuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9InRhZyIgPk88L3RleHQ+Cjx0ZXh0IHg9IjIyNjIuMCIgeT0iMTE1Ny4wIiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJsZWdlbmQiID5NTSBvdXRjb21lPC90ZXh0Pgo8Y2lyY2xlIGN4PSIyMjQwIiBjeT0iMTE4NCIgcj0iMTIiIGZpbGw9IiM1YzQzODkiLz4KPHRleHQgeD0iMjI0MC4wIiB5PSIxMTg5LjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJ0YWciID5DPC90ZXh0Pgo8dGV4dCB4PSIyMjYyLjAiIHk9IjExODkuMCIgdGV4dC1hbmNob3I9InN0YXJ0IiBjbGFzcz0ibGVnZW5kIiA+Y29uc2VxdWVuY2UgZm9yIHRoZSBtYXJrZXQ8L3RleHQ+CjxyZWN0IHg9IjQwLjAiIHk9IjEyNTYuMCIgd2lkdGg9IjYxNS4wIiBoZWlnaHQ9Ijg0LjAiIHJ4PSIxMiIgZmlsbD0iI2ZmZjFmMiIgc3Ryb2tlPSIjYzA1YjY5IiBzdHJva2Utd2lkdGg9IjEuNyIvPgo8dGV4dCB4PSIzNDcuNSIgeT0iMTI5MS4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0iYmFkZ2UiID5NTXMgYWJzb3JiIH42MiUgb2YgdGhlIHN1cmdlOzwvdGV4dD4KPHRleHQgeD0iMzQ3LjUiIHk9IjEzMTcuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9ImJhZGdlIiA+bm9uLU1NIG9yZGVycyB+MzUlPC90ZXh0Pgo8cmVjdCB4PSI2NzUuMCIgeT0iMTI1Ni4wIiB3aWR0aD0iNjE1LjAiIGhlaWdodD0iODQuMCIgcng9IjEyIiBmaWxsPSIjZmZmMWYyIiBzdHJva2U9IiNjMDViNjkiIHN0cm9rZS13aWR0aD0iMS43Ii8+Cjx0ZXh0IHg9Ijk4Mi41IiB5PSIxMjkxLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJiYWRnZSIgPn4yNyBNTXMgKGs5MCkgdGFrZTwvdGV4dD4KPHRleHQgeD0iOTgyLjUiIHk9IjEzMTcuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9ImJhZGdlIiA+OTAlIG9mIE1NIGFic29ycHRpb248L3RleHQ+CjxyZWN0IHg9IjEzMTAuMCIgeT0iMTI1Ni4wIiB3aWR0aD0iNjE1LjAiIGhlaWdodD0iODQuMCIgcng9IjEyIiBmaWxsPSIjZmZmMWYyIiBzdHJva2U9IiNjMDViNjkiIHN0cm9rZS13aWR0aD0iMS43Ii8+Cjx0ZXh0IHg9IjE2MTcuNSIgeT0iMTI5MS4wIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBjbGFzcz0iYmFkZ2UiID5ObyB0b3AtNSBhYnNvcmJlciBpcyBzaG9ja2VkPC90ZXh0Pgo8dGV4dCB4PSIxNjE3LjUiIHk9IjEzMTcuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9ImJhZGdlIiA+aW4gMzYlIG9mIHN1cmdlczwvdGV4dD4KPHJlY3QgeD0iMTk0NS4wIiB5PSIxMjU2LjAiIHdpZHRoPSI2MTUuMCIgaGVpZ2h0PSI4NC4wIiByeD0iMTIiIGZpbGw9IiNmZmZmZmYiIHN0cm9rZT0iIzlhYTRiMCIgc3Ryb2tlLXdpZHRoPSIxLjciLz4KPHRleHQgeD0iMjI1Mi41IiB5PSIxMjkxLjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGNsYXNzPSJiYWRnZSIgc3R5bGU9ImZpbGw6IzM1NDQ1OCI+RG9lcyByZWNvdmVyeSBzbG93IHdpdGggdGhlPC90ZXh0Pgo8dGV4dCB4PSIyMjUyLjUiIHk9IjEzMTcuMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgY2xhc3M9ImJhZGdlIiBzdHlsZT0iZmlsbDojMzU0NDU4Ij5udW1iZXIgb2Ygc2hvY2tlZCBNTXM/PC90ZXh0Pgo8dGV4dCB4PSI0MC4wIiB5PSIxMzc4LjAiIHRleHQtYW5jaG9yPSJzdGFydCIgY2xhc3M9ImZvb3QiID5CYWRnZXMgMS0yOiBtZWRpYW5zIG92ZXIgdGhlIDkyMiBvbmUtc2lkZWQgc3VyZ2VzIChFeHA4IGFuYWx5c2lzIDc2LjMsIDc2LjYpLiBCYWRnZSAzOiBzaGFyZSBvZiB0aGUgOTIyIHN1cmdlcyAoYW5hbHlzaXMgNTUuNCkuIEJhZGdlIDQgaXMgYW4gb3BlbiBxdWVzdGlvbiAocGxhbiBzZWN0aW9uIEopLjwvdGV4dD4KPHRleHQgeD0iNDAuMCIgeT0iMTQwNC4wIiB0ZXh0LWFuY2hvcj0ic3RhcnQiIGNsYXNzPSJmb290IiA+dDAgc3VyZ2Ugc3RhcnQgwrcgdF9wdiBtaW51dGUgd2l0aCB0aGUgbW9zdCBzdXJnZS1zaWRlIHRha2VyIFVTRCDCtyB0X2MgZW5kIG9mIHRoZSBydW4gwrcgdCogdGhlIE1NJ3Mgb3duIGludmVudG9yeSBwZWFrIMK3IM+DMjQgdGhlIE1NJ3MgdXN1YWwgaW52ZW50b3J5IHN3aW5nIG92ZXIgdGhlIHByaW9yIDI0IGggKHJvYnVzdCBzY2FsZSk8L3RleHQ+Cjx0ZXh0IHg9IjQwLjAiIHk9IjE0MzAuMCIgdGV4dC1hbmNob3I9InN0YXJ0IiBjbGFzcz0iZm9vdCIgPlQ2MCBtaW51dGVzIGFmdGVyIHQqIHRvIGdpdmUgYmFjayA2MCUgb2YgdGhlIHBlYWsgwrcgazkwIHNtYWxsZXN0IE1NIHNldCBob2xkaW5nIDkwJSBvZiBNTSBhYnNvcnB0aW9uLXNpZGUgbWFrZXIgdm9sdW1lIMK3IFIoMTIwKSBwcmljZSBtb3ZlIGJhY2sgdG93YXJkIHRoZSBzdGFydCwgdDEgdG8gdDEgKyAxMjAgbWluLCBpbiBicHMgKHQxID0gb25lIG1pbnV0ZSBhZnRlciB0aGUgcnVuKTwvdGV4dD4KPC9zdmc+" alt="The flow-shock chart: seven stages of a one-sided taker surge, from the flow shock through who absorbs it, who is shocked, the MMs' actions and outcomes, to the market and price outcomes, across the market and its takers, the market makers and other participants" width="2600" height="1450" draggable="false"></div>
 </main>
+<script>
+(function () {
+  var st = document.getElementById('vstage'), im = document.getElementById('vimg'), lab = document.getElementById('vzoom');
+  var W0 = 2600, H0 = 1450, s = 1, x = 0, y = 0, fitS = 1, atFit = true, MAX = 3;
+  function apply() {
+    im.style.width = (W0 * s) + 'px'; im.style.height = (H0 * s) + 'px';
+    im.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+    lab.textContent = Math.round(s / fitS * 100) + '%';
+  }
+  function box() { return st.getBoundingClientRect(); }
+  function fit() {
+    var r = box(); fitS = Math.min(r.width / W0, r.height / H0);
+    s = fitS; x = (r.width - W0 * s) / 2; y = (r.height - H0 * s) / 2; atFit = true; apply();
+  }
+  function zoomAt(f, cx, cy) {
+    var ns = Math.min(MAX, Math.max(fitS * 0.6, s * f)), k = ns / s;
+    x = cx - (cx - x) * k; y = cy - (cy - y) * k; s = ns; atFit = false; apply();
+  }
+  function centre() { var r = box(); return [r.width / 2, r.height / 2]; }
+  st.addEventListener('wheel', function (e) {
+    e.preventDefault(); var r = box();
+    zoomAt(Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0018)), e.clientX - r.left, e.clientY - r.top);
+  }, {passive: false});
+  var pts = new Map(), last = null;
+  st.addEventListener('pointerdown', function (e) {
+    st.setPointerCapture(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]); st.classList.add('drag'); last = null;
+  });
+  st.addEventListener('pointermove', function (e) {
+    if (!pts.has(e.pointerId)) return;
+    var prev = pts.get(e.pointerId); pts.set(e.pointerId, [e.clientX, e.clientY]);
+    if (pts.size === 1) { x += e.clientX - prev[0]; y += e.clientY - prev[1]; atFit = false; apply(); return; }
+    var p = Array.from(pts.values()).slice(0, 2), r = box();
+    var d = Math.hypot(p[0][0] - p[1][0], p[0][1] - p[1][1]);
+    var mx = (p[0][0] + p[1][0]) / 2 - r.left, my = (p[0][1] + p[1][1]) / 2 - r.top;
+    if (last) { x += mx - last.mx; y += my - last.my; zoomAt(d / last.d, mx, my); }
+    last = {d: d, mx: mx, my: my};
+  });
+  function up(e) { pts.delete(e.pointerId); last = null; if (!pts.size) st.classList.remove('drag'); }
+  st.addEventListener('pointerup', up); st.addEventListener('pointercancel', up);
+  st.addEventListener('dblclick', function (e) {
+    var r = box(); if (s > fitS * 1.9) fit(); else zoomAt(2, e.clientX - r.left, e.clientY - r.top);
+  });
+  document.getElementById('vin').onclick = function () { var c = centre(); zoomAt(1.4, c[0], c[1]); };
+  document.getElementById('vout').onclick = function () { var c = centre(); zoomAt(1 / 1.4, c[0], c[1]); };
+  document.getElementById('vfit').onclick = fit;
+  document.getElementById('vfull').onclick = function () { var c = centre(); zoomAt(1 / s, c[0], c[1]); };
+  document.addEventListener('keydown', function (e) {
+    if (e.target.closest && e.target.closest('input,textarea')) return;
+    var c = centre();
+    if (e.key === '+' || e.key === '=') zoomAt(1.4, c[0], c[1]);
+    else if (e.key === '-') zoomAt(1 / 1.4, c[0], c[1]);
+    else if (e.key === '0') fit();
+  });
+  window.addEventListener('resize', function () { if (atFit) fit(); });
+  if (im.complete) fit(); else im.addEventListener('load', fit);
+  fit();
+})();
+</script>
 <script>
   /* site menu (make_public_site.py): remembered state, chevrons, scroll position, theme */
   (function () {
